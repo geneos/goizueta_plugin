@@ -5,3 +5,4 @@ Nombre: Goizueta Custom Components
 Autor: Coop. GENEOS
 Prefijo: CGEN
 Package: ar.com.geneos.goizueta.plugin
+Version: 1.0.0
