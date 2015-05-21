@@ -1,14 +1,13 @@
 /** Modelo Generado - NO CAMBIAR MANUALMENTE - Disytel */
 package ar.com.geneos.goizueta.plugin.model;
 
-import org.openXpertya.model.*;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
-import java.util.logging.Level;
-import java.util.*;
-import java.sql.*;
-import java.math.*;
-
-import org.openXpertya.util.*;
+import org.openXpertya.model.M_Table;
+import org.openXpertya.model.POInfo;
+import org.openXpertya.util.KeyNamePair;
 
 /**
  * Modelo Generado por CG_Trip_Point
