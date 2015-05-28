@@ -1,8 +1,10 @@
-package ar.com.geneos.goizueta.plugin.client.pos;
+package ar.com.geneos.goizueta.plugin.client.pos.ctrl;
 
 import java.math.BigDecimal;
 
 import org.openXpertya.reflection.CallResult;
+
+import ar.com.geneos.goizueta.plugin.client.pos.PoSMainForm;
 
 public class AddPOSPaymentValidations {
 

@@ -143,6 +143,8 @@ import org.openXpertya.util.ValueNamePair;
 import org.openXpertya.utils.Disposable;
 import org.openXpertya.utils.LYCloseWindowAdapter;
 
+import ar.com.geneos.goizueta.plugin.client.pos.ctrl.AddPOSPaymentValidations;
+
 public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disposable {
 
 	/** Singleton */
