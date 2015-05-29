@@ -35,8 +35,6 @@ import org.compiere.swing.CTextField;
 import org.openXpertya.apps.AUserAuth;
 import org.openXpertya.grid.ed.VNumber;
 import org.openXpertya.model.DiscountCalculator.IDocumentLine.DiscountApplication;
-import org.openXpertya.pos.ctrl.PoSModel;
-import org.openXpertya.pos.model.OrderProduct;
 import org.openXpertya.pos.model.User;
 import org.openXpertya.pos.view.KeyUtils;
 import org.openXpertya.pos.view.PoSMsgRepository;
@@ -45,6 +43,9 @@ import org.openXpertya.swing.util.FocusUtils;
 import org.openXpertya.util.DisplayType;
 import org.openXpertya.util.UserAuthConstants;
 import org.openXpertya.util.UserAuthData;
+
+import ar.com.geneos.goizueta.plugin.client.pos.ctrl.PoSModel;
+import ar.com.geneos.goizueta.plugin.client.pos.model.OrderProduct;
 
 public class UpdateOrderProductDialog extends JDialog {
 

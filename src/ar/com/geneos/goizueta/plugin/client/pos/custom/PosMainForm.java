@@ -12,10 +12,14 @@ import org.compiere.swing.CPanel;
 import org.compiere.swing.CTextField;
 import org.openXpertya.apps.form.VComponentsFactory;
 import org.openXpertya.grid.ed.VLookup;
+import org.openXpertya.pos.ctrl.PoSModel;
+import org.openXpertya.pos.view.PoSMsgRepository;
 import org.openXpertya.swing.util.FocusUtils;
 import org.openXpertya.util.DisplayType;
 
+import ar.com.geneos.goizueta.plugin.client.pos.AuthorizationDialog;
 import ar.com.geneos.goizueta.plugin.client.pos.PoSMainForm;
+import ar.com.geneos.goizueta.plugin.client.pos.ctrl.AddPOSPaymentValidations;
 
 public class PosMainForm extends PoSMainForm {
 
@@ -45,7 +49,6 @@ public class PosMainForm extends PoSMainForm {
 	private String MSG_TRIP_DESTINATION;
 	private String MSG_SENDER_DETAILS;
 	private String MSG_DECLARED_VALUE;
-	private String MSG_REFRESH_VALUE;
 
 	// Combos
 	private VLookup cgTripCombo = null;
@@ -58,6 +61,16 @@ public class PosMainForm extends PoSMainForm {
 
 	// BUTTONS
 	private CButton cgDeclaredValueButton = null;
+
+	/**
+	 * This method initializes, and overrides PoSModel whit CGPoSModel
+	 * 
+	 */
+	public PosMainForm() {
+		super();
+		model = new CGPoSModel();
+		model.setProcessListener(this);
+	}
 
 	/**
 	 * This method overrides cProductTopPanel, adding CGTripPanel on top
@@ -181,13 +194,6 @@ public class PosMainForm extends PoSMainForm {
 			cgTripPanel.add(cgTripPanelSenderDetailsLabel, gridBagConstraints20);
 			cgTripPanel.add(getCGSenderDetailsText(), gridBagConstraints21);
 
-			/*
-			 * cProductInPanel.add(cCountLabel, gridBagConstraints2);
-			 * cProductInPanel.add(cProductNameLabel, gridBagConstraints11);
-			 * cProductInPanel.add(cProductNameDetailLabel,
-			 * gridBagConstraints21); cProductInPanel.add(getCCountPanel(),
-			 * gridBagConstraints22);
-			 */
 		}
 		return cgTripPanel;
 	}
@@ -362,7 +368,6 @@ public class PosMainForm extends PoSMainForm {
 		MSG_TRIP_ORIGIN = getMsg("TripOrigin");
 		MSG_TRIP_DESTINATION = getMsg("TripDestination");
 		MSG_DECLARED_VALUE = getMsg("TripDeclaredValue");
-		MSG_REFRESH_VALUE = getMsg("TripRefreshValue");
 	}
 
 	// Overrides goToPayments adding mandatory fields check

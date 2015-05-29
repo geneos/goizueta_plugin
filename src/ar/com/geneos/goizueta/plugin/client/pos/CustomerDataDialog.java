@@ -12,9 +12,10 @@ import org.compiere.swing.CButton;
 import org.compiere.swing.CLabel;
 import org.compiere.swing.CPanel;
 import org.compiere.swing.CTextField;
-import org.openXpertya.pos.model.BusinessPartner;
 import org.openXpertya.pos.view.KeyUtils;
 import org.openXpertya.swing.util.FocusUtils;
+
+import ar.com.geneos.goizueta.plugin.client.pos.model.BusinessPartner;
 
 public class CustomerDataDialog extends JDialog {
 

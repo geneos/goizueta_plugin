@@ -14,12 +14,7 @@ import org.openXpertya.model.DiscountCalculator.IDocumentLine.DiscountApplicatio
 import org.openXpertya.model.MBPartner;
 import org.openXpertya.model.MPOSPaymentMedium;
 import org.openXpertya.pos.model.AmountHelper;
-import org.openXpertya.pos.model.CashPayment;
-import org.openXpertya.pos.model.CreditNotePayment;
-import org.openXpertya.pos.model.CreditPayment;
-import org.openXpertya.pos.model.IPaymentMediumInfo;
 import org.openXpertya.pos.model.Organization;
-import org.openXpertya.pos.model.Payment;
 import org.openXpertya.pos.model.PaymentTerm;
 import org.openXpertya.pos.model.Tax;
 import org.openXpertya.util.Env;
