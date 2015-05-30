@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 
 import org.compiere.swing.CButton;
 import org.compiere.swing.CLabel;
@@ -377,8 +378,16 @@ public class PosMainForm extends PoSMainForm {
 
 			errorMsg("Llenar campos obligatorios");
 
-		else
+		else{
+			//Update trip data in cgOrder
+			((CGOrder)getOrder() ).setCg_trip_id((Integer) cgTripCombo.getValue());
+			((CGOrder)getOrder() ).setCg_origin_id((Integer) cgOriginCombo.getValue());
+			((CGOrder)getOrder() ).setCg_destination_id((Integer) cgDestinationCombo.getValue());
+			((CGOrder)getOrder() ).setDeclaredValue((BigDecimal) cgDeclaredValueText.getValue());
+			((CGOrder)getOrder() ).setSenderDetails((String) cgDeclaredValueText.getValue());
+			
 			super.goToPayments();
+		}
 	}
 
 }

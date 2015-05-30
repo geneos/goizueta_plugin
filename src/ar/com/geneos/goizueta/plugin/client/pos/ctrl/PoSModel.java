@@ -75,7 +75,7 @@ public class PoSModel {
 	/** Cantidad máxima en una línea de pedido */
 	private Integer maxOrderLineQty;
 	
-	private boolean isCopyRep;
+	protected boolean isCopyRep;
 	
 	public PoSModel() {
 		super();
@@ -136,7 +136,7 @@ public class PoSModel {
 	/**
 	 * @param order Fija o asigna order.
 	 */
-	void setOrder(Order order) {
+	protected void setOrder(Order order) {
 		this.order = order;
 	}
 	

@@ -215,7 +215,7 @@ public class PoSOnline extends PoSConnectionState {
 		setRole(MRole.get(getCtx(), Env.getAD_Role_ID(getCtx())));
 	}
 
-	private static void throwIfFalse(boolean b, DocAction sourceDocActionPO, Class posExceptionClass) throws PosException {
+	protected static void throwIfFalse(boolean b, DocAction sourceDocActionPO, Class posExceptionClass) throws PosException {
 		if (!b) {
 			ValueNamePair np = CLogger.retrieveError();
 			String msg = null;
@@ -571,7 +571,7 @@ public class PoSOnline extends PoSConnectionState {
 		}
 	}
 
-	private String getTrxName() {
+	protected String getTrxName() {
 		// return trx != null ? trx.getTrxName() : null;
 		return trxName;
 	}
