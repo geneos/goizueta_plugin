@@ -6,6 +6,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.compiere.swing.CButton;
 import org.compiere.swing.CLabel;
@@ -13,10 +15,12 @@ import org.compiere.swing.CPanel;
 import org.compiere.swing.CTextField;
 import org.openXpertya.apps.form.VComponentsFactory;
 import org.openXpertya.grid.ed.VLookup;
+import org.openXpertya.pos.model.Product;
 import org.openXpertya.swing.util.FocusUtils;
 import org.openXpertya.util.DisplayType;
 
 import ar.com.geneos.goizueta.plugin.client.pos.PoSMainForm;
+import ar.com.geneos.goizueta.plugin.client.pos.model.OrderProduct;
 
 public class PosMainForm extends PoSMainForm {
 
@@ -47,6 +51,7 @@ public class PosMainForm extends PoSMainForm {
 	private String MSG_SENDER_DETAILS;
 	private String MSG_DECLARED_VALUE;
 	private String MSG_ERROR_MANDATORY;
+	private String MSG_ADITIONAL_ADDED;
 
 	// Combos
 	private VLookup cgTripCombo = null;
@@ -370,6 +375,7 @@ public class PosMainForm extends PoSMainForm {
 		MSG_TRIP_DESTINATION = getMsg("CG_TripDestination");
 		MSG_DECLARED_VALUE = getMsg("CG_TripDeclaredValue");
 		MSG_ERROR_MANDATORY = getMsg("CG_TripErrorMandatory");
+		MSG_ADITIONAL_ADDED = getMsg("CG_TripAditionalAdded");
 	}
 
 	// Overrides goToPayments adding mandatory fields check
@@ -388,8 +394,28 @@ public class PosMainForm extends PoSMainForm {
 			((CGOrder) getOrder()).setDeclaredValue(new BigDecimal((String) cgDeclaredValueText.getValue()));
 			((CGOrder) getOrder()).setSenderDetails((String) cgSenderDetailsText.getValue());
 
-			// Update aditional per value
 			super.goToPayments();
+
+			// Update aditional per value
+			// productId correspondiente al producto Adicional por Valor
+			// (Obtener desde parametros)
+			int productId = 1015478;
+
+			// Primero borro la linea existente
+			List<OrderProduct> copyProducts = new ArrayList<OrderProduct>(getOrder().getOrderProducts());
+			for (OrderProduct op : copyProducts) {
+				if (op.getProduct().getId() == productId)
+					removeOrderProduct(op);
+			}
+
+			// Agrego nueva
+			BigDecimal adicionalPorValor = BigDecimal.ZERO;
+			adicionalPorValor = new BigDecimal((String) cgDeclaredValueText.getValue()).multiply(new BigDecimal(0.007));
+
+			Product product = getModel().getProduct(productId, 0);
+			product.setStdPrice(adicionalPorValor);
+			addOrderProduct(product);
+			infoMsg(MSG_ADITIONAL_ADDED);
 		}
 	}
 

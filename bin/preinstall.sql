@@ -1,7 +1,6 @@
 ----------------------------------------------------------------------
 ---------- Nuevas Tablas y/o Vistas 
 ----------------------------------------------------------------------
-
 CREATE TABLE CG_Trip_Point(
 
 cg_trip_point_id integer NOT NULL ,
@@ -53,6 +52,7 @@ ALTER TABLE C_Invoice ADD COLUMN CG_Trip_Point_Origin_ID integer;
 ALTER TABLE C_Invoice ADD COLUMN cg_sender_details character varying(150);
 ALTER TABLE C_Invoice ADD COLUMN CG_Trip_ID integer;
 ALTER TABLE C_Invoice ADD COLUMN cg_aditional_per_value numeric(10,2);
+
 ----------------------------------------------------------------------
 ---------- Modificación de tablas y/o vistas
 ----------------------------------------------------------------------
