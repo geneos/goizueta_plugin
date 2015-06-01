@@ -28818,4 +28818,2028 @@
 <newValue>640</newValue>
 </column>
 </changegroup>
+<changegroup operation="M" tableName="AD_Form" uid="CORE-AD_Form-113">
+<column name="Classname" type="10">
+<oldValue>org.openXpertya.pos.view.PoSMainForm</oldValue>
+<newValue>ar.com.geneos.goizueta.plugin.client.pos.custom.PosMainForm</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message" uid="CG-AD_Message-1011102">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message-1011102</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Message_ID" type="13">
+<oldValue>null</oldValue>
+<newValue>1011102</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-05-27 10:26:22.336685</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="EntityType" type="17">
+<oldValue>null</oldValue>
+<newValue>U</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Informacion del Viaje</newValue>
+</column>
+<column name="MsgType" type="17">
+<oldValue>null</oldValue>
+<newValue>I</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-05-27 10:26:22.337527</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Value" type="10">
+<oldValue>null</oldValue>
+<newValue>Trip Income</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_ES-1011102">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_ES-1011102</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_ES-140">es_ES</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011102">1011102</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-05-27 10:26:22.729087</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Informacion del Viaje</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-05-27 10:26:22.729809</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_AR-1011102">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_AR-1011102</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_AR-133">es_AR</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011102">1011102</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-05-27 10:26:22.98628</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Informacion del Viaje</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-05-27 10:26:22.987071</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_MX-1011102">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_MX-1011102</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_MX-143">es_MX</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011102">1011102</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-05-27 10:26:23.197517</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Informacion del Viaje</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-05-27 10:26:23.198111</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_PY-1011102">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_PY-1011102</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_PY-148">es_PY</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011102">1011102</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-05-27 10:26:23.408974</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Informacion del Viaje</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-05-27 10:26:23.409754</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Message" uid="CG-AD_Message-1011102">
+<column name="Value" type="10">
+<oldValue>Trip Income</oldValue>
+<newValue>TripIncome</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Field" uid="CG-AD_Field-1017908">
+<column name="IsDisplayed" type="20">
+<oldValue>N</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="SeqNo" type="11">
+<oldValue>0</oldValue>
+<newValue>90</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Field_Trl" uid="CG-AD_Field_Trl-1017908-es_AR">
+<column name="Name" type="10">
+<oldValue>finished</oldValue>
+<newValue>Finalizado</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Column" uid="CG-AD_Column-1016669">
+<column name="ReadOnlyLogic" type="14">
+<oldValue>null</oldValue>
+<newValue>@finished@='Y'</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Column" uid="CG-AD_Column-1016666">
+<column name="ReadOnlyLogic" type="14">
+<oldValue>null</oldValue>
+<newValue>@finished@='Y'</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Column" uid="CG-AD_Column-1016668">
+<column name="AD_Reference_ID" refTable="AD_Reference" type="18">
+<oldValue>28</oldValue>
+<newValue refUID="CORE-AD_Reference-20">20</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Column" uid="CG-AD_Column-1016670">
+<column name="ReadOnlyLogic" type="14">
+<oldValue>null</oldValue>
+<newValue>@finished@='Y'</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Column" uid="CG-AD_Column-1016665">
+<column name="ReadOnlyLogic" type="14">
+<oldValue>null</oldValue>
+<newValue>@finished@='Y'</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Column" uid="CG-AD_Column-1016667">
+<column name="ReadOnlyLogic" type="14">
+<oldValue>null</oldValue>
+<newValue>@finished@='Y'</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Column" uid="CG-AD_Column-1016657">
+<column name="ReadOnlyLogic" type="14">
+<oldValue>null</oldValue>
+<newValue>@finished@='Y'</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Column" uid="CG-AD_Column-1016659">
+<column name="IsUpdateable" type="20">
+<oldValue>N</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="ReadOnlyLogic" type="14">
+<oldValue>null</oldValue>
+<newValue>@finished@='Y'</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Column" uid="CG-AD_Column-1016658">
+<column name="IsUpdateable" type="20">
+<oldValue>N</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="ReadOnlyLogic" type="14">
+<oldValue>null</oldValue>
+<newValue>@finished@='Y'</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Message" uid="CG-AD_Message-1011102">
+<column name="Value" type="10">
+<oldValue>TripIncome</oldValue>
+<newValue>CG_TripData</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message" uid="CG-AD_Message-1011103">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message-1011103</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Message_ID" type="13">
+<oldValue>null</oldValue>
+<newValue>1011103</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:17:01.189507</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="EntityType" type="17">
+<oldValue>null</oldValue>
+<newValue>U</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Viaje</newValue>
+</column>
+<column name="MsgType" type="17">
+<oldValue>null</oldValue>
+<newValue>I</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:17:01.190519</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Value" type="10">
+<oldValue>null</oldValue>
+<newValue>CG_Trip</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_ES-1011103">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_ES-1011103</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_ES-140">es_ES</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011103">1011103</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:17:01.540075</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Viaje</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:17:01.540821</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_AR-1011103">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_AR-1011103</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_AR-133">es_AR</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011103">1011103</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:17:01.785293</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Viaje</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:17:01.78615</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_MX-1011103">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_MX-1011103</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_MX-143">es_MX</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011103">1011103</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:17:01.995752</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Viaje</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:17:01.996401</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_PY-1011103">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_PY-1011103</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_PY-148">es_PY</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011103">1011103</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:17:02.25243</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Viaje</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:17:02.252872</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message" uid="CG-AD_Message-1011104">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message-1011104</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Message_ID" type="13">
+<oldValue>null</oldValue>
+<newValue>1011104</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:12.159399</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="EntityType" type="17">
+<oldValue>null</oldValue>
+<newValue>U</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Rte / #Remito</newValue>
+</column>
+<column name="MsgType" type="17">
+<oldValue>null</oldValue>
+<newValue>I</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:12.160318</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Value" type="10">
+<oldValue>null</oldValue>
+<newValue>CG_TripSenderDetails</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_ES-1011104">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_ES-1011104</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_ES-140">es_ES</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011104">1011104</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:13.316279</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Rte / #Remito</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:13.317058</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_AR-1011104">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_AR-1011104</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_AR-133">es_AR</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011104">1011104</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:13.570512</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Rte / #Remito</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:13.570948</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_MX-1011104">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_MX-1011104</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_MX-143">es_MX</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011104">1011104</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:13.764468</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Rte / #Remito</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:13.765239</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_PY-1011104">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_PY-1011104</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_PY-148">es_PY</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011104">1011104</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:13.952022</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Rte / #Remito</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:13.952666</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message" uid="CG-AD_Message-1011105">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message-1011105</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Message_ID" type="13">
+<oldValue>null</oldValue>
+<newValue>1011105</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:40.813237</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="EntityType" type="17">
+<oldValue>null</oldValue>
+<newValue>U</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Origen</newValue>
+</column>
+<column name="MsgType" type="17">
+<oldValue>null</oldValue>
+<newValue>I</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:40.814101</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Value" type="10">
+<oldValue>null</oldValue>
+<newValue>CG_TripOrigin</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_ES-1011105">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_ES-1011105</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_ES-140">es_ES</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011105">1011105</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:41.061415</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Origen</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:41.062199</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_AR-1011105">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_AR-1011105</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_AR-133">es_AR</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011105">1011105</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:41.264601</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Origen</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:41.265464</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_MX-1011105">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_MX-1011105</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_MX-143">es_MX</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011105">1011105</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:41.486987</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Origen</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:41.487838</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_PY-1011105">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_PY-1011105</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_PY-148">es_PY</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011105">1011105</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:41.675818</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Origen</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:41.67664</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message" uid="CG-AD_Message-1011106">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message-1011106</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Message_ID" type="13">
+<oldValue>null</oldValue>
+<newValue>1011106</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:53.378175</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="EntityType" type="17">
+<oldValue>null</oldValue>
+<newValue>U</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Destino</newValue>
+</column>
+<column name="MsgType" type="17">
+<oldValue>null</oldValue>
+<newValue>I</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:53.379184</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Value" type="10">
+<oldValue>null</oldValue>
+<newValue>CG_TripDestination</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_ES-1011106">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_ES-1011106</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_ES-140">es_ES</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011106">1011106</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:53.615787</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Destino</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:53.616544</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_AR-1011106">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_AR-1011106</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_AR-133">es_AR</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011106">1011106</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:53.975682</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Destino</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:53.976522</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_MX-1011106">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_MX-1011106</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_MX-143">es_MX</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011106">1011106</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:54.174065</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Destino</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:54.174639</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_PY-1011106">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_PY-1011106</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_PY-148">es_PY</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011106">1011106</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:54.3647</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Destino</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:18:54.365481</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message" uid="CG-AD_Message-1011107">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message-1011107</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Message_ID" type="13">
+<oldValue>null</oldValue>
+<newValue>1011107</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:19:10.094786</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="EntityType" type="17">
+<oldValue>null</oldValue>
+<newValue>U</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>V. Declarado</newValue>
+</column>
+<column name="MsgType" type="17">
+<oldValue>null</oldValue>
+<newValue>I</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:19:10.095372</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Value" type="10">
+<oldValue>null</oldValue>
+<newValue>CG_TripDeclaredValue</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_ES-1011107">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_ES-1011107</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_ES-140">es_ES</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011107">1011107</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:19:10.326939</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>V. Declarado</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:19:10.32766</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_AR-1011107">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_AR-1011107</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_AR-133">es_AR</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011107">1011107</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:19:10.529458</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>V. Declarado</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:19:10.529995</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_MX-1011107">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_MX-1011107</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_MX-143">es_MX</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011107">1011107</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:19:10.897949</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>V. Declarado</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:19:10.898785</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_PY-1011107">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_PY-1011107</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_PY-148">es_PY</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011107">1011107</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:19:11.097879</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>V. Declarado</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:19:11.098705</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message" uid="CG-AD_Message-1011108">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message-1011108</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Message_ID" type="13">
+<oldValue>null</oldValue>
+<newValue>1011108</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:20:29.891358</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="EntityType" type="17">
+<oldValue>null</oldValue>
+<newValue>U</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Los siguientes campos son obligatorios:
+Viaje, Origen, Destino, V. Declarado y Rte / #Remito.
+Por favor verifique que los mismos esten cargados</newValue>
+</column>
+<column name="MsgType" type="17">
+<oldValue>null</oldValue>
+<newValue>I</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:20:29.89196</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Value" type="10">
+<oldValue>null</oldValue>
+<newValue>CG_TripErrorMandatory</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_ES-1011108">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_ES-1011108</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_ES-140">es_ES</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011108">1011108</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:20:30.136913</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Los siguientes campos son obligatorios:
+Viaje, Origen, Destino, V. Declarado y Rte / #Remito.
+Por favor verifique que los mismos esten cargados</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:20:30.137664</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_AR-1011108">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_AR-1011108</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_AR-133">es_AR</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011108">1011108</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:20:30.329622</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Los siguientes campos son obligatorios:
+Viaje, Origen, Destino, V. Declarado y Rte / #Remito.
+Por favor verifique que los mismos esten cargados</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:20:30.330232</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_MX-1011108">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_MX-1011108</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_MX-143">es_MX</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011108">1011108</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:20:30.530022</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Los siguientes campos son obligatorios:
+Viaje, Origen, Destino, V. Declarado y Rte / #Remito.
+Por favor verifique que los mismos esten cargados</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:20:30.530826</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="AD_Message_Trl" uid="CG-AD_Message_Trl-es_PY-1011108">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-AD_Message_Trl-es_PY-1011108</newValue>
+</column>
+<column name="AD_ComponentVersion_ID" refTable="AD_ComponentVersion" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_ComponentVersion-1010081">1010081</newValue>
+</column>
+<column name="AD_Language" refTable="AD_Language" type="18">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-AD_Language-es_PY-148">es_PY</newValue>
+</column>
+<column name="AD_Message_ID" refTable="AD_Message" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-AD_Message-1011108">1011108</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:20:30.871432</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsTranslated" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="MsgText" type="14">
+<oldValue>null</oldValue>
+<newValue>Los siguientes campos son obligatorios:
+Viaje, Origen, Destino, V. Declarado y Rte / #Remito.
+Por favor verifique que los mismos esten cargados</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-01 10:20:30.872198</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>0</newValue>
+</column>
+</changegroup>
 </changelog>

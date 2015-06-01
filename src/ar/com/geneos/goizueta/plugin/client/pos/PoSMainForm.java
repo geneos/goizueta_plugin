@@ -5232,7 +5232,7 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 		worker.start();
 	}	
 	
-	private void newOrder() {
+	protected void newOrder() {
 		if (infoFiscalPrinter != null) {
 			infoFiscalPrinter.setVisible(false);
 			infoFiscalPrinter.clearDetail();

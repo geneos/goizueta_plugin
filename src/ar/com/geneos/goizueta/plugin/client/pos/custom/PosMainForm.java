@@ -13,14 +13,10 @@ import org.compiere.swing.CPanel;
 import org.compiere.swing.CTextField;
 import org.openXpertya.apps.form.VComponentsFactory;
 import org.openXpertya.grid.ed.VLookup;
-import org.openXpertya.pos.ctrl.PoSModel;
-import org.openXpertya.pos.view.PoSMsgRepository;
 import org.openXpertya.swing.util.FocusUtils;
 import org.openXpertya.util.DisplayType;
 
-import ar.com.geneos.goizueta.plugin.client.pos.AuthorizationDialog;
 import ar.com.geneos.goizueta.plugin.client.pos.PoSMainForm;
-import ar.com.geneos.goizueta.plugin.client.pos.ctrl.AddPOSPaymentValidations;
 
 public class PosMainForm extends PoSMainForm {
 
@@ -50,6 +46,7 @@ public class PosMainForm extends PoSMainForm {
 	private String MSG_TRIP_DESTINATION;
 	private String MSG_SENDER_DETAILS;
 	private String MSG_DECLARED_VALUE;
+	private String MSG_ERROR_MANDATORY;
 
 	// Combos
 	private VLookup cgTripCombo = null;
@@ -209,6 +206,7 @@ public class PosMainForm extends PoSMainForm {
 			cgTripCombo = VComponentsFactory.VLookupFactory("CG_Trip_ID", "CG_Trip", getWindowNo(), DisplayType.Table,
 					"CG_Trip.finished = 'N' and CG_Trip.isactive='Y'", true);
 			cgTripCombo.setPreferredSize(new java.awt.Dimension(INPUT_SIZE, 20));
+			cgTripCombo.setValue(null);
 			FocusUtils.addFocusHighlight(cgTripCombo);
 		}
 		return cgTripCombo;
@@ -224,6 +222,7 @@ public class PosMainForm extends PoSMainForm {
 			cgDestinationCombo = VComponentsFactory.VLookupFactory("CG_Trip_Point_ID", "CG_Trip_Point", getWindowNo(), DisplayType.Table,
 					"CG_Trip_Point.isdestination = 'Y' and CG_Trip_Point.isactive='Y'", true);
 			cgDestinationCombo.setPreferredSize(new java.awt.Dimension(120, 20));
+			cgDestinationCombo.setValue(null);
 			FocusUtils.addFocusHighlight(cgDestinationCombo);
 		}
 		return cgDestinationCombo;
@@ -239,6 +238,7 @@ public class PosMainForm extends PoSMainForm {
 			cgOriginCombo = VComponentsFactory.VLookupFactory("CG_Trip_Point_ID", "CG_Trip_Point", getWindowNo(), DisplayType.Table,
 					"CG_Trip_Point.isorigin = 'Y' and CG_Trip_Point.isactive='Y'", true);
 			cgOriginCombo.setPreferredSize(new java.awt.Dimension(120, 20));
+			cgOriginCombo.setValue(null);
 			FocusUtils.addFocusHighlight(cgOriginCombo);
 		}
 		return cgOriginCombo;
@@ -363,31 +363,41 @@ public class PosMainForm extends PoSMainForm {
 	// Overrides initMsgs, adding new Messages
 	protected void initMsgs() {
 		super.initMsgs();
-		MSG_TRIP_DATA = getMsg("TripData");
-		MSG_TRIP = getMsg("Trip");
-		MSG_SENDER_DETAILS = getMsg("TripSenderDetails");
-		MSG_TRIP_ORIGIN = getMsg("TripOrigin");
-		MSG_TRIP_DESTINATION = getMsg("TripDestination");
-		MSG_DECLARED_VALUE = getMsg("TripDeclaredValue");
+		MSG_TRIP_DATA = getMsg("CG_TripData");
+		MSG_TRIP = getMsg("CG_Trip");
+		MSG_SENDER_DETAILS = getMsg("CG_TripSenderDetails");
+		MSG_TRIP_ORIGIN = getMsg("CG_TripOrigin");
+		MSG_TRIP_DESTINATION = getMsg("CG_TripDestination");
+		MSG_DECLARED_VALUE = getMsg("CG_TripDeclaredValue");
+		MSG_ERROR_MANDATORY = getMsg("CG_TripErrorMandatory");
 	}
 
 	// Overrides goToPayments adding mandatory fields check
 	protected void goToPayments() {
-		if (((Integer) cgTripCombo.getValue()).equals(0) || ((Integer) cgOriginCombo.getValue()).equals(0)
-				|| ((Integer) cgDestinationCombo.getValue()).equals(0) || cgDeclaredValueText.getText().trim().isEmpty())
+		if (cgTripCombo.getValue() == null || cgOriginCombo.getValue() == null || cgDestinationCombo.getValue() == null
+				|| (new BigDecimal((String) cgDeclaredValueText.getValue())).equals(BigDecimal.ZERO)
+				|| ((String) cgSenderDetailsText.getValue()).trim().isEmpty())
 
-			errorMsg("Llenar campos obligatorios");
+			errorMsg(MSG_ERROR_MANDATORY);
 
-		else{
-			//Update trip data in cgOrder
-			((CGOrder)getOrder() ).setCg_trip_id((Integer) cgTripCombo.getValue());
-			((CGOrder)getOrder() ).setCg_origin_id((Integer) cgOriginCombo.getValue());
-			((CGOrder)getOrder() ).setCg_destination_id((Integer) cgDestinationCombo.getValue());
-			((CGOrder)getOrder() ).setDeclaredValue((BigDecimal) cgDeclaredValueText.getValue());
-			((CGOrder)getOrder() ).setSenderDetails((String) cgDeclaredValueText.getValue());
-			
+		else {
+			// Update trip data in cgOrder
+			((CGOrder) getOrder()).setCg_trip_id((Integer) cgTripCombo.getValue());
+			((CGOrder) getOrder()).setCg_origin_id((Integer) cgOriginCombo.getValue());
+			((CGOrder) getOrder()).setCg_destination_id((Integer) cgDestinationCombo.getValue());
+			((CGOrder) getOrder()).setDeclaredValue(new BigDecimal((String) cgDeclaredValueText.getValue()));
+			((CGOrder) getOrder()).setSenderDetails((String) cgSenderDetailsText.getValue());
+
+			// Update aditional per value
 			super.goToPayments();
 		}
 	}
 
+	protected void newOrder() {
+		super.newOrder();
+		cgOriginCombo.setValue(null);
+		cgDestinationCombo.setValue(null);
+		cgDeclaredValueText.setText("0");
+		cgSenderDetailsText.setValue("");
+	}
 }

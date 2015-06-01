@@ -25,6 +25,6 @@ public class CGPoSOnline extends PoSOnline {
 		
 		throwIfFalse(lpInv.save(), lpInv, InvoiceCreateException.class);
 		
-		return super.createOxpInvoice(order);
+		return inv;
 	}
 }

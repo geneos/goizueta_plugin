@@ -58,4 +58,13 @@ public class CGOrder extends Order {
 		this.senderDetails = senderDetails;
 	}
 
+	public void clear() {
+		super.clear();
+		setSenderDetails(null);
+		setDeclaredValue(null);
+		setCg_origin_id(0);
+		setCg_destination_id(0);
+		setCg_trip_id(0);
+	}
+
 }
