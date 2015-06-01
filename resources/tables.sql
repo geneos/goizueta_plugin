@@ -68,3 +68,42 @@ WITH (
 ALTER TABLE libertya.cg_trip
   OWNER TO libertya;
 -- End create table CG_TRIP
+
+-- Add custom fields to C_INVOICE
+ALTER TABLE C_Invoice ADD COLUMN cg_declared_value numeric(24,2);
+ALTER TABLE C_Invoice ADD COLUMN CG_Trip_Point_Destination_ID integer;
+ALTER TABLE C_Invoice ADD COLUMN CG_Trip_Point_Origin_ID integer;
+ALTER TABLE C_Invoice ADD COLUMN cg_sender_details character varying(150);
+ALTER TABLE C_Invoice ADD COLUMN CG_Trip_ID integer;
+ALTER TABLE C_Invoice ADD COLUMN cg_aditional_per_value numeric(10,2);
+-- END Add custom fields to C_INVOICE
+
+-- Create table CG_Parameter
+CREATE TABLE libertya.cg_parameter
+(
+  cg_parameter_id integer NOT NULL,
+  ad_client_id integer NOT NULL,
+  ad_org_id integer NOT NULL,
+  isactive character(1) NOT NULL DEFAULT 'Y'::bpchar,
+  created timestamp without time zone NOT NULL DEFAULT ('now'::text)::timestamp(6) with time zone,
+  createdby integer NOT NULL,
+  updated timestamp without time zone NOT NULL DEFAULT ('now'::text)::timestamp(6) with time zone,
+  updatedby integer NOT NULL,
+  name character varying(30) NOT NULL,
+  paramValue character varying(40) NOT NULL,
+  description character varying(255),
+  CONSTRAINT cg_parameter_key PRIMARY KEY (cg_parameter_id),
+  CONSTRAINT cg_parameter_client FOREIGN KEY (ad_client_id)
+      REFERENCES libertya.ad_client (ad_client_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT cg_parameter_org FOREIGN KEY (ad_org_id)
+      REFERENCES libertya.ad_org (ad_org_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=TRUE
+);
+ALTER TABLE libertya.cg_parameter
+  OWNER TO libertya;
+-- End create table CG_TRIP
+

@@ -1,6 +1,7 @@
 ----------------------------------------------------------------------
 ---------- Nuevas Tablas y/o Vistas 
 ----------------------------------------------------------------------
+
 CREATE TABLE CG_Trip_Point(
 
 cg_trip_point_id integer NOT NULL ,
@@ -19,6 +20,23 @@ CONSTRAINT cg_trip_point_key PRIMARY KEY (cg_trip_point_id) ,
 CONSTRAINT cg_trip_point_client FOREIGN KEY (ad_client_id) REFERENCES ad_client (ad_client_id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION  ,
 CONSTRAINT cg_trip_point_location FOREIGN KEY (c_location_id) REFERENCES c_location (c_location_id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION  ,
 CONSTRAINT cg_trip_point_org FOREIGN KEY (ad_org_id) REFERENCES ad_org (ad_org_id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION  );
+
+CREATE TABLE CG_Parameter(
+
+cg_parameter_id integer NOT NULL ,
+ad_client_id integer NOT NULL ,
+ad_org_id integer NOT NULL ,
+isactive character(1) NOT NULL DEFAULT 'Y'::bpchar ,
+created timestamp without time zone NOT NULL DEFAULT ('now'::text)::timestamp(6) with time zone ,
+createdby integer NOT NULL ,
+updated timestamp without time zone NOT NULL DEFAULT ('now'::text)::timestamp(6) with time zone ,
+updatedby integer NOT NULL ,
+name character varying(30) NOT NULL ,
+paramvalue character varying(40) NOT NULL ,
+description character varying(255) ,
+CONSTRAINT cg_parameter_key PRIMARY KEY (cg_parameter_id) ,
+CONSTRAINT cg_parameter_client FOREIGN KEY (ad_client_id) REFERENCES ad_client (ad_client_id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION  ,
+CONSTRAINT cg_parameter_org FOREIGN KEY (ad_org_id) REFERENCES ad_org (ad_org_id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION  );
 
 CREATE TABLE CG_Trip(
 

@@ -18,9 +18,11 @@ import org.openXpertya.grid.ed.VLookup;
 import org.openXpertya.pos.model.Product;
 import org.openXpertya.swing.util.FocusUtils;
 import org.openXpertya.util.DisplayType;
+import org.openXpertya.util.Env;
 
 import ar.com.geneos.goizueta.plugin.client.pos.PoSMainForm;
 import ar.com.geneos.goizueta.plugin.client.pos.model.OrderProduct;
+import ar.com.geneos.goizueta.plugin.model.MCGParameter;
 
 public class PosMainForm extends PoSMainForm {
 
@@ -52,6 +54,9 @@ public class PosMainForm extends PoSMainForm {
 	private String MSG_DECLARED_VALUE;
 	private String MSG_ERROR_MANDATORY;
 	private String MSG_ADITIONAL_ADDED;
+	private String MSG_ERROR_MISSING_APVPRODUCT;
+	private String MSG_ERROR_MISSING_APVRATE;
+	private String MSG_ERROR_APVPRODUCT_NOTFOUND;
 
 	// Combos
 	private VLookup cgTripCombo = null;
@@ -325,6 +330,7 @@ public class PosMainForm extends PoSMainForm {
 	 * 
 	 * @return org.compiere.swing.CButton
 	 */
+	@SuppressWarnings("unused")
 	private CButton getCGDeclaredValueButton() {
 		if (cgDeclaredValueButton == null) {
 			cgDeclaredValueButton = new CButton();
@@ -359,7 +365,8 @@ public class PosMainForm extends PoSMainForm {
 			gridBagConstraints01.gridx = 1;
 
 			cgDeclaredValuePanel.add(getCGDeclaredValueText(), gridBagConstraints00);
-			cgDeclaredValuePanel.add(getCGDeclaredValueButton(), gridBagConstraints01);
+			// cgDeclaredValuePanel.add(getCGDeclaredValueButton(),
+			// gridBagConstraints01);
 
 		}
 		return cgDeclaredValuePanel;
@@ -376,6 +383,9 @@ public class PosMainForm extends PoSMainForm {
 		MSG_DECLARED_VALUE = getMsg("CG_TripDeclaredValue");
 		MSG_ERROR_MANDATORY = getMsg("CG_TripErrorMandatory");
 		MSG_ADITIONAL_ADDED = getMsg("CG_TripAditionalAdded");
+		MSG_ERROR_MISSING_APVPRODUCT = getMsg("CG_TripErrorMissingAPVProduct");
+		MSG_ERROR_MISSING_APVRATE = getMsg("CG_TripErrorMissingAPVRate");
+		MSG_ERROR_APVPRODUCT_NOTFOUND = getMsg("CG_TripErrorAPVProductNotFound");
 	}
 
 	// Overrides goToPayments adding mandatory fields check
@@ -387,6 +397,31 @@ public class PosMainForm extends PoSMainForm {
 			errorMsg(MSG_ERROR_MANDATORY);
 
 		else {
+
+			int productId = 0;
+			String productIdString = MCGParameter.getValueForName(Env.getCtx(), "APVProductID", null);
+			try {
+				productId = Integer.valueOf(productIdString);
+			} catch (Exception e) {
+				errorMsg(MSG_ERROR_MISSING_APVPRODUCT);
+				return;
+			}
+
+			BigDecimal rate = BigDecimal.ZERO;
+			String rateString = MCGParameter.getValueForName(Env.getCtx(), "APVRate", null);
+			try {
+				rate = new BigDecimal(rateString);
+			} catch (Exception e) {
+				errorMsg(MSG_ERROR_MISSING_APVRATE);
+				return;
+			}
+
+			Product product = getModel().getProduct(productId, 0);
+			if (product == null) {
+				errorMsg(MSG_ERROR_APVPRODUCT_NOTFOUND);
+				return;
+			}
+
 			// Update trip data in cgOrder
 			((CGOrder) getOrder()).setCg_trip_id((Integer) cgTripCombo.getValue());
 			((CGOrder) getOrder()).setCg_origin_id((Integer) cgOriginCombo.getValue());
@@ -397,9 +432,6 @@ public class PosMainForm extends PoSMainForm {
 			super.goToPayments();
 
 			// Update aditional per value
-			// productId correspondiente al producto Adicional por Valor
-			// (Obtener desde parametros)
-			int productId = 1015478;
 
 			// Primero borro la linea existente
 			List<OrderProduct> copyProducts = new ArrayList<OrderProduct>(getOrder().getOrderProducts());
@@ -410,9 +442,8 @@ public class PosMainForm extends PoSMainForm {
 
 			// Agrego nueva
 			BigDecimal adicionalPorValor = BigDecimal.ZERO;
-			adicionalPorValor = new BigDecimal((String) cgDeclaredValueText.getValue()).multiply(new BigDecimal(0.007));
+			adicionalPorValor = new BigDecimal((String) cgDeclaredValueText.getValue()).multiply(rate);
 
-			Product product = getModel().getProduct(productId, 0);
 			product.setStdPrice(adicionalPorValor);
 			addOrderProduct(product);
 			infoMsg(MSG_ADITIONAL_ADDED);
