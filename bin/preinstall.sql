@@ -70,7 +70,7 @@ ALTER TABLE C_Invoice ADD COLUMN CG_Trip_Point_Origin_ID integer;
 ALTER TABLE C_Invoice ADD COLUMN cg_sender_details character varying(150);
 ALTER TABLE C_Invoice ADD COLUMN CG_Trip_ID integer;
 ALTER TABLE C_Invoice ADD COLUMN cg_aditional_per_value numeric(10,2);
-
+ALTER TABLE C_Project ADD COLUMN cg_carrier_rate numeric(6,3);
 ----------------------------------------------------------------------
 ---------- Modificación de tablas y/o vistas
 ----------------------------------------------------------------------

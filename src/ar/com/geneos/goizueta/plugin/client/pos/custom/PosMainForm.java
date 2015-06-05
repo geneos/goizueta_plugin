@@ -15,10 +15,16 @@ import org.compiere.swing.CPanel;
 import org.compiere.swing.CTextField;
 import org.openXpertya.apps.form.VComponentsFactory;
 import org.openXpertya.grid.ed.VLookup;
+import org.openXpertya.model.MPriceList;
+import org.openXpertya.model.MPriceListVersion;
+import org.openXpertya.model.MProduct;
+import org.openXpertya.model.MProductPrice;
+import org.openXpertya.model.Query;
 import org.openXpertya.pos.model.Product;
 import org.openXpertya.swing.util.FocusUtils;
 import org.openXpertya.util.DisplayType;
 import org.openXpertya.util.Env;
+import org.openXpertya.util.Trx;
 
 import ar.com.geneos.goizueta.plugin.client.pos.PoSMainForm;
 import ar.com.geneos.goizueta.plugin.client.pos.model.OrderProduct;
@@ -399,7 +405,7 @@ public class PosMainForm extends PoSMainForm {
 		else {
 
 			int productId = 0;
-			String productIdString = MCGParameter.getValueForName(Env.getCtx(), "APVProductID", null);
+			String productIdString = MCGParameter.getValueForName(Env.getCtx(), MCGParameter.APV_PRODUCT_ID, null);
 			try {
 				productId = Integer.valueOf(productIdString);
 			} catch (Exception e) {
@@ -408,7 +414,7 @@ public class PosMainForm extends PoSMainForm {
 			}
 
 			BigDecimal rate = BigDecimal.ZERO;
-			String rateString = MCGParameter.getValueForName(Env.getCtx(), "APVRate", null);
+			String rateString = MCGParameter.getValueForName(Env.getCtx(), MCGParameter.APV_RATE, null);
 			try {
 				rate = new BigDecimal(rateString);
 			} catch (Exception e) {
@@ -443,10 +449,32 @@ public class PosMainForm extends PoSMainForm {
 			// Agrego nueva
 			BigDecimal adicionalPorValor = BigDecimal.ZERO;
 			adicionalPorValor = new BigDecimal((String) cgDeclaredValueText.getValue()).multiply(rate);
+			// Verifico / Agrego producto de adicional por valor en la lista de
+			// precios
+			boolean parseErr = false;
+			// Adds Additional value product to Current Price List
+
+			MProduct mproduct = new MProduct(Env.getCtx(), productId, null);
+			if (mproduct != null) {
+				int priceListVersionID = getModel().getPriceListVersion().getId();
+				MProductPrice pp = new Query(Env.getCtx(), MProductPrice.Table_Name, "isactive = 'Y' and m_product_id = " + productId
+						+ " and M_PriceList_Version_ID = " + priceListVersionID, null).<MProductPrice> first();
+				if (pp == null) {
+					// Force save out of transaction
+					Trx outTrx = Trx.createTrx("ProducPrice" + System.currentTimeMillis());
+					pp = new MProductPrice(Env.getCtx(), 0, outTrx.getTrxName());
+					pp.setM_Product_ID(productId);
+					pp.setM_PriceList_Version_ID(priceListVersionID);
+					pp.setPrices(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+					pp.setIsActive(true);
+					pp.save();
+					outTrx.commit();
+				}
+			}
 
 			product.setStdPrice(adicionalPorValor);
 			addOrderProduct(product);
-			infoMsg(MSG_ADITIONAL_ADDED);
+			//infoMsg(MSG_ADITIONAL_ADDED);
 		}
 	}
 
