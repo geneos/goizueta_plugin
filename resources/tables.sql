@@ -110,3 +110,7 @@ ALTER TABLE C_Invoice ADD COLUMN cg_aditional_per_value numeric(10,2);
 -- Add custom fields to C_PROYECT
 ALTER TABLE libertya.C_Project ADD COLUMN cg_carrier_rate numeric(6,3);
 -- END Add custom fields to C_PROYECT
+
+-- Add custom fields to CG_Trip
+ALTER TABLE Libertya.CG_Trip
+ADD COLUMN trip_date timestamp without time zone NOT NULL DEFAULT ('now'::text)::timestamp(6) with time zone;

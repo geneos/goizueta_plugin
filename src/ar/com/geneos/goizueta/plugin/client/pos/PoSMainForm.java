@@ -1133,7 +1133,7 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 		if (cOrderTopPanel == null) {
 			cOrderTopPanel = new CPanel();
 			cOrderTopPanel.setPreferredSize(new java.awt.Dimension(0,90));
-			cOrderTopPanel.setLayout(new BoxLayout(getCOrderTopPanel(), BoxLayout.X_AXIS));
+			cOrderTopPanel.setLayout(new BoxLayout(cOrderTopPanel, BoxLayout.X_AXIS));
 			cOrderTopPanel.add(getCProductInPanel(), null);
 			cOrderTopPanel.add(getCTotalPanel(), null);
 		}

@@ -8,10 +8,10 @@ import org.openXpertya.model.Query;
 public class MCGParameter extends LP_CG_Parameter {
 
 	private static final long serialVersionUID = -3626003483376845602L;
-	public static final String THIRD_CARRIER_GROUP_ID = "thirdCarrierGroupID";
-	public static final String OWN_CARRIER_GROUP_ID = "ownCarrierGroupID";
-	public static final String APV_PRODUCT_ID = "APVProductID";
-	public static final String APV_RATE = "APVRate";
+	public static final String THIRD_CARRIER_GROUP_ID = "IdentificadorGrupoCamionesTerceros";
+	public static final String OWN_CARRIER_GROUP_ID = "IdentificadorGrupoCamionesPropios";
+	public static final String APV_PRODUCT_ID = "IdentificadorAdicionalPorValor";
+	public static final String APV_RATE = "ProporcionAdicionalPorValor";
 
 	public MCGParameter(Properties ctx, int CG_Trip_Point_ID, String trxName) {
 		super(ctx, CG_Trip_Point_ID, trxName);
