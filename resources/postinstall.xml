@@ -1,331 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changelog>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-387-10">
-<column name="SeqNo" type="11">
-<oldValue>1</oldValue>
+<changegroup operation="I" tableName="C_Bank" uid="CG-C_Bank-1010100">
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>1010016</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-C_Bank-1010100</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>1010053</newValue>
+</column>
+<column name="C_Bank_ID" type="13">
+<oldValue>null</oldValue>
+<newValue>1010100</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-29 12:17:23.647792</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>1010717</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsOwnBank" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="Name" type="10">
+<oldValue>null</oldValue>
+<newValue>Standard</newValue>
+</column>
+<column name="RoutingNo" type="10">
+<oldValue>null</oldValue>
+<newValue>1</newValue>
+</column>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-29 12:17:23.648376</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>1010717</newValue>
+</column>
+</changegroup>
+<changegroup operation="I" tableName="C_BankAccount" uid="CG-C_BankAccount-1010094">
+<column name="AccountNo" type="10">
+<oldValue>null</oldValue>
+<newValue>1234</newValue>
+</column>
+<column name="AD_Client_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>1010016</newValue>
+</column>
+<column name="AD_ComponentObjectUID" type="10">
+<oldValue>null</oldValue>
+<newValue>CG-C_BankAccount-1010094</newValue>
+</column>
+<column name="AD_Org_ID" type="19">
+<oldValue>null</oldValue>
+<newValue>1010053</newValue>
+</column>
+<column name="BankAccountType" type="17">
+<oldValue>null</oldValue>
+<newValue>C</newValue>
+</column>
+<column name="C_BankAccount_ID" type="13">
+<oldValue>null</oldValue>
+<newValue>1010094</newValue>
+</column>
+<column name="C_Bank_ID" refTable="C_Bank" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CG-C_Bank-1010100">1010100</newValue>
+</column>
+<column name="C_Currency_ID" refTable="C_Currency" type="19">
+<oldValue>null</oldValue>
+<newValue refUID="CORE-C_Currency-118">118</newValue>
+</column>
+<column name="Created" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-29 12:18:43.925805</newValue>
+</column>
+<column name="CreatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>1010717</newValue>
+</column>
+<column name="CreditLimit" type="22">
+<oldValue>null</oldValue>
 <newValue>0</newValue>
 </column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-258-10">
-<column name="SeqNo" type="11">
-<oldValue>2</oldValue>
-<newValue>1</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-364-10">
-<column name="SeqNo" type="11">
-<oldValue>3</oldValue>
-<newValue>2</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-402-10">
-<column name="SeqNo" type="11">
-<oldValue>4</oldValue>
-<newValue>3</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-401-10">
-<column name="SeqNo" type="11">
-<oldValue>5</oldValue>
-<newValue>4</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-404-10">
-<column name="SeqNo" type="11">
-<oldValue>6</oldValue>
-<newValue>5</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-405-10">
-<column name="SeqNo" type="11">
-<oldValue>7</oldValue>
-<newValue>6</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-410-10">
-<column name="SeqNo" type="11">
-<oldValue>8</oldValue>
-<newValue>7</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-260-10">
-<column name="SeqNo" type="11">
-<oldValue>9</oldValue>
-<newValue>8</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-403-10">
-<column name="SeqNo" type="11">
-<oldValue>10</oldValue>
-<newValue>9</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-398-10">
-<column name="SeqNo" type="11">
-<oldValue>11</oldValue>
-<newValue>10</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-219-10">
-<column name="SeqNo" type="11">
-<oldValue>12</oldValue>
-<newValue>11</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-116-10">
-<column name="Parent_ID" refTable="AD_Menu" type="18">
-<oldValue>160</oldValue>
-<newValue refUID="CG-AD_Menu-1010560">1010559</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CG-AD_TreeNodeMM-10-1010563">
-<column name="SeqNo" type="11">
-<oldValue>0</oldValue>
-<newValue>1</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CG-AD_TreeNodeMM-10-1010562">
-<column name="SeqNo" type="11">
-<oldValue>1</oldValue>
-<newValue>2</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CG-AD_TreeNodeMM-10-1010561">
-<column name="SeqNo" type="11">
-<oldValue>2</oldValue>
-<newValue>3</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CG-AD_TreeNodeMM-10-1010563">
-<column name="SeqNo" type="11">
-<oldValue>1</oldValue>
+<column name="CurrentBalance" type="22">
+<oldValue>null</oldValue>
 <newValue>0</newValue>
 </column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CG-AD_TreeNodeMM-10-1010562">
-<column name="SeqNo" type="11">
-<oldValue>2</oldValue>
+<column name="Description" type="10">
+<oldValue>null</oldValue>
+<newValue>Standard</newValue>
+</column>
+<column name="IsActive" type="20">
+<oldValue>null</oldValue>
+<newValue>Y</newValue>
+</column>
+<column name="IsChequesEnCartera" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="IsDefault" type="20">
+<oldValue>null</oldValue>
+<newValue>N</newValue>
+</column>
+<column name="Sucursal" type="10">
+<oldValue>null</oldValue>
 <newValue>1</newValue>
 </column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CG-AD_TreeNodeMM-10-1010561">
-<column name="SeqNo" type="11">
-<oldValue>3</oldValue>
-<newValue>2</newValue>
+<column name="Updated" type="16">
+<oldValue>null</oldValue>
+<newValue>2015-06-29 12:18:43.926679</newValue>
+</column>
+<column name="UpdatedBy" type="18">
+<oldValue>null</oldValue>
+<newValue>1010717</newValue>
 </column>
 </changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-116-10">
-<column name="Parent_ID" refTable="AD_Menu" type="18">
-<oldValue>1010559</oldValue>
-<newValue refUID="CORE-AD_Menu-160">160</newValue>
+<changegroup operation="M" tableName="C_BankAccount" uid="CG-C_BankAccount-1010094">
+<column name="IsChequesEnCartera" type="20">
+<oldValue>N</oldValue>
+<newValue>Y</newValue>
 </column>
 </changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-387-10">
-<column name="SeqNo" type="11">
-<oldValue>0</oldValue>
-<newValue>1</newValue>
+<changegroup operation="M" tableName="AD_User" uid="CORE-AD_User-1010717">
+<column name="LastContact" type="15">
+<oldValue>null</oldValue>
+<newValue>2015-06-29 12:36:44.573</newValue>
 </column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-258-10">
-<column name="SeqNo" type="11">
-<oldValue>1</oldValue>
-<newValue>2</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-364-10">
-<column name="SeqNo" type="11">
-<oldValue>2</oldValue>
-<newValue>3</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-402-10">
-<column name="SeqNo" type="11">
-<oldValue>3</oldValue>
-<newValue>4</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-401-10">
-<column name="SeqNo" type="11">
-<oldValue>4</oldValue>
-<newValue>5</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-404-10">
-<column name="SeqNo" type="11">
-<oldValue>5</oldValue>
-<newValue>6</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-405-10">
-<column name="SeqNo" type="11">
-<oldValue>6</oldValue>
-<newValue>7</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-410-10">
-<column name="SeqNo" type="11">
-<oldValue>7</oldValue>
-<newValue>8</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-260-10">
-<column name="SeqNo" type="11">
-<oldValue>8</oldValue>
-<newValue>9</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-403-10">
-<column name="SeqNo" type="11">
-<oldValue>9</oldValue>
-<newValue>10</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-398-10">
-<column name="SeqNo" type="11">
-<oldValue>10</oldValue>
-<newValue>11</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-219-10">
-<column name="SeqNo" type="11">
-<oldValue>11</oldValue>
-<newValue>12</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-387-10">
-<column name="SeqNo" type="11">
-<oldValue>1</oldValue>
-<newValue>0</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-258-10">
-<column name="SeqNo" type="11">
-<oldValue>2</oldValue>
-<newValue>1</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-364-10">
-<column name="SeqNo" type="11">
-<oldValue>3</oldValue>
-<newValue>2</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-402-10">
-<column name="SeqNo" type="11">
-<oldValue>4</oldValue>
-<newValue>3</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-401-10">
-<column name="SeqNo" type="11">
-<oldValue>5</oldValue>
-<newValue>4</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-404-10">
-<column name="SeqNo" type="11">
-<oldValue>6</oldValue>
-<newValue>5</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-405-10">
-<column name="SeqNo" type="11">
-<oldValue>7</oldValue>
-<newValue>6</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-410-10">
-<column name="SeqNo" type="11">
-<oldValue>8</oldValue>
-<newValue>7</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-260-10">
-<column name="SeqNo" type="11">
-<oldValue>9</oldValue>
-<newValue>8</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-403-10">
-<column name="SeqNo" type="11">
-<oldValue>10</oldValue>
-<newValue>9</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-398-10">
-<column name="SeqNo" type="11">
-<oldValue>11</oldValue>
-<newValue>10</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-219-10">
-<column name="SeqNo" type="11">
-<oldValue>12</oldValue>
-<newValue>11</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-116-10">
-<column name="Parent_ID" refTable="AD_Menu" type="18">
-<oldValue>160</oldValue>
-<newValue refUID="CG-AD_Menu-1010560">1010559</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CG-AD_TreeNodeMM-10-1010563">
-<column name="SeqNo" type="11">
-<oldValue>0</oldValue>
-<newValue>1</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CG-AD_TreeNodeMM-10-1010562">
-<column name="SeqNo" type="11">
-<oldValue>1</oldValue>
-<newValue>2</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CG-AD_TreeNodeMM-10-1010561">
-<column name="SeqNo" type="11">
-<oldValue>2</oldValue>
-<newValue>3</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-103-1010115">
-<column name="SeqNo" type="11">
-<oldValue>2</oldValue>
-<newValue>1</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-104-1010115">
-<column name="SeqNo" type="11">
-<oldValue>3</oldValue>
-<newValue>2</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CORE-AD_TreeNodeMM-1010115-116">
-<column name="Parent_ID" refTable="AD_Menu" type="18">
-<oldValue>157</oldValue>
-<newValue refUID="CG-AD_Menu-1010560">1010559</newValue>
-</column>
-<column name="SeqNo" type="11">
-<oldValue>1</oldValue>
-<newValue>0</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CG-AD_TreeNodeMM-1010115-1010563">
-<column name="SeqNo" type="11">
-<oldValue>0</oldValue>
-<newValue>1</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CG-AD_TreeNodeMM-1010115-1010562">
-<column name="SeqNo" type="11">
-<oldValue>1</oldValue>
-<newValue>2</newValue>
-</column>
-</changegroup>
-<changegroup operation="M" tableName="AD_TreeNodeMM" uid="CG-AD_TreeNodeMM-1010115-1010561">
-<column name="SeqNo" type="11">
-<oldValue>2</oldValue>
-<newValue>3</newValue>
+<column name="LastResult" type="10">
+<oldValue>null</oldValue>
+<newValue>Factura: B000100000001</newValue>
 </column>
 </changegroup>
 </changelog>
