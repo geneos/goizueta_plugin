@@ -34,6 +34,7 @@ updatedby integer NOT NULL ,
 name character varying(30) NOT NULL ,
 paramvalue character varying(40) NOT NULL ,
 description character varying(255) ,
+ad_componentobjectuid character varying(100) ,
 CONSTRAINT cg_parameter_key PRIMARY KEY (cg_parameter_id) ,
 CONSTRAINT cg_parameter_client FOREIGN KEY (ad_client_id) REFERENCES ad_client (ad_client_id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION  ,
 CONSTRAINT cg_parameter_org FOREIGN KEY (ad_org_id) REFERENCES ad_org (ad_org_id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION  );
