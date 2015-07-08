@@ -407,7 +407,6 @@ public class PosMainForm extends PoSMainForm {
 	// Overrides goToPayments adding mandatory fields check
 	protected void goToPayments() {
 		if (cgTripCombo.getValue() == null || cgOriginCombo.getValue() == null || cgDestinationCombo.getValue() == null
-				|| (new BigDecimal((String) cgDeclaredValueText.getValue())).equals(BigDecimal.ZERO)
 				|| ((String) cgSenderDetailsText.getValue()).trim().isEmpty())
 
 			errorMsg(MSG_ERROR_MANDATORY);
@@ -445,8 +444,6 @@ public class PosMainForm extends PoSMainForm {
 			((CGOrder) getOrder()).setDeclaredValue(new BigDecimal((String) cgDeclaredValueText.getValue()));
 			((CGOrder) getOrder()).setSenderDetails((String) cgSenderDetailsText.getValue());
 
-			super.goToPayments();
-
 			// Update aditional per value
 
 			// Primero borro la linea existente
@@ -455,35 +452,38 @@ public class PosMainForm extends PoSMainForm {
 				if (op.getProduct().getId() == productId)
 					removeOrderProduct(op);
 			}
+			if (!new BigDecimal((String) cgDeclaredValueText.getValue()).equals(BigDecimal.ZERO)) {
+				// Agrego nueva
+				BigDecimal adicionalPorValor = BigDecimal.ZERO;
+				adicionalPorValor = new BigDecimal((String) cgDeclaredValueText.getValue()).multiply(rate);
+				// Verifico / Agrego producto de adicional por valor en la lista
+				// de
+				// precios
+				boolean parseErr = false;
+				// Adds Additional value product to Current Price List
 
-			// Agrego nueva
-			BigDecimal adicionalPorValor = BigDecimal.ZERO;
-			adicionalPorValor = new BigDecimal((String) cgDeclaredValueText.getValue()).multiply(rate);
-			// Verifico / Agrego producto de adicional por valor en la lista de
-			// precios
-			boolean parseErr = false;
-			// Adds Additional value product to Current Price List
-
-			MProduct mproduct = new MProduct(Env.getCtx(), productId, null);
-			if (mproduct != null) {
-				int priceListVersionID = getModel().getPriceListVersion().getId();
-				MProductPrice pp = new Query(Env.getCtx(), MProductPrice.Table_Name, "isactive = 'Y' and m_product_id = " + productId
-						+ " and M_PriceList_Version_ID = " + priceListVersionID, null).<MProductPrice> first();
-				if (pp == null) {
-					// Force save out of transaction
-					Trx outTrx = Trx.createTrx("ProducPrice" + System.currentTimeMillis());
-					pp = new MProductPrice(Env.getCtx(), 0, outTrx.getTrxName());
-					pp.setM_Product_ID(productId);
-					pp.setM_PriceList_Version_ID(priceListVersionID);
-					pp.setPrices(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-					pp.setIsActive(true);
-					pp.save();
-					outTrx.commit();
+				MProduct mproduct = new MProduct(Env.getCtx(), productId, null);
+				if (mproduct != null) {
+					int priceListVersionID = getModel().getPriceListVersion().getId();
+					MProductPrice pp = new Query(Env.getCtx(), MProductPrice.Table_Name, "isactive = 'Y' and m_product_id = " + productId
+							+ " and M_PriceList_Version_ID = " + priceListVersionID, null).<MProductPrice> first();
+					if (pp == null) {
+						// Force save out of transaction
+						Trx outTrx = Trx.createTrx("ProducPrice" + System.currentTimeMillis());
+						pp = new MProductPrice(Env.getCtx(), 0, outTrx.getTrxName());
+						pp.setM_Product_ID(productId);
+						pp.setM_PriceList_Version_ID(priceListVersionID);
+						pp.setPrices(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+						pp.setIsActive(true);
+						pp.save();
+						outTrx.commit();
+					}
 				}
-			}
 
-			product.setStdPrice(adicionalPorValor);
-			addOrderProduct(product);
+				product.setStdPrice(adicionalPorValor);
+				addOrderProduct(product);
+			}
+			super.goToPayments();
 			// infoMsg(MSG_ADITIONAL_ADDED);
 		}
 	}
