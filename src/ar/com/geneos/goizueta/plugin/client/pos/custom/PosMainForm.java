@@ -93,7 +93,8 @@ public class PosMainForm extends PoSMainForm {
 	protected CPanel getCOrderTopPanel() {
 		if (!cOrderTopPanelInitialized) {
 			super.getCOrderTopPanel().add(getCGTripPanel(), null);
-			super.getCOrderTopPanel().setPreferredSize(new java.awt.Dimension(0, 110));
+			super.getCOrderTopPanel().setPreferredSize(new java.awt.Dimension(0,130));
+			super.getCOrderTopPanel().setMaximumSize(new java.awt.Dimension(0,130));
 			cOrderTopPanelInitialized = true;
 		}
 		return super.getCOrderTopPanel();
@@ -103,7 +104,7 @@ public class PosMainForm extends PoSMainForm {
 		if (cgTripPanel == null) {
 
 			cgTripPanel = new CPanel();
-			cgTripPanel.setPreferredSize(new java.awt.Dimension(350, 115));
+			cgTripPanel.setPreferredSize(new java.awt.Dimension(350, 90));
 
 			cgTripPanel.setLayout(new GridBagLayout());
 			cgTripPanel.setName("");
@@ -140,14 +141,6 @@ public class PosMainForm extends PoSMainForm {
 			gridBagConstraints20.gridy = 2;
 			gridBagConstraints20.gridwidth = GridBagConstraints.REMAINDER;
 
-			/*
-			 * GridBagConstraints gridBagConstraints21 = new
-			 * GridBagConstraints(); gridBagConstraints21.gridy = 2;
-			 * gridBagConstraints21.insets = new java.awt.Insets(2, 0, 0, 0);
-			 * gridBagConstraints21.anchor = java.awt.GridBagConstraints.WEST;
-			 * gridBagConstraints21.gridx = 1; gridBagConstraints21.gridwidth =
-			 * GridBagConstraints.REMAINDER;
-			 */
 			GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
 			gridBagConstraints10.gridx = 0;
 			gridBagConstraints10.anchor = java.awt.GridBagConstraints.WEST;

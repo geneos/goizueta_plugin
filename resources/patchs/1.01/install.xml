@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<changelog>
+<changegroup operation="D" tableName="AD_Field_Trl" uid="CG-AD_Field_Trl-1017920-es_AR"/>
+<changegroup operation="D" tableName="AD_Field_Trl" uid="CG-AD_Field_Trl-1017920-es_ES"/>
+<changegroup operation="D" tableName="AD_Field_Trl" uid="CG-AD_Field_Trl-1017920-es_MX"/>
+<changegroup operation="D" tableName="AD_Field_Trl" uid="CG-AD_Field_Trl-1017920-es_PY"/>
+<changegroup operation="D" tableName="AD_Field" uid="CG-AD_Field-1017919"/>
+<changegroup operation="D" tableName="AD_Field_Trl" uid="CG-AD_Field_Trl-1017921-es_AR"/>
+<changegroup operation="D" tableName="AD_Field_Trl" uid="CG-AD_Field_Trl-1017921-es_ES"/>
+<changegroup operation="D" tableName="AD_Field_Trl" uid="CG-AD_Field_Trl-1017921-es_MX"/>
+<changegroup operation="D" tableName="AD_Field_Trl" uid="CG-AD_Field_Trl-1017921-es_PY"/>
+<changegroup operation="D" tableName="AD_Field" uid="CG-AD_Field-1017920"/>
+<changegroup operation="D" tableName="AD_Field_Trl" uid="CG-AD_Field_Trl-1017922-es_AR"/>
+<changegroup operation="D" tableName="AD_Field_Trl" uid="CG-AD_Field_Trl-1017922-es_ES"/>
+<changegroup operation="D" tableName="AD_Field_Trl" uid="CG-AD_Field_Trl-1017922-es_MX"/>
+<changegroup operation="D" tableName="AD_Field_Trl" uid="CG-AD_Field_Trl-1017922-es_PY"/>
+<changegroup operation="D" tableName="AD_Field" uid="CG-AD_Field-1017921"/>
+<changegroup operation="D" tableName="AD_Field" uid="CG-AD_Field-1017922"/>
+<changegroup operation="M" tableName="AD_Field" uid="CORE-AD_Field-1014249">
+<column name="IsActive" type="20">
+<oldValue>N</oldValue>
+<newValue>Y</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Field" uid="CORE-AD_Field-1014251">
+<column name="IsActive" type="20">
+<oldValue>N</oldValue>
+<newValue>Y</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Field" uid="CORE-AD_Field-1014253">
+<column name="IsActive" type="20">
+<oldValue>N</oldValue>
+<newValue>Y</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Field" uid="CORE-AD_Field-1003722">
+<column name="IsActive" type="20">
+<oldValue>Y</oldValue>
+<newValue>N</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Field" uid="CORE-AD_Field-1003723">
+<column name="IsActive" type="20">
+<oldValue>Y</oldValue>
+<newValue>N</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Field" uid="CORE-AD_Field-6935">
+<column name="IsSameLine" type="20">
+<oldValue>Y</oldValue>
+<newValue>N</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Field" uid="CORE-AD_Field-1014253">
+<column name="SeqNo" type="11">
+<oldValue>620</oldValue>
+<newValue>610</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Field" uid="CORE-AD_Field-1014250">
+<column name="SeqNo" type="11">
+<oldValue>610</oldValue>
+<newValue>620</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Field" uid="CORE-AD_Field-1014253">
+<column name="IsSameLine" type="20">
+<oldValue>N</oldValue>
+<newValue>Y</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Field" uid="CORE-AD_Field-1014253">
+<column name="SeqNo" type="11">
+<oldValue>610</oldValue>
+<newValue>600</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Field" uid="CORE-AD_Field-1014252">
+<column name="SeqNo" type="11">
+<oldValue>600</oldValue>
+<newValue>610</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Field" uid="CORE-AD_Field-1014253">
+<column name="SeqNo" type="11">
+<oldValue>600</oldValue>
+<newValue>590</newValue>
+</column>
+</changegroup>
+<changegroup operation="M" tableName="AD_Field" uid="CORE-AD_Field-1014251">
+<column name="SeqNo" type="11">
+<oldValue>590</oldValue>
+<newValue>600</newValue>
+</column>
+</changegroup>
+</changelog>
