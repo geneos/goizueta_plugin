@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<changelog>
+<changegroup operation="M" tableName="AD_Column" uid="CORE-AD_Column-5797">
+<column name="DefaultValue" type="14">
+<oldValue>-1</oldValue>
+<newValue></newValue>
+</column>
+</changegroup>
+</changelog>
