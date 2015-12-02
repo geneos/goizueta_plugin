@@ -7,6 +7,7 @@ import org.openXpertya.pos.view.PoSMsgRepository;
 import org.openXpertya.pos.view.table.AbstractPoSTableModel;
 import org.openXpertya.util.Util;
 
+import ar.com.geneos.goizueta.plugin.client.pos.custom.CGOrderProduct;
 import ar.com.geneos.goizueta.plugin.client.pos.model.OrderProduct;
 
 public class ProductTableModel extends AbstractPoSTableModel {
@@ -28,7 +29,17 @@ public class ProductTableModel extends AbstractPoSTableModel {
 		this();
 		this.orderProducts = orderProducts;
 	}
-
+	
+	public void setValueAt(Object value, int row, int column) {
+		CGOrderProduct orderProduct = (CGOrderProduct)getOrderProducts().get(row);
+		switch (column) {
+		case 7:
+			orderProduct.setSenderDetails((String)value);
+		default:
+			return;
+		}
+	  }
+	
 	public Object getValueAt(int row, int col) {
 		OrderProduct orderProduct = getOrderProducts().get(row);
 		switch (col) {
@@ -51,6 +62,8 @@ public class ProductTableModel extends AbstractPoSTableModel {
 			} else {
 				return OP_CHECKOUT_POS;
 			}
+		case 7:
+			return ((CGOrderProduct)orderProduct).getSenderDetails();
 		default:
 			return null;
 		}
@@ -75,5 +88,4 @@ public class ProductTableModel extends AbstractPoSTableModel {
 	public void setOrderProducts(List<OrderProduct> orderProducts) {
 		this.orderProducts = orderProducts;
 	}
-
 }

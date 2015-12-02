@@ -9,14 +9,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.compiere.swing.CButton;
 import org.compiere.swing.CLabel;
 import org.compiere.swing.CPanel;
 import org.compiere.swing.CTextField;
 import org.openXpertya.apps.form.VComponentsFactory;
 import org.openXpertya.grid.ed.VLookup;
-import org.openXpertya.model.MPriceList;
-import org.openXpertya.model.MPriceListVersion;
 import org.openXpertya.model.MProduct;
 import org.openXpertya.model.MProductPrice;
 import org.openXpertya.model.Query;
@@ -28,6 +25,7 @@ import org.openXpertya.util.Trx;
 
 import ar.com.geneos.goizueta.plugin.client.pos.PoSMainForm;
 import ar.com.geneos.goizueta.plugin.client.pos.model.OrderProduct;
+import ar.com.geneos.goizueta.plugin.client.pos.view.table.ProductTableModel;
 import ar.com.geneos.goizueta.plugin.model.MCGParameter;
 
 public class PosMainForm extends PoSMainForm {
@@ -69,11 +67,7 @@ public class PosMainForm extends PoSMainForm {
 	private VLookup cgDestinationCombo = null;
 
 	// INPUTS
-	private CTextField cgSenderDetailsText = null;
 	private CTextField cgDeclaredValueText = null;
-
-	// BUTTONS
-	private CButton cgDeclaredValueButton = null;
 
 	/**
 	 * This method initializes, and overrides PoSModel whit CGPoSModel
@@ -93,8 +87,8 @@ public class PosMainForm extends PoSMainForm {
 	protected CPanel getCOrderTopPanel() {
 		if (!cOrderTopPanelInitialized) {
 			super.getCOrderTopPanel().add(getCGTripPanel(), null);
-			super.getCOrderTopPanel().setPreferredSize(new java.awt.Dimension(0,130));
-			super.getCOrderTopPanel().setMaximumSize(new java.awt.Dimension(0,130));
+			super.getCOrderTopPanel().setPreferredSize(new java.awt.Dimension(0, 130));
+			super.getCOrderTopPanel().setMaximumSize(new java.awt.Dimension(0, 130));
 			cOrderTopPanelInitialized = true;
 		}
 		return super.getCOrderTopPanel();
@@ -233,20 +227,6 @@ public class PosMainForm extends PoSMainForm {
 	}
 
 	/**
-	 * This method initializes cgSenderDetailsText
-	 * 
-	 * @return org.compiere.swing.CTextField
-	 */
-	private CTextField getCGSenderDetailsText() {
-		if (cgSenderDetailsText == null) {
-			cgSenderDetailsText = new CTextField();
-			cgSenderDetailsText.setPreferredSize(new java.awt.Dimension(265, 20));
-			FocusUtils.addFocusHighlight(cgSenderDetailsText);
-		}
-		return cgSenderDetailsText;
-	}
-
-	/**
 	 * This method initializes cProductCodePanel
 	 * 
 	 * @return org.compiere.swing.CPanel
@@ -376,7 +356,6 @@ public class PosMainForm extends PoSMainForm {
 			gridBagConstraints01.gridx = 1;
 
 			cgSenderDetailsPanel.add(cgTripPanelSenderDetailsLabel, gridBagConstraints00);
-			cgSenderDetailsPanel.add(getCGSenderDetailsText(), gridBagConstraints01);
 		}
 		return cgSenderDetailsPanel;
 	}
@@ -399,8 +378,7 @@ public class PosMainForm extends PoSMainForm {
 
 	// Overrides goToPayments adding mandatory fields check
 	protected void goToPayments() {
-		if (cgTripCombo.getValue() == null || cgOriginCombo.getValue() == null || cgDestinationCombo.getValue() == null
-				|| ((String) cgSenderDetailsText.getValue()).trim().isEmpty())
+		if (cgTripCombo.getValue() == null || cgOriginCombo.getValue() == null || cgDestinationCombo.getValue() == null)
 
 			errorMsg(MSG_ERROR_MANDATORY);
 
@@ -435,7 +413,6 @@ public class PosMainForm extends PoSMainForm {
 			((CGOrder) getOrder()).setCg_origin_id((Integer) cgOriginCombo.getValue());
 			((CGOrder) getOrder()).setCg_destination_id((Integer) cgDestinationCombo.getValue());
 			((CGOrder) getOrder()).setDeclaredValue(new BigDecimal((String) cgDeclaredValueText.getValue()));
-			((CGOrder) getOrder()).setSenderDetails((String) cgSenderDetailsText.getValue());
 
 			// Update aditional per value
 
@@ -452,7 +429,6 @@ public class PosMainForm extends PoSMainForm {
 				// Verifico / Agrego producto de adicional por valor en la lista
 				// de
 				// precios
-				boolean parseErr = false;
 				// Adds Additional value product to Current Price List
 
 				MProduct mproduct = new MProduct(Env.getCtx(), productId, null);
@@ -462,7 +438,7 @@ public class PosMainForm extends PoSMainForm {
 							+ " and M_PriceList_Version_ID = " + priceListVersionID, null).<MProductPrice> first();
 					if (pp == null) {
 						// Force save out of transaction
-						Trx outTrx = Trx.createTrx("ProducPrice" + System.currentTimeMillis());
+						Trx outTrx = Trx.createTrx("ProductPrice" + System.currentTimeMillis());
 						pp = new MProductPrice(Env.getCtx(), 0, outTrx.getTrxName());
 						pp.setM_Product_ID(productId);
 						pp.setM_PriceList_Version_ID(priceListVersionID);
@@ -475,6 +451,16 @@ public class PosMainForm extends PoSMainForm {
 
 				product.setStdPrice(adicionalPorValor);
 				addOrderProduct(product);
+
+				// Itero la tabla y seteo los sender Details de cada linea
+				List<OrderProduct> orderProducts = getOrder().getOrderProducts();
+				int aux = 0;
+
+				for (OrderProduct op : orderProducts) {
+					((ProductTableModel) getCOrderTable().getModel()).getValueAt(aux, 7);
+					((CGOrderProduct) op).setSenderDetails((String) ((ProductTableModel) getCOrderTable().getModel()).getValueAt(aux, 7));
+					aux++;
+				}
 			}
 			super.goToPayments();
 			// infoMsg(MSG_ADITIONAL_ADDED);
@@ -484,6 +470,5 @@ public class PosMainForm extends PoSMainForm {
 	protected void newOrder() {
 		super.newOrder();
 		cgDeclaredValueText.setText("0");
-		cgSenderDetailsText.setValue("");
 	}
 }

@@ -207,7 +207,7 @@ public class PoSModel {
 		return res;
 	}
 	
-	private OrderProduct createOrderProduct(Product product) {
+	protected OrderProduct createOrderProduct(Product product) {
 		Tax productTax;
 		if (getOrder().getBusinessPartner() != null)
 			productTax = getConnectionState().getProductTax(
