@@ -112,9 +112,15 @@ public class PosMainForm extends PoSMainForm {
 			cgTripPanelTripLabel.setPreferredSize(new java.awt.Dimension(35, 20));
 			cgTripPanelTripLabel.setText(MSG_TRIP);
 
-			cgTripPanelSenderDetailsLabel = new CLabel();
-			cgTripPanelSenderDetailsLabel.setPreferredSize(new java.awt.Dimension(90, 20));
-			cgTripPanelSenderDetailsLabel.setText(MSG_SENDER_DETAILS);
+			/*
+			 * 	Cambio en la forma de ingreso de remitentes a la tabla de productos.
+			 * 	Geneos 29/03/2016
+			 * 
+			 */
+			
+			//cgTripPanelSenderDetailsLabel = new CLabel();
+			//cgTripPanelSenderDetailsLabel.setPreferredSize(new java.awt.Dimension(90, 20));
+			//cgTripPanelSenderDetailsLabel.setText(MSG_SENDER_DETAILS);
 
 			cgTripPanelOriginLabel = new CLabel();
 			cgTripPanelOriginLabel.setPreferredSize(new java.awt.Dimension(45, 20));
@@ -173,7 +179,13 @@ public class PosMainForm extends PoSMainForm {
 
 			cgTripPanel.add(getCGOriginDestinationPanel(), gridBagConstraints10);
 
-			cgTripPanel.add(getCGSenderDetailsPanel(), gridBagConstraints20);
+			/*
+			 * 	Comentado para que no agregue el paner de remitente en la cabecera
+			 * 	Geneos 29/03/2016 
+			 * 
+			 */
+			
+			// cgTripPanel.add(getCGSenderDetailsPanel(), gridBagConstraints20);
 		}
 		return cgTripPanel;
 	}
@@ -425,7 +437,8 @@ public class PosMainForm extends PoSMainForm {
 			if (!new BigDecimal((String) cgDeclaredValueText.getValue()).equals(BigDecimal.ZERO)) {
 				// Agrego nueva
 				BigDecimal adicionalPorValor = BigDecimal.ZERO;
-				adicionalPorValor = new BigDecimal((String) cgDeclaredValueText.getValue()).multiply(rate);
+				// Por defecto redondeado a 2 decimales
+				adicionalPorValor = new BigDecimal((String) cgDeclaredValueText.getValue()).multiply(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
 				// Verifico / Agrego producto de adicional por valor en la lista
 				// de
 				// precios
