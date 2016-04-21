@@ -61,60 +61,60 @@ public class UpdateOrderProductDialog extends JDialog {
 
 	private JPanel jContentPane = null;
 	private CPanel cMainPanel = null;
-	private CPanel cItemPanel = null;
+	protected CPanel cItemPanel = null;
 	private CPanel cCmdPanel = null;
-	private CLabel cProductLabel = null;
-	private CLabel cProductDescLabel = null;
-	private CLabel cProductPriceLabel = null;
-	private CLabel cProductTaxedPriceLabel = null;
-	private CLabel cProductTaxRateLabel = null;
+	protected CLabel cProductLabel = null;
+	protected CLabel cProductDescLabel = null;
+	protected CLabel cProductPriceLabel = null;
+	protected CLabel cProductTaxedPriceLabel = null;
+	protected CLabel cProductTaxRateLabel = null;
 	private VNumber cPriceListText = null;
-	private VNumber cProductTaxedPriceText = null;
+	public VNumber cProductTaxedPriceText = null;
 	private VNumber cDiscountAmtText = null;
-	private CLabel cDiscountLabel = null;
+	protected CLabel cDiscountLabel = null;
 	private VNumber cDiscountText = null;
-	private CLabel cCountLabel = null;
+	protected CLabel cCountLabel = null;
 	private CTextField cCountText = null;
 	private CButton cOkButton = null;
 	private CButton cRemoveButton = null;
 	private CButton cCancelButton = null;
-	private CLabel cApplicationLabel = null;
+	protected CLabel cApplicationLabel = null;
 	private CPanel cApplicationPanel = null;
 	private JRadioButton cToPriceRadio = null;
 	private JRadioButton cBonusRadio = null;
 	private ButtonGroup applicationGroup = null;
-	private AUserAuth userAuthPanel = null;
-	private CLabel cLineDescriptionLabel = null;
+	protected AUserAuth userAuthPanel = null;
+	protected CLabel cLineDescriptionLabel = null;
 	private CTextField cLineDescriptionText = null;
-	private String MSG_PRODUCT;
+	protected String MSG_PRODUCT;
 	private String MSG_OK;
 	private String MSG_DELETE;
 	private String MSG_CANCEL;
-	private String MSG_PRICE;
-	private String MSG_DISCOUNT;
-	private String MSG_COUNT;
+	protected String MSG_PRICE;
+	protected String MSG_DISCOUNT;
+	protected String MSG_COUNT;
 	private String MSG_NO_PRODUCT_PRICE;
 	private String MSG_INVALID_PRODUCT_PRICE;
 	private String MSG_INVALID_PRODUCT_COUNT;
 	private String MSG_CONFIRM_DELETE_RPODUCT;
 	private String MSG_UPDATE_ITEM;
-	private String MSG_TAXRATE;
-	private String MSG_TAXED_PRICE;
-	private String MSG_APPLICATION;
+	protected String MSG_TAXRATE;
+	protected String MSG_TAXED_PRICE;
+	protected String MSG_APPLICATION;
 	private String MSG_TO_PRICE;
 	private String MSG_BONUS;
-	private String MSG_PRICE_LIST;
-	private String MSG_MANUAL_DISCOUNT;
-	private String MSG_AMOUNT;
-	private String MSG_SUPERVISOR_AUTH;
+	protected String MSG_PRICE_LIST;
+	protected String MSG_MANUAL_DISCOUNT;
+	protected String MSG_AMOUNT;
+	protected String MSG_SUPERVISOR_AUTH;
 	private String MSG_SURPASS_MAX_QTY;
 	private String MSG_INVALID_PRICE;
 	private String MSG_INVALID_FINAL_PRICE;
 	private String MSG_INVALID_COUNT;
-	private String MSG_LINE_DESCRIPTION_TITLE;
-	private String MSG_DESCRIPTION;
+	protected String MSG_LINE_DESCRIPTION_TITLE;
+	protected String MSG_DESCRIPTION;
 
-	private final String CHANGE_FOCUS_USER_AUTH = "changeFocusUserAuth";
+	protected final String CHANGE_FOCUS_USER_AUTH = "changeFocusUserAuth";
 
 	private Map<String, KeyStroke> actionKeys;
 
@@ -148,7 +148,7 @@ public class UpdateOrderProductDialog extends JDialog {
 		this.setContentPane(getJContentPane());
 	}
 
-	private void initMsgs() {
+	public void initMsgs() {
 		MSG_PRODUCT = getMsg("M_Product_ID");
 		MSG_OK = getMsg("OK");
 		MSG_DELETE = getMsg("POSDelete");
@@ -239,7 +239,7 @@ public class UpdateOrderProductDialog extends JDialog {
 	 * 
 	 * @return org.compiere.swing.CPanel
 	 */
-	private CPanel getCItemPanel() {
+	protected CPanel getCItemPanel() {
 		if (cItemPanel == null) {
 			final int V_SPAN = 3;
 
@@ -536,7 +536,7 @@ public class UpdateOrderProductDialog extends JDialog {
 	 * 
 	 * @return org.openXpertya.grid.ed.VNumber
 	 */
-	private VNumber getCPriceListText() {
+	protected VNumber getCPriceListText() {
 		if (cPriceListText == null) {
 			cPriceListText = new VNumber();
 			cPriceListText.setPreferredSize(new java.awt.Dimension(100, 20));
@@ -548,7 +548,7 @@ public class UpdateOrderProductDialog extends JDialog {
 		return cPriceListText;
 	}
 
-	private VNumber getCDiscountAmtText() {
+	protected VNumber getCDiscountAmtText() {
 		if (cDiscountAmtText == null) {
 			cDiscountAmtText = new VNumber();
 			cDiscountAmtText.setDisplayType(DisplayType.Amount);
@@ -559,7 +559,7 @@ public class UpdateOrderProductDialog extends JDialog {
 		return cDiscountAmtText;
 	}
 
-	private VNumber getCProductTaxedPriceText() {
+	protected VNumber getCProductTaxedPriceText() {
 		if (cProductTaxedPriceText == null) {
 			cProductTaxedPriceText = new VNumber();
 			cProductTaxedPriceText.setDisplayType(DisplayType.CostPrice);
@@ -592,7 +592,7 @@ public class UpdateOrderProductDialog extends JDialog {
 	 * 
 	 * @return org.openXpertya.grid.ed.VNumber
 	 */
-	private VNumber getCDiscountText() {
+	protected VNumber getCDiscountText() {
 		if (cDiscountText == null) {
 			cDiscountText = new VNumber();
 			cDiscountText.setDisplayType(DisplayType.CostPrice);
@@ -625,7 +625,7 @@ public class UpdateOrderProductDialog extends JDialog {
 	 * 
 	 * @return org.compiere.swing.CTextField
 	 */
-	private CTextField getCCountText() {
+	protected CTextField getCCountText() {
 		if (cCountText == null) {
 			cCountText = new CTextField();
 			cCountText.setMinimumSize(new java.awt.Dimension(50, 20));
@@ -686,7 +686,7 @@ public class UpdateOrderProductDialog extends JDialog {
 		return cCountText;
 	}
 
-	private CTextField getCLineDescriptionText() {
+	protected CTextField getCLineDescriptionText() {
 		if (cLineDescriptionText == null) {
 			cLineDescriptionText = new CTextField();
 			cLineDescriptionText.setText(getOrderProduct().getLineDescription());
@@ -770,7 +770,7 @@ public class UpdateOrderProductDialog extends JDialog {
 	 * 
 	 * @return org.compiere.swing.CPanel
 	 */
-	private CPanel getCApplicationPanel() {
+	protected CPanel getCApplicationPanel() {
 		if (cApplicationPanel == null) {
 			cApplicationPanel = new CPanel();
 			cApplicationPanel.setLayout(new FlowLayout());
@@ -865,7 +865,7 @@ public class UpdateOrderProductDialog extends JDialog {
 		return panel;
 	}
 
-	private void updateDiscountComponents() {
+	protected void updateDiscountComponents() {
 		boolean isManualDiscountApplicable = getOrderProduct().getOrder().isManualDiscountApplicable(getOrderProduct());
 		getCBonusRadio().setEnabled(isManualDiscountApplicable);
 		getCToPriceRadio().setEnabled(isManualDiscountApplicable);
@@ -914,7 +914,7 @@ public class UpdateOrderProductDialog extends JDialog {
 		return true;
 	}
 
-	private void updateDiscountAmtText() {
+	protected void updateDiscountAmtText() {
 		BigDecimal manualDiscount = (BigDecimal) (getCDiscountText().getValue() == null ? BigDecimal.ZERO : getCDiscountText().getValue());
 		BigDecimal priceList = (BigDecimal) getCPriceListText().getValue();
 		priceList = priceList == null || manualDiscount.compareTo(BigDecimal.ZERO) == 0 ? BigDecimal.ZERO : priceList;

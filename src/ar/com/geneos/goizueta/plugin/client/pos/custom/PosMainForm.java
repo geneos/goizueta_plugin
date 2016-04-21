@@ -12,6 +12,7 @@ import java.util.List;
 import org.compiere.swing.CLabel;
 import org.compiere.swing.CPanel;
 import org.compiere.swing.CTextField;
+import org.openXpertya.apps.AEnv;
 import org.openXpertya.apps.form.VComponentsFactory;
 import org.openXpertya.grid.ed.VLookup;
 import org.openXpertya.model.MProduct;
@@ -24,6 +25,7 @@ import org.openXpertya.util.Env;
 import org.openXpertya.util.Trx;
 
 import ar.com.geneos.goizueta.plugin.client.pos.PoSMainForm;
+import ar.com.geneos.goizueta.plugin.client.pos.UpdateOrderProductDialog;
 import ar.com.geneos.goizueta.plugin.client.pos.model.OrderProduct;
 import ar.com.geneos.goizueta.plugin.client.pos.view.table.ProductTableModel;
 import ar.com.geneos.goizueta.plugin.model.MCGParameter;
@@ -483,5 +485,18 @@ public class PosMainForm extends PoSMainForm {
 	protected void newOrder() {
 		super.newOrder();
 		cgDeclaredValueText.setText("0");
+	}
+	
+	@Override
+	protected void openUpdateOrderProductDialog() {
+		if (!hasOrderProducts())
+			return;
+		OrderProduct orderProduct = (OrderProduct) getOrderTableUtils().getSelection();
+		if (orderProduct != null) {
+			CGUpdateOrderProductDialog dialog = new CGUpdateOrderProductDialog(orderProduct, this);
+			AEnv.positionCenterScreen(dialog);
+			dialog.setModal(true);
+			dialog.setVisible(true);
+		}
 	}
 }

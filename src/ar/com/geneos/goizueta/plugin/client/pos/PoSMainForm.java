@@ -751,8 +751,6 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 		MSG_PRICE_LIST = getMsg("M_PriceList_ID");
 		MSG_CHECKOUT_IN = getMsg("CheckoutIn");
 
-		// Agregado Goizueta
-		MSG_SENDER_DETAILS = getMsg("CG_TripSenderDetails");
 		MSG_PAYMENT_MEDIUM = getMsg("ReceiptMedium");
 		MSG_NO_PAYMENT_MEDIUM_ERROR = getMsg("NoPaymentMediumError");
 		MSG_CREDIT_CARD_PLAN = getMsg("CreditCardPlan");
@@ -4450,7 +4448,7 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 	/**
 	 * @return Devuelve orderTableUtils.
 	 */
-	private TableUtils getOrderTableUtils() {
+	protected TableUtils getOrderTableUtils() {
 		return orderTableUtils;
 	}
 
@@ -4477,7 +4475,7 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 		this.paymentsTableUtils = tenderTypeTableUtils;
 	}
 
-	private void openUpdateOrderProductDialog() {
+	protected void openUpdateOrderProductDialog() {
 		if (!hasOrderProducts())
 			return;
 		OrderProduct orderProduct = (OrderProduct) getOrderTableUtils().getSelection();
@@ -4531,7 +4529,7 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 		updateAllowClose();
 	}
 
-	private boolean hasOrderProducts() {
+	protected boolean hasOrderProducts() {
 		return getCOrderTable().getRowCount() > 0;
 	}
 
