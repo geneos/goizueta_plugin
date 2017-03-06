@@ -41,6 +41,9 @@ public class InvoiceDataSource implements JRDataSource  {
 		methodMapper.put("UNIDAD", "getUOMName");
 		methodMapper.put("IMPORTE", "getTotalPriceEnteredNet");
 		
+		methodMapper.put("TIPO_CLI", "getTipoCliente");
+		methodMapper.put("APV", "getTotalAPV");
+		
 		methodMapper.put("VENDOR", "getBPartnerVendorName");
 		methodMapper.put("CHARGE", "getChargeName");
 		methodMapper.put("TAX_RATE", "getTaxRate");
