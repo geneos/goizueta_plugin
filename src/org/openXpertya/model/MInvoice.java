@@ -4197,6 +4197,21 @@ public class MInvoice extends X_C_Invoice implements DocAction {
 					int nroCbte = Integer.parseInt(processor.getNroCbte());
 					this.setNumeroComprobante(nroCbte);
 
+					/*
+					 * Ajuste por revisión de bug - commit r1443
+					 * 
+					 * 
+					 */
+					
+					boolean updateDocumentNo = getNumeroComprobante()!= nroCbte && this.skipAfterAndBeforeSave;
+					
+					if(updateDocumentNo)
+						setDocumentNo(CalloutInvoiceExt.GenerarNumeroDeDocumento(getPuntoDeVenta(), 
+								getNumeroComprobante(), 
+								getLetra(), 
+								isSOTrx(), 
+								false));					
+					
 					// Actualizar la secuencia del tipo de documento de la
 					// factura en función del valor recibido en el WS de AFIP
 					MDocType dt = MDocType.get(getCtx(), getC_DocType_ID(),

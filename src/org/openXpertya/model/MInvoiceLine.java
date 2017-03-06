@@ -1939,6 +1939,7 @@ public class MInvoiceLine extends X_C_InvoiceLine {
      * 30-03-2016 
      * 
      * */
+    
     public String getProductCompleteName()
     {
     	LP_C_InvoiceLine line_lp = new LP_C_InvoiceLine(p_ctx, getC_InvoiceLine_ID(), null);
@@ -1956,6 +1957,61 @@ public class MInvoiceLine extends X_C_InvoiceLine {
     		
     	}
     	return "";
+    }
+    
+    /** 
+     * Devuelve la descripcion del grupo de socio de Entidad Comercial 
+     * Geneos por requerimiento de Goizueta.
+     * 02-05-2016 
+     * 
+     * */
+    
+    public String getTipoCliente()
+    {
+    	MInvoice inv = new MInvoice(p_ctx, getC_Invoice_ID(), null);
+    	
+    	MBPartner cli = new MBPartner(p_ctx, inv.getC_BPartner_ID(), null);
+    	
+    	MBPGroup group = new MBPGroup(p_ctx, cli.getC_BP_Group_ID(), null);
+    	
+    	if(group.getName() != null)
+    		return group.getName();
+
+    	return "";
+    }
+    
+    /** 
+     * Devuelve el monto del artículo que representa el adicional por valor
+     * Geneos por requerimiento de Goizueta.
+     * 02-05-2016 
+     * 
+     * */
+    
+    public BigDecimal getTotalAPV()
+    {
+    	MInvoice inv = new MInvoice(p_ctx, getC_Invoice_ID(), null);
+    	
+    	MInvoiceLine[] lines = inv.getLines();
+    	BigDecimal total = Env.ZERO;
+    	
+    	for (MInvoiceLine line : lines) {
+
+    		MProduct prod = new MProduct(p_ctx, line.getM_Product_ID(), null);
+    		
+    		if(line.getM_Product_ID() == 1015477) {
+    			if(inv.getLetra().equals("A"))
+    				total = line.getPriceEnteredNet();
+    			else
+    				total = line.getPriceEnteredWithTax();
+    			
+    			total = total.setScale(2,BigDecimal.ROUND_HALF_UP);
+    			return total;
+    			//return total.toString();	
+    		}
+    		
+    	}
+    	
+    	return Env.ZERO;
     }
     
     
