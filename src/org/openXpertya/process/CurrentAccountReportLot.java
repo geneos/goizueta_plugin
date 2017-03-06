@@ -1,5 +1,6 @@
 package org.openXpertya.process;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,12 +11,20 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.openXpertya.cc.CurrentAccountQuery;
+import org.openXpertya.model.MBPartner;
 import org.openXpertya.model.MCurrency;
+import org.openXpertya.model.MQuery;
+import org.openXpertya.model.PrintInfo;
+import org.openXpertya.print.MPrintFormat;
+import org.openXpertya.print.ReportEngine;
+import org.openXpertya.print.Viewer;
 import org.openXpertya.util.DB;
 import org.openXpertya.util.Env;
+import org.openXpertya.util.Language;
+import org.openXpertya.util.Trx;
 import org.openXpertya.util.Util;
 
-public class CurrentAccountReport extends SvrProcess {
+public class CurrentAccountReportLot extends SvrProcess {
 
 	/** Entidad Comercial de los comprobantes a consultar */
 	private Integer p_C_BPartnerID;
@@ -32,11 +41,11 @@ public class CurrentAccountReport extends SvrProcess {
 	/** Tipo de Cuenta del Reporte: Cliente o Proveedor */
 	private String p_AccountType;
 	/** Incluir pedidos no facturados en el informe */
-	private boolean p_includeOpenOrders;
-	private String p_includeOpenOrders_char;
+	private boolean p_includeOpenOrders = false;
+	private String p_includeOpenOrders_char = "N";
 	/** Mostrar detalle de Cobros y Pagos en el informe */
-	private boolean p_ShowDetailedReceiptsPayments;
-	private String p_ShowDetailedReceiptsPayments_char;
+	private boolean p_ShowDetailedReceiptsPayments = false;
+	private String p_ShowDetailedReceiptsPayments_char = "N";
 
 	/** Signo de documentos que son débitos (depende de p_AccountType) */
 	private int debit_signo_issotrx;
@@ -148,226 +157,297 @@ public class CurrentAccountReport extends SvrProcess {
 	protected String doIt() throws Exception {
 
 		// delete all rows older than a week
-		DB.executeUpdate("DELETE FROM T_CUENTACORRIENTE WHERE DATECREATED < ('now'::text)::timestamp(6) - interval '7 days'");
-		// delete all rows in table with the given ad_pinstance_id
-		DB.executeUpdate("DELETE FROM T_CUENTACORRIENTE WHERE AD_PInstance_ID = "
-				+ getAD_PInstance_ID());
+		DB.executeUpdate("DELETE FROM T_CUENTACORRIENTE");
 
-		// Saldo acumulado, por defecto es 0.
-		acumBalance = BigDecimal.ZERO;
+		PreparedStatement pstmt_group = null;
+		ResultSet rs_group = null;
+		
+		StringBuilder sql_group = new StringBuilder();
+		sql_group.append("SELECT C_BPartner_ID from C_BPartner " +
+				"where C_BP_Group_ID = " + p_C_BPartner_GroupID);
+		
 
-		// Si se ingresó un filtro de fecha de inicio, entonces se calcula el
-		// saldo acumulado
-		// a partir de todos los comprobantes que tiene fecha de transacción
-		// menor a la
-		// fecha inicial seteada para el reporte.
-		if (p_DateTrx_From != null) {
-			calculateBalance();
-		}
+		pstmt_group = DB.prepareStatement(sql_group.toString(), get_TrxName());
 
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		BigDecimal credit = null;
+		BigDecimal debit = null;
+		Map<String, Integer> documents = new HashMap<String, Integer>();
+		String documentKey;
 
 		try {
-			pstmt = DB.prepareStatement(getCurrentAccountQuery().getQuery(),
-					get_TrxName());
-			int i = 1;
-			// Parámetros de sqlDoc
-			pstmt.setInt(i++, debit_signo_issotrx);
-			pstmt.setInt(i++, client_Currency_ID);
-			pstmt.setInt(i++, credit_signo_isotrx);
-			pstmt.setInt(i++, client_Currency_ID);
-			pstmt.setInt(i++, getAD_Client_ID());
-			pstmt.setInt(i++, p_C_BPartnerID);
-			i = pstmtSetParam(i, p_AD_Org_ID, pstmt);
-			i = pstmtSetParam(i, p_C_DocType_ID, pstmt);
-			// Parámetros para el filtro de fechas
-			i = pstmtSetParam(i, p_DateTrx_From, pstmt);
-			// Cambio para asignarlo y usar INTERVAL
-			// Geneos 05102016
-			//i = pstmtSetParam(i, p_DateTrx_To, pstmt);
+			rs_group = pstmt_group.executeQuery();
+			while (rs_group.next()) {
+				
+				p_C_BPartnerID = rs_group.getInt(1);
 
-			rs = pstmt.executeQuery();
+				// Saldo acumulado, por defecto es 0.
+				acumBalance = BigDecimal.ZERO;
 
-			int subIndice = 0;
-			int trx_Org_ID = p_AD_Org_ID != null ? p_AD_Org_ID : Env
-					.getContextAsInt(getCtx(), "#AD_Org_ID");
-			StringBuffer usql = new StringBuffer();
-
-			if (p_DateTrx_From != null) {
-				subIndice++;
-				// insert first row: before query balance period
-				// Field used for 'date field' in temporary table: DATETRX
-				usql.append(" INSERT INTO T_CUENTACORRIENTE (SUBINDICE, IncludeOpenOrders, ShowDetailedReceiptsPayments, AD_CLIENT_ID, AD_ORG_ID, AD_PINSTANCE_ID, ISO_CODE, AMOUNT, DEBE, HABER, SALDO, NUMEROCOMPROBANTE, C_BPARTNER_ID, ACCOUNTTYPE, DATETRX, C_DOCTYPE_ID, OnlyCurrentAccountDocuments) "
-						+ " VALUES ("
-						+ subIndice
-						+ ", '"
-						+ p_includeOpenOrders_char
-						+ "', '"
-						+ p_ShowDetailedReceiptsPayments_char
-						+ "', "
-						+ getAD_Client_ID()
-						+ ", "
-						+ trx_Org_ID
-						+ " , "
-						+ getAD_PInstance_ID()
-						+ ", '"
-						+ "', "
-						+ BigDecimal.ZERO
-						+ ", "
-						+ acumDebit
-						+ ", "
-						+ acumCredit
-						+ ", "
-						+ acumBalance
-						+ ", '-', "
-						+ p_C_BPartnerID
-						+ ", '"
-						+ p_AccountType
-						+ "', '"
-						+ p_DateTrx_From + "', NULL"
-						+ ", "
-						+ "'"+(isOnlyCurrentAccountDocuments()?"Y":"N")+"'"
-						+ ");");
-			}
-
-			BigDecimal credit = null;
-			BigDecimal debit = null;
-			Map<String, Integer> documents = new HashMap<String, Integer>();
-			String documentKey;
-			// process rs & insert rows in table
-			while (rs.next()) {
-				documentKey = rs.getString("documenttable")
-						+ "_"
-						+ rs.getString("document_id")
-						+ (Util.isEmpty(rs.getInt("c_invoicepayschedule_id"),
-								true) ? "" : "_"
-								+ rs.getInt("c_invoicepayschedule_id"));
-				if(documents.get(documentKey) == null){
-					Timestamp fechaVencimiento = null;
-					if (!p_ShowDetailedReceiptsPayments) {
-						// Obtengo la última fecha de vencimiento de la factura, si
-						// es que tiene.
-						String sqlFechaVen = "select MAX(duedate) from libertya.c_invoicepayschedule ipc inner join c_invoice i on (ipc.c_invoice_id = i.c_invoice_id) where (i.c_invoice_id = '"
-								+ rs.getString("document_id")
-								+ "') and ('"
-								+ rs.getString("documenttable")
-								+ "' = 'C_Invoice')";
-						PreparedStatement pstmFechaVen = DB.prepareStatement(
-								sqlFechaVen, get_TrxName(), true);
-						ResultSet rsFechaVen = pstmFechaVen.executeQuery();
-						if (rsFechaVen.next()) {
-							fechaVencimiento = rsFechaVen.getTimestamp(1);
-						}
-					} else
-						fechaVencimiento = rs.getTimestamp("duedate");
-	
-					subIndice++;
-					credit = rs.getBigDecimal("Credit");
-					debit = rs.getBigDecimal("Debit");
-					int currencyID = rs.getInt("C_Currency_ID");
-					// Validación de Conversión de monedas.
-					// En caso de no existir una conversión entre la moneda del
-					// documento y la moneda de
-					// la compañía, entonces el monto Debit y Credit serán NULL.
-					if ((credit == null || debit == null)
-							&& currencyID != client_Currency_ID) {
-						String fromISO = MCurrency
-								.getISO_Code(getCtx(), currencyID);
-						String toISO = MCurrency.getISO_Code(getCtx(),
-								client_Currency_ID);
-						log.severe("No Currency Conversion from " + fromISO
-								+ " to " + toISO);
-						throw new Exception("@NoCurrencyConversion@ (" + fromISO
-								+ "->" + toISO + ")");
-					}
-					
-					// ANTONIO: La cuenta es al reves acumBalance =
-					// acumBalance.add(credit.subtract(debit));
-					acumBalance = acumBalance.add(debit.subtract(credit));
-					usql.append(" INSERT INTO T_CUENTACORRIENTE (SUBINDICE, IncludeOpenOrders, ShowDetailedReceiptsPayments, AD_CLIENT_ID, AD_ORG_ID, AD_PINSTANCE_ID, ISO_CODE, AMOUNT, DEBE, HABER, SALDO, NUMEROCOMPROBANTE, C_BPARTNER_ID, ACCOUNTTYPE, DATETRX, C_DOCTYPE_ID, C_INVOICE_ID, C_PAYMENT_ID, C_CASHLINE_ID, C_ALLOCATIONHDR_ID, duedate, OnlyCurrentAccountDocuments) "
-							+ " VALUES ("
-							+ subIndice
-							+ ", '"
-							+ p_includeOpenOrders_char
-							+ "', '"
-							+ p_ShowDetailedReceiptsPayments_char
-							+ "', "
-							+ getAD_Client_ID()
-							+ ", "
-							+ trx_Org_ID
-							+ " , "
-							+ getAD_PInstance_ID()
-							+ " ,'"
-							+ MCurrency.getISO_Code(getCtx(),
-									rs.getInt("C_Currency_ID"))
-							+ "', "
-							+ rs.getBigDecimal("Amount")
-							+ ", "
-							+ rs.getBigDecimal("Debit")
-							+ ", "
-							+ rs.getBigDecimal("Credit")
-							+ ", "
-							+ acumBalance
-							+ ", '"
-							+ rs.getString("DocumentNo")
-							+ "', "
-							+ p_C_BPartnerID
-							+ ", '"
-							+ p_AccountType
-							+ "', '"
-							+ rs.getTimestamp("DateTrx")
-							+ "', "
-							+ rs.getInt("C_DocType_ID") 
-							+ ", ");
-	
-					// La linea es de una factura?
-					usql.append(
-							DOC_INVOICE.equals(rs.getString("documenttable")) ? rs
-									.getString("document_id") : "NULL")
-							.append(", ");
-					// La linea es de un pago/cheque?
-					usql.append(
-							DOC_PAYMENT.equals(rs.getString("documenttable")) ? rs
-									.getString("document_id") : "NULL")
-							.append(", ");
-					// La linea es de una linea de caja?
-					usql.append(
-							DOC_CASHLINE.equals(rs.getString("documenttable")) ? rs
-									.getString("document_id") : "NULL")
-							.append(", ");
-					// Es un recibo agrupado?
-					usql.append(
-							DOC_ALLOCATIONHDR.equals(rs.getString("documenttable")) ? rs
-									.getString("document_id") : "NULL").append(
-							" , ");
-	
-					// Si se tiene una fecha de vencimiento se inserta
-					if (fechaVencimiento != null) {
-						usql.append("'" + fechaVencimiento + "'");
-					} else
-						usql.append("NULL");
-					
-					usql.append(" , '"+(isOnlyCurrentAccountDocuments()?"Y":"N")+"'");
-					usql.append(" ); ");
-					documents.put(documentKey, trx_Org_ID);
+				// Si se ingresó un filtro de fecha de inicio, entonces se calcula el
+				// saldo acumulado
+				// a partir de todos los comprobantes que tiene fecha de transacción
+				// menor a la
+				// fecha inicial seteada para el reporte.
+				if (p_DateTrx_From != null) {
+					calculateBalance();
 				}
+
+				PreparedStatement pstmt = null;
+				ResultSet rs = null;
+
+				try {
+					
+
+							pstmt = DB.prepareStatement(getCurrentAccountQuery().getQuery(),
+									get_TrxName());
+							int i = 1;
+							// Parámetros de sqlDoc
+							pstmt.setInt(i++, debit_signo_issotrx);
+							pstmt.setInt(i++, client_Currency_ID);
+							pstmt.setInt(i++, credit_signo_isotrx);
+							pstmt.setInt(i++, client_Currency_ID);
+							pstmt.setInt(i++, getAD_Client_ID());
+							pstmt.setInt(i++, p_C_BPartnerID);
+							i = pstmtSetParam(i, p_AD_Org_ID, pstmt);
+							i = pstmtSetParam(i, p_C_DocType_ID, pstmt);
+							// Parámetros para el filtro de fechas
+							i = pstmtSetParam(i, p_DateTrx_From, pstmt);
+							
+							// Cambio para asignarlo y usar INTERVAL
+							// Geneos 05102016
+							//i = pstmtSetParam(i, p_DateTrx_To, pstmt);
+
+							rs = pstmt.executeQuery();
+
+							int subIndice = 0;
+							int trx_Org_ID = p_AD_Org_ID != null ? p_AD_Org_ID : Env
+									.getContextAsInt(getCtx(), "#AD_Org_ID");
+							StringBuffer usql = new StringBuffer();
+
+							if (p_DateTrx_From != null) {
+								subIndice++;
+								// insert first row: before query balance period
+								// Field used for 'date field' in temporary table: DATETRX
+								usql.append(" INSERT INTO T_CUENTACORRIENTE (SUBINDICE, IncludeOpenOrders, ShowDetailedReceiptsPayments, AD_CLIENT_ID, AD_ORG_ID, AD_PINSTANCE_ID, ISO_CODE, AMOUNT, DEBE, HABER, SALDO, NUMEROCOMPROBANTE, C_BPARTNER_ID, ACCOUNTTYPE, DATETRX, C_DOCTYPE_ID, OnlyCurrentAccountDocuments) "
+										+ " VALUES ("
+										+ subIndice
+										+ ", '"
+										+ p_includeOpenOrders_char
+										+ "', '"
+										+ p_ShowDetailedReceiptsPayments_char
+										+ "', "
+										+ getAD_Client_ID()
+										+ ", "
+										+ trx_Org_ID
+										+ " , "
+										+ getAD_PInstance_ID()
+										+ ", '"
+										+ "', "
+										+ BigDecimal.ZERO
+										+ ", "
+										+ acumDebit
+										+ ", "
+										+ acumCredit
+										+ ", "
+										+ acumBalance
+										+ ", '-', "
+										+ p_C_BPartnerID
+										+ ", '"
+										+ p_AccountType
+										+ "', '"
+										+ p_DateTrx_From + "', NULL"
+										+ ", "
+										+ "'"+(isOnlyCurrentAccountDocuments()?"Y":"N")+"'"
+										+ ");");
+							}
+							
+							DB.executeUpdate(usql.toString(), get_TrxName());
+							usql = new StringBuffer();
+
+							// process rs & insert rows in table
+							while (rs.next()) {
+								documentKey = rs.getString("documenttable")
+										+ "_"
+										+ rs.getString("document_id")
+										+ (Util.isEmpty(rs.getInt("c_invoicepayschedule_id"),
+												true) ? "" : "_"
+												+ rs.getInt("c_invoicepayschedule_id"));
+								if(documents.get(documentKey) == null){
+									Timestamp fechaVencimiento = null;
+									if (!p_ShowDetailedReceiptsPayments) {
+										// Obtengo la última fecha de vencimiento de la factura, si
+										// es que tiene.
+										String sqlFechaVen = "select MAX(duedate) from libertya.c_invoicepayschedule ipc inner join c_invoice i on (ipc.c_invoice_id = i.c_invoice_id) where (i.c_invoice_id = '"
+												+ rs.getString("document_id")
+												+ "') and ('"
+												+ rs.getString("documenttable")
+												+ "' = 'C_Invoice')";
+										PreparedStatement pstmFechaVen = DB.prepareStatement(
+												sqlFechaVen, get_TrxName(), true);
+										ResultSet rsFechaVen = pstmFechaVen.executeQuery();
+										if (rsFechaVen.next()) {
+											fechaVencimiento = rsFechaVen.getTimestamp(1);
+										}
+									} else
+										fechaVencimiento = rs.getTimestamp("duedate");
+					
+									subIndice++;
+									credit = rs.getBigDecimal("Credit");
+									debit = rs.getBigDecimal("Debit");
+									int currencyID = rs.getInt("C_Currency_ID");
+									// Validación de Conversión de monedas.
+									// En caso de no existir una conversión entre la moneda del
+									// documento y la moneda de
+									// la compañía, entonces el monto Debit y Credit serán NULL.
+									if ((credit == null || debit == null)
+											&& currencyID != client_Currency_ID) {
+										String fromISO = MCurrency
+												.getISO_Code(getCtx(), currencyID);
+										String toISO = MCurrency.getISO_Code(getCtx(),
+												client_Currency_ID);
+										log.severe("No Currency Conversion from " + fromISO
+												+ " to " + toISO);
+										throw new Exception("@NoCurrencyConversion@ (" + fromISO
+												+ "->" + toISO + ")");
+									}
+									
+									// ANTONIO: La cuenta es al reves acumBalance =
+									// acumBalance.add(credit.subtract(debit));
+									acumBalance = acumBalance.add(debit.subtract(credit));
+									usql.append(" INSERT INTO T_CUENTACORRIENTE (SUBINDICE, IncludeOpenOrders, ShowDetailedReceiptsPayments, AD_CLIENT_ID, AD_ORG_ID, AD_PINSTANCE_ID, ISO_CODE, AMOUNT, DEBE, HABER, SALDO, NUMEROCOMPROBANTE, C_BPARTNER_ID, ACCOUNTTYPE, DATETRX, C_DOCTYPE_ID, C_INVOICE_ID, C_PAYMENT_ID, C_CASHLINE_ID, C_ALLOCATIONHDR_ID, duedate, OnlyCurrentAccountDocuments) "
+											+ " VALUES ("
+											+ subIndice
+											+ ", '"
+											+ p_includeOpenOrders_char
+											+ "', '"
+											+ p_ShowDetailedReceiptsPayments_char
+											+ "', "
+											+ getAD_Client_ID()
+											+ ", "
+											+ trx_Org_ID
+											+ " , "
+											+ getAD_PInstance_ID()
+											+ " ,'"
+											+ MCurrency.getISO_Code(getCtx(),
+													rs.getInt("C_Currency_ID"))
+											+ "', "
+											+ rs.getBigDecimal("Amount")
+											+ ", "
+											+ rs.getBigDecimal("Debit")
+											+ ", "
+											+ rs.getBigDecimal("Credit")
+											+ ", "
+											+ acumBalance
+											+ ", '"
+											+ rs.getString("DocumentNo")
+											+ "', "
+											+ p_C_BPartnerID
+											+ ", '"
+											+ p_AccountType
+											+ "', '"
+											+ rs.getTimestamp("DateTrx")
+											+ "', "
+											+ rs.getInt("C_DocType_ID") 
+											+ ", ");
+					
+									// La linea es de una factura?
+									usql.append(
+											DOC_INVOICE.equals(rs.getString("documenttable")) ? rs
+													.getString("document_id") : "NULL")
+											.append(", ");
+									// La linea es de un pago/cheque?
+									usql.append(
+											DOC_PAYMENT.equals(rs.getString("documenttable")) ? rs
+													.getString("document_id") : "NULL")
+											.append(", ");
+									// La linea es de una linea de caja?
+									usql.append(
+											DOC_CASHLINE.equals(rs.getString("documenttable")) ? rs
+													.getString("document_id") : "NULL")
+											.append(", ");
+									// Es un recibo agrupado?
+									usql.append(
+											DOC_ALLOCATIONHDR.equals(rs.getString("documenttable")) ? rs
+													.getString("document_id") : "NULL").append(
+											" , ");
+					
+									// Si se tiene una fecha de vencimiento se inserta
+									if (fechaVencimiento != null) {
+										usql.append("'" + fechaVencimiento + "'");
+									} else
+										usql.append("NULL");
+									
+									usql.append(" , '"+(isOnlyCurrentAccountDocuments()?"Y":"N")+"'");
+									usql.append(" ); ");
+									documents.put(documentKey, trx_Org_ID);
+									DB.executeUpdate(usql.toString(), get_TrxName());
+									usql = new StringBuffer();
+								}
+							}
+
+							// incorporar los pedidos no facturados (parcial o total)
+							if (p_includeOpenOrders)
+								usql.append(appendOrdersNotInvoiced(subIndice, trx_Org_ID));
+
+							/*
+							 * 	Comentado para poder insertar de a una sentencia y evitar el error de longitud máxima del SB.
+							 * 	Solo quedaría incorporar los pedidos no facturados
+							 * 
+							 */
+							
+							if (usql.length() > 0)
+								// Se insertan todas las líneas en la tabla.
+								DB.executeUpdate(usql.toString(), get_TrxName());
+
+				
+				Trx.getTrx(get_TrxName()).commit();
+							
+				
+				Language language = Language.getLoginLanguage();    // Base Language
+				
+				// Get Format & Data
+				
+				MPrintFormat format = MPrintFormat.get( getCtx(),1000762,false );
+		        format.setLanguage( language );
+		        format.setTranslationLanguage( language );
+		        
+		        MBPartner ent = new MBPartner(getCtx(), p_C_BPartnerID, get_TrxName());
+		        
+		        
+		        MQuery query = new MQuery("T_CuentaCorriente");
+		        query.addRestriction("C_BPartner_ID", "=", p_C_BPartnerID, "Entidad Comercial", ent.getName());
+		        
+
+
+				// Engine
+
+		        PrintInfo info = new PrintInfo("Resumen de Cuenta Corriente",1000150,0);
+
+		        ReportEngine re = new ReportEngine(getCtx(),format,query,info);
+		        
+		        //new Viewer(re);
+		        String directory = "C:\\ReportesLibertya\\";
+		        //String directory = "/home/pepo/tmp/ReportesLibertya/";
+		        re.getPDF(new File(directory + ent.getName() + ".pdf"));
+					
+
+				} catch (SQLException e) {
+					log.log(Level.SEVERE, "Fill T_CuentaCorriente error", e);
+					throw new Exception("Current Account Error", e);
+				}
+				
+				
 			}
-
-			// incorporar los pedidos no facturados (parcial o total)
-			if (p_includeOpenOrders)
-				usql.append(appendOrdersNotInvoiced(subIndice, trx_Org_ID));
-
-			if (usql.length() > 0)
-				// Se insertan todas las líneas en la tabla.
-				DB.executeUpdate(usql.toString(), get_TrxName());
-
+			
 		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Fill T_CuentaCorriente error", e);
-			throw new Exception("Current Account Error", e);
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
+		
 		return "";
 	}
+
 
 	private void calculateBalance() throws Exception {
 		StringBuffer sqlBalance = new StringBuffer();
