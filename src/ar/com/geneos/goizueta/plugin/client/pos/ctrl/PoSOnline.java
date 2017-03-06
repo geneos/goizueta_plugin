@@ -84,6 +84,7 @@ import org.openXpertya.model.MUser;
 import org.openXpertya.model.M_Tab;
 import org.openXpertya.model.PO;
 import org.openXpertya.model.PrintInfo;
+import org.openXpertya.pos.ctrl.PoSConfig;
 import org.openXpertya.pos.exceptions.FiscalPrintException;
 import org.openXpertya.pos.exceptions.InsufficientBalanceException;
 import org.openXpertya.pos.exceptions.InsufficientCreditException;
