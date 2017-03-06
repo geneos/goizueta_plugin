@@ -4,9 +4,13 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
+import ar.com.geneos.goizueta.plugin.client.pos.model.BusinessPartner;
+import ar.com.geneos.goizueta.plugin.client.pos.model.DiscountSchema;
+import ar.com.geneos.goizueta.plugin.client.pos.model.Order;
+import ar.com.geneos.goizueta.plugin.client.pos.model.PaymentMedium;
+import org.openXpertya.pos.ctrl.PoSConfig;
 import org.openXpertya.model.DiscountCalculator.IDocument;
 import org.openXpertya.model.FiscalDocumentPrint;
-import org.openXpertya.pos.ctrl.PoSConfig;
 import org.openXpertya.pos.exceptions.PosException;
 import org.openXpertya.pos.exceptions.UserException;
 import org.openXpertya.pos.model.EntidadFinanciera;
@@ -19,11 +23,6 @@ import org.openXpertya.pos.model.Product;
 import org.openXpertya.pos.model.ProductList;
 import org.openXpertya.pos.model.Tax;
 import org.openXpertya.pos.model.User;
-
-import ar.com.geneos.goizueta.plugin.client.pos.model.BusinessPartner;
-import ar.com.geneos.goizueta.plugin.client.pos.model.DiscountSchema;
-import ar.com.geneos.goizueta.plugin.client.pos.model.Order;
-import ar.com.geneos.goizueta.plugin.client.pos.model.PaymentMedium;
 
 public class PoSOffline extends PoSConnectionState {
 
@@ -309,5 +308,17 @@ public class PoSOffline extends PoSConnectionState {
 	public boolean addSecurityValidationToCN() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@Override
+	public BigDecimal currencyConvert(BigDecimal amount, int fromCurrencyId, int toCurrency) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getDolarCurrencyID() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

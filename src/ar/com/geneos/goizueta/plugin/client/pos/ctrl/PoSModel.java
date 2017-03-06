@@ -9,12 +9,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import ar.com.geneos.goizueta.plugin.client.pos.model.BusinessPartner;
+import ar.com.geneos.goizueta.plugin.client.pos.model.CheckPayment;
+import ar.com.geneos.goizueta.plugin.client.pos.model.Order;
+import ar.com.geneos.goizueta.plugin.client.pos.model.OrderProduct;
+import ar.com.geneos.goizueta.plugin.client.pos.model.Payment;
+import ar.com.geneos.goizueta.plugin.client.pos.model.PaymentMedium;
+import org.openXpertya.pos.ctrl.PoSConfig;
 import org.openXpertya.model.FiscalDocumentPrint;
 import org.openXpertya.model.FiscalDocumentPrintListener;
 import org.openXpertya.model.MPOSJournal;
 import org.openXpertya.model.MProduct;
-import org.openXpertya.pos.ctrl.PoSConfig;
 import org.openXpertya.pos.exceptions.InsufficientBalanceException;
 import org.openXpertya.pos.exceptions.InsufficientCreditException;
 import org.openXpertya.pos.exceptions.InvalidOrderException;
@@ -37,13 +42,6 @@ import org.openXpertya.process.DocActionStatusListener;
 import org.openXpertya.util.ASyncProcess;
 import org.openXpertya.util.Env;
 import org.openXpertya.util.Util;
-
-import ar.com.geneos.goizueta.plugin.client.pos.model.BusinessPartner;
-import ar.com.geneos.goizueta.plugin.client.pos.model.CheckPayment;
-import ar.com.geneos.goizueta.plugin.client.pos.model.Order;
-import ar.com.geneos.goizueta.plugin.client.pos.model.OrderProduct;
-import ar.com.geneos.goizueta.plugin.client.pos.model.Payment;
-import ar.com.geneos.goizueta.plugin.client.pos.model.PaymentMedium;
 
 public class PoSModel {
 
@@ -172,12 +170,20 @@ public class PoSModel {
 		return getConnectionState().getClientCurrencyID();
 	}
 	
+	public int getDolarCurrencyID() {
+		return getConnectionState().getDolarCurrencyID();
+	}
+	
 	public boolean balanceValidate() {
 		return getConnectionState().balanceValidate(getOrder());
 	}
 	
 	public BigDecimal currencyConvert(BigDecimal amount, int fromCurrencyId) {
 		return getConnectionState().currencyConvert(amount,fromCurrencyId);
+	}
+	
+	public BigDecimal currencyConvert(BigDecimal amount, int fromCurrencyId, int toCurrencyID) {
+		return getConnectionState().currencyConvert(amount,fromCurrencyId,toCurrencyID);
 	}
 	
 	private boolean productStockValidate(Product product, BigDecimal count) {
@@ -208,13 +214,7 @@ public class PoSModel {
 	}
 	
 	protected OrderProduct createOrderProduct(Product product) {
-		Tax productTax;
-		if (getOrder().getBusinessPartner() != null)
-			productTax = getConnectionState().getProductTax(
-					product.getId(), getOrder().getBusinessPartner().getLocationId());
-		else
-			productTax = getConnectionState().getProductTax(product.getId());
-		
+		Tax productTax = getProductTax(product);
 		String checkoutPlace;
 		// Si el TPV crea el remito entonces la entrega se hace en el TPV
 		if (getConfig().isCreateInOut()) {
@@ -291,15 +291,23 @@ public class PoSModel {
 		return getConnectionState().getCurrentUser();
 	}
 	
+	public Tax getProductTax(Product product){
+		Tax productTax;
+		if (getOrder().getBusinessPartner() != null){
+			productTax = getOrder().getBusinessPartner().getTax() != null ? getOrder()
+					.getBusinessPartner().getTax() : getConnectionState()
+					.getProductTax(product.getId(),
+							getOrder().getBusinessPartner().getLocationId());
+		}
+		else
+			productTax = getConnectionState().getProductTax(product.getId());
+		return productTax;
+	}
+	
 	public void recalculateOrderTotal() {
-		// Se obtiene la localización del cliente.
-		int locationID = getOrder().getBusinessPartner().getLocationId();
 		// Se recalcula la tasa de impuesto para cada producto del pedido.
 		for (OrderProduct orderProduct : getOrder().getOrderProducts()) {
-			Tax newTax = getConnectionState().getProductTax(
-						orderProduct.getProduct().getId(),
-						locationID);
-			orderProduct.setTax(newTax);
+			orderProduct.setTax(getProductTax(orderProduct.getProduct()));
 		}
 	}
 	

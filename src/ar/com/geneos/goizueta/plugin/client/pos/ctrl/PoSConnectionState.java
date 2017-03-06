@@ -7,7 +7,6 @@ import java.util.Set;
 import org.openXpertya.model.DiscountCalculator.IDocument;
 import org.openXpertya.model.FiscalDocumentPrint;
 import org.openXpertya.model.FiscalDocumentPrintListener;
-import org.openXpertya.pos.ctrl.PoSConfig;
 import org.openXpertya.pos.exceptions.InsufficientBalanceException;
 import org.openXpertya.pos.exceptions.InsufficientCreditException;
 import org.openXpertya.pos.exceptions.InvalidOrderException;
@@ -29,6 +28,7 @@ import org.openXpertya.print.fiscal.FiscalPrinterEventListener;
 import org.openXpertya.process.DocActionStatusListener;
 import org.openXpertya.util.ASyncProcess;
 import org.openXpertya.util.CLogger;
+import org.openXpertya.pos.ctrl.PoSConfig;
 
 import ar.com.geneos.goizueta.plugin.client.pos.model.BusinessPartner;
 import ar.com.geneos.goizueta.plugin.client.pos.model.DiscountSchema;
@@ -52,6 +52,8 @@ public abstract class PoSConnectionState {
 	public abstract User getUser(int userID);
 	
 	public abstract BigDecimal currencyConvert(BigDecimal amount, int fromCurrencyId);
+	
+	public abstract BigDecimal currencyConvert(BigDecimal amount, int fromCurrencyId, int toCurrency);
 	
 	public abstract BusinessPartner getBPartner(int bPartnerID);
 	
@@ -130,6 +132,8 @@ public abstract class PoSConnectionState {
 	public abstract boolean reprintInvoice(Order order, FiscalDocumentPrint fdp);
 	
 	public abstract boolean addSecurityValidationToCN();
+	
+	public abstract int getDolarCurrencyID();
 	
 	/**
 	 * @param checkDeadLineToCompare
