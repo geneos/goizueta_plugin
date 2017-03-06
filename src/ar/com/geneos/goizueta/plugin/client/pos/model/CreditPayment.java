@@ -2,7 +2,6 @@ package ar.com.geneos.goizueta.plugin.client.pos.model;
 
 import org.openXpertya.pos.model.PaymentTerm;
 
-
 public class CreditPayment extends Payment {
 
 	// Variables de instancia

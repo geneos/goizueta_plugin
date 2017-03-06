@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import org.openXpertya.pos.model.Location;
 import org.openXpertya.pos.model.PaymentTerm;
+import org.openXpertya.pos.model.Tax;
 
 public class BusinessPartner {
 
@@ -42,6 +43,8 @@ public class BusinessPartner {
 	private boolean percepcionLiable;
 	
 	private boolean automaticCreditNote;
+	
+	private Tax tax = null;
 	
 	public BusinessPartner() {
 		super();
@@ -312,5 +315,13 @@ public class BusinessPartner {
 
 	public void setAutomaticCreditNote(boolean automaticCreditNote) {
 		this.automaticCreditNote = automaticCreditNote;
+	}
+
+	public Tax getTax() {
+		return tax;
+	}
+
+	public void setTax(Tax tax) {
+		this.tax = tax;
 	}
 }

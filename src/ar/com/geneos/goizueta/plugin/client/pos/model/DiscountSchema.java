@@ -4,8 +4,7 @@ import java.sql.ResultSet;
 
 import org.openXpertya.model.MDiscountSchema;
 import org.openXpertya.model.MDiscountSchemaBreak;
-
-import ar.com.geneos.goizueta.plugin.client.pos.ctrl.PoSOnline;
+import org.openXpertya.pos.ctrl.PoSOnline;
 
 /**
  * <p>

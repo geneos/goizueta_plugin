@@ -2,7 +2,6 @@ package ar.com.geneos.goizueta.plugin.client.pos.model;
 
 import java.math.BigDecimal;
 
-
 public class CreditCardPayment extends Payment {
 
 	private String creditCardNumber;

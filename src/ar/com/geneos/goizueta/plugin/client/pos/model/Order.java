@@ -19,10 +19,10 @@ import org.openXpertya.pos.model.PaymentTerm;
 import org.openXpertya.pos.model.Tax;
 import org.openXpertya.util.Env;
 
-public class Order {
+public class Order  {
 
 	private static final BigDecimal ROUND_TOLERANCE = new BigDecimal(0.01);
-
+	
 	private int id = 0;
 	private Timestamp date = Env.getDate();
 	private List<OrderProduct> orderProducts;
@@ -34,54 +34,48 @@ public class Order {
 	private BigDecimal totalBPartnerDiscount = BigDecimal.ZERO;
 	private BigDecimal totalManualGeneralDiscount = BigDecimal.ZERO;
 	private List<Tax> otherTaxes = new ArrayList<Tax>();
-
-	/** Precisión para importes */
+	
+	/** Precisión para importes */ 
 	private int stdPrecision = 2;
 	/** Preciosión para precios */
 	private int costingPresicion = 4;
-
+	
 	/** Calculador de descuentos */
 	private DiscountCalculator discountCalculator = null;
-
+	
 	/** ID del Pedido (C_Order) generado a partir de este pedido TPV */
 	private int generatedOrderID = 0;
-
+	
 	/** ID de la Factura (C_Invoice) generada a partir de este pedido TPV */
 	private int generatedInvoiceID = 0;
-
+	
 	/** Esquema de vencimientos */
 	private PaymentTerm paymentTerm;
-
+	
 	/** Organización del pedido */
 	private Organization organization;
-
+	
 	/** Medio de cobro a crédito */
 	private Integer creditPOSPaymentMediumID = null;
-
-	/**
-	 * Determina si se debe dejar exceder el monto agregado con lo pendiente
-	 * para efectivo
-	 */
+	
+	/** Determina si se debe dejar exceder el monto agregado con lo pendiente para efectivo */
 	private boolean allowSurpassCashAmount = true;
-
-	/**
-	 * Determina si se debe dejar exceder el monto agregado con lo pendiente
-	 * para cheques
-	 */
+	
+	/** Determina si se debe dejar exceder el monto agregado con lo pendiente para cheques */
 	private boolean allowSurpassCheckAmount = true;
-
+		
 	private Order() {
 		super();
 		setOrderProducts(new ArrayList<OrderProduct>());
 		setPayments(new ArrayList<Payment>());
-		discountCalculator = DiscountCalculator.create(getDiscountableOrderWrapper(), MBPartner.DISCOUNTCONTEXT_Bill);
-		// Se cargan los descuentos configurados en este momento ya que la
-		// instanciación de un
+		discountCalculator = DiscountCalculator.create(
+				getDiscountableOrderWrapper(), MBPartner.DISCOUNTCONTEXT_Bill);
+		// Se cargan los descuentos configurados en este momento ya que la instanciación de un
 		// Order se debe hacer en modo online.
 		discountCalculator.loadConfiguredDiscounts();
 	}
-
-	public Order(Organization organization) {
+	
+	public Order(Organization organization){
 		this();
 		setOrganization(organization);
 	}
@@ -91,13 +85,13 @@ public class Order {
 		orderProduct.setOrder(this);
 		updateDiscounts();
 	}
-
+	
 	public void removeOrderProduct(OrderProduct orderProduct) {
 		getOrderProducts().remove(orderProduct);
 		orderProduct.setOrder(null);
 		updateDiscounts();
 	}
-
+	
 	public void updateOrderProduct() {
 		updateDiscounts();
 	}
@@ -125,8 +119,7 @@ public class Order {
 	}
 
 	/**
-	 * @param orderProducts
-	 *            Fija o asigna orderProducts.
+	 * @param orderProducts Fija o asigna orderProducts.
 	 */
 	public void setOrderProducts(List<OrderProduct> orderProducts) {
 		this.orderProducts = orderProducts;
@@ -140,20 +133,19 @@ public class Order {
 	}
 
 	/**
-	 * @param payments
-	 *            Fija o asigna payments.
+	 * @param payments Fija o asigna payments.
 	 */
 	public void setPayments(List<Payment> payments) {
 		this.payments = payments;
 	}
-
+	
 	/**
 	 * @return Devuelve vendedor.
 	 */
 	public int getOrderRep() {
 		return orderRep;
 	}
-
+	
 	/**
 	 * Asigna el vendedor
 	 */
@@ -169,11 +161,9 @@ public class Order {
 	}
 
 	/**
-	 * Asigna la Entidad Comercial del pedido. Se recalculan descuentos si la EC
-	 * tiene algún descuento asociado.
-	 * 
-	 * @param businessPartner
-	 *            Entidad Comercial a asignar
+	 * Asigna la Entidad Comercial del pedido. Se recalculan descuentos
+	 * si la EC tiene algún descuento asociado.
+	 * @param businessPartner Entidad Comercial a asignar
 	 */
 	public void setBusinessPartner(BusinessPartner businessPartner) {
 		this.businessPartner = businessPartner;
@@ -182,28 +172,30 @@ public class Order {
 		BigDecimal flatDiscount = null;
 		String discountContext = null;
 		// Se obtiene el descuento asociado a la EC si no es null
-		if (businessPartner != null) {
+		if(businessPartner != null){
 			discountSchema = businessPartner.getDiscountSchema();
 			flatDiscount = businessPartner.getFlatDiscount();
 			discountContext = businessPartner.getDiscountSchemaContext();
-		} else {
+		}
+		else{
 			setOtherTaxes(new ArrayList<Tax>());
 		}
-		// Se asigna el descuento de EC al
-		getDiscountCalculator().loadBPartnerDiscount(discountSchema, flatDiscount, discountContext);
+		// Se asigna el descuento de EC al 
+		getDiscountCalculator().loadBPartnerDiscount(discountSchema,
+				flatDiscount, discountContext);
 		// Actualiza los descuentos
 		updateDiscounts();
 	}
-
+	
 	/**
 	 * Actualiza los impuestos adicionales a cada línea
 	 */
-	public void updateOtherTaxesInLines() {
+	public void updateOtherTaxesInLines(){
 		for (OrderProduct op : getOrderProducts()) {
 			op.updateOtherTaxes();
 		}
 	}
-
+	
 	/**
 	 * @return El importe total del pedido, incluyendo impuestos y descuentos a
 	 *         nivel de documento.
@@ -228,7 +220,7 @@ public class Order {
 		boolean isPerceptionIncludedInPrice = true;
 		for (OrderProduct orderProduct : getOrderProducts()) {
 			isPerceptionIncludedInPrice = orderProduct.getProduct().isPerceptionIncludedInPrice();
-			// amount = amount.add(orderProduct.getTotalTaxedPrice());
+			//amount = amount.add(orderProduct.getTotalTaxedPrice());
 			BigDecimal lineAmt = orderProduct.getPrice().multiply(orderProduct.getCount());
 			if (orderProduct.getProduct().isTaxIncludedInPrice()) {
 				amount = amount.add(lineAmt);
@@ -243,13 +235,13 @@ public class Order {
 			}
 			totalNetAmt = totalNetAmt.add(lineAmt);
 		}
-
+		
 		for (Tax tax : taxBaseAmt.keySet()) {
 			baseAmt = scaleAmount(taxBaseAmt.get(tax));
 			amount = amount.add(baseAmt).add(baseAmt.multiply(tax.getTaxRateMultiplier()));
 		}
-
-		if (!isPerceptionIncludedInPrice) {
+		
+		if (!isPerceptionIncludedInPrice){
 			// Impuestos adicionales
 			for (Tax otherTax : getOtherTaxes()) {
 				baseAmt = scaleAmount(totalNetAmt);
@@ -257,6 +249,7 @@ public class Order {
 			}
 		}
 
+		
 		// return AmountHelper.scale(amount);
 		return scaleAmount(amount);
 	}
@@ -279,31 +272,35 @@ public class Order {
 			CashPayment existentCashPayment = findCashPaymentLike(payment);
 			if (existentCashPayment != null) {
 				existentCashPayment.addAmount(payment.getAmount());
+				existentCashPayment.addRealAmount(payment.getRealAmount());
+				existentCashPayment.addRealAmountConverted(payment.getRealAmountConverted());
 				existentCashPayment.addConvertedAmount(payment.getConvertedAmount());
 				existentPayment = existentCashPayment;
 			}
-			// - Pago a Crédito:
-		} else if (payment.isCreditPayment()) {
+		// - Pago a Crédito:
+		} else if (payment.isCreditPayment()){
 			CreditPayment existentCreditPayment = findCreditPaymentLike(payment);
 			if (existentCreditPayment != null) {
 				existentCreditPayment.addAmount(payment.getAmount());
+				existentCreditPayment.addRealAmount(payment.getRealAmount());
+				existentCreditPayment.addRealAmountConverted(payment.getRealAmountConverted());
 				existentPayment = existentCreditPayment;
 			}
 			// Asocio el paymentTerm al pedido
-			setPaymentTerm(((CreditPayment) payment).getPaymentTerm());
+			setPaymentTerm(((CreditPayment)payment).getPaymentTerm());
 			// Asocio el medio de cobro a crédito al pedido
 			setCreditPOSPaymentMediumID(payment.getPaymentMedium().getId());
 		}
-
+		
 		// Si se actualizó un pago existente se lo quita de la lista de pagos
 		// actuales a fin de recalcular correctamente el descuento del pago
 		// total, como si el mismo hubiese sido agregado por el usuario de una
-		// vez (y no en dos o mas partes).
+		// vez (y no en dos o mas partes). 
 		if (existentPayment != null) {
 			removePayment(existentPayment);
 			payment = existentPayment;
 		}
-
+		
 		//
 		// Actualización de descuentos
 		//
@@ -311,8 +308,8 @@ public class Order {
 		// Actualiza el pago para determinar el importe real del mismo.
 		// Se comenta la línea del cálculo del pago real ya que lo que ingresa
 		// el usuario es el monto real
-		// calculatePaymentRealAmount(payment);
-
+//		calculatePaymentRealAmount(payment);
+		
 		// Agrega el esquema de descuento del pago como un descuento
 		// general para el calculo del descuento total general del pedido.
 		// Los descuentos se totalizan segun el medio de pago. Por eso que el ID
@@ -320,39 +317,41 @@ public class Order {
 		// medio de pago.
 		Integer discountID = payment.getPaymentMedium().getInternalID(payment);
 		if (getDiscountCalculator().containsDiscount(discountID)) {
-			getDiscountCalculator().addDiscountBaseAmount(discountID, payment.getRealAmount());
+			getDiscountCalculator().addDiscountBaseAmount(discountID, payment.getRealAmountConverted());
 		} else {
-			discountID = getDiscountCalculator().addGeneralDiscount(payment.getDiscountSchema(), GeneralDiscountKind.PaymentMedium, payment.getRealAmount(),
+			discountID = getDiscountCalculator().addGeneralDiscount(
+					payment.getDiscountSchema(),
+					GeneralDiscountKind.PaymentMedium,
+					payment.getRealAmountConverted(),
 					payment.getPaymentMedium().getName());
 			payment.getPaymentMedium().setInternalID(discountID, payment);
 		}
 
 		// Se aplican los descuentos generales al pedido
 		getDiscountCalculator().applyDocumentHeaderDiscounts();
-
+		
 		// Si es un pago en efectivo y supera lo que resta pagar del pedido,
 		// entonces la diferencia entre el efectivo y el pendiente es el cambio
 		// del pago
-		if (payment.isCashPayment()) {
+		if(payment.isCashPayment()){
 			BigDecimal pendingAmt = getTotalAmount().subtract(getPaidAmount());
-			if (pendingAmt.compareTo(payment.getConvertedAmount()) < 0) {
+			if(pendingAmt.compareTo(payment.getConvertedAmount()) < 0){
 				payment.setChangeAmt(payment.getConvertedAmount().subtract(pendingAmt));
-			} else {
+			}
+			else{
 				payment.setChangeAmt(BigDecimal.ZERO);
 			}
 		}
-
+		
 		// Se agrega el pago a la lista. Si era un pago existente, anteriormente
 		// se había eliminado para el recálculo de descuentos y ahora se vuelve
 		// a agregar
 		getPayments().add(payment);
 	}
-
+	
 	/**
 	 * Calcula el importe real de un pago
-	 * 
-	 * @param payment
-	 *            Pago
+	 * @param payment Pago
 	 */
 	private void calculatePaymentRealAmount(Payment payment) {
 		/*
@@ -361,10 +360,12 @@ public class Order {
 		 * decrementado según el descuento que tenga asociado el medio de pago.
 		 * Es decir, debemos calcular RP de forma que:
 		 * 
-		 * RP = P / (1 - T)
+		 *   RP = P / (1 - T)
 		 * 
-		 * Donde: - RP: Importe real del pago - P: Importe ingresado del pago -
-		 * T: Tasa del descuento aplicado (-1 < T < 1)
+		 * Donde: 
+		 * - RP: Importe real del pago 
+		 * - P: Importe ingresado del pago 
+		 * - T: Tasa del descuento aplicado (-1 < T < 1)
 		 * 
 		 * La tasa no la conocemos ya que un esquema de descuento puede tener
 		 * una tasa del 10% pero sea aplicable solo a un subconjunto de las
@@ -373,12 +374,13 @@ public class Order {
 		 * constante, y al obtener el importe de descuento podemos obtener
 		 * también la tasa de esa aplicación. De esta forma:
 		 * 
-		 * T = C / D
+		 *   T = C / D
 		 * 
-		 * Donde: - C: Importe constante de aplicación (se usará 100) - D:
-		 * Importe del descuento basado en C.
+		 * Donde: 
+		 * - C: Importe constante de aplicación (se usará 100) 
+		 * - D: Importe del descuento basado en C.
 		 */
-
+		
 		BigDecimal currentToPayAmt = getToPayAmount(payment.getPaymentMediumInfo());
 		// Obtiene el importe del pago para el cálculo de descuento.
 		// Si el pago es menor o igual al pendiente a pagar según el medio de
@@ -388,39 +390,42 @@ public class Order {
 		if (payment.getAmount().compareTo(currentToPayAmt) <= 0) {
 			paymentAmt = payment.getAmount();
 
-			// Si el pago supera el importe pendiente, para no calcular
-			// descuentos sobre importes que no se van a cobrar (e.d vueltos o
-			// créditos a favor del cliente), el importe base para el descuento
-			// es el importe pendiente de pago según el medio de pago indicado.
+		// Si el pago supera el importe pendiente, para no calcular
+		// descuentos sobre importes que no se van a cobrar (e.d vueltos o
+		// créditos a favor del cliente), el importe base para el descuento
+		// es el importe pendiente de pago según el medio de pago indicado.
 		} else {
 			paymentAmt = currentToPayAmt;
 		}
-
+		
 		// Previene la división por cero en el cálculo. (solo se puede dar para
 		// recálculos de descuentos de líneas).
 		if (paymentAmt.compareTo(BigDecimal.ZERO) <= 0) {
 			return;
 		}
-
+	
 		// Efectúa el cálculo de la fórmula
-		final int SCALE = 20;
-		BigDecimal discount = BigDecimal.ZERO; // D
-		BigDecimal rate = BigDecimal.ZERO; // T
-		BigDecimal paymentRealAmt = null; // RP
-		BigDecimal constantAmt = new BigDecimal(100); // C. Utilizado para
-														// calcular T
-
+		final int SCALE           = 20; 
+		BigDecimal discount       = BigDecimal.ZERO;     // D
+		BigDecimal rate           = BigDecimal.ZERO;     // T
+		BigDecimal paymentRealAmt = null;                // RP
+		BigDecimal constantAmt    = new BigDecimal(100); // C. Utilizado para calcular T
+		
 		// Calcula la tasa real de aplicación (puede diferir de la tasa del
 		// esquema debido a aplicaciones parciales en las líneas - descuentos
 		// selectivos -)
-		if (payment.getDiscountSchema() != null && isPaymentMediumDiscountApplicable(payment.getDiscountSchema().getDiscountContextType())) {
-			discount = getDiscountCalculator().calculateDiscount(payment.getDiscountSchema(), constantAmt);
+		if (payment.getDiscountSchema() != null
+				&& isPaymentMediumDiscountApplicable(payment
+						.getDiscountSchema().getDiscountContextType())) {
+			discount = getDiscountCalculator().calculateDiscount(
+					payment.getDiscountSchema(), constantAmt);
 			rate = discount.divide(constantAmt, SCALE, BigDecimal.ROUND_HALF_EVEN);
 		}
 		// Calcula el importe real del pago a partir del importe original y la
 		// tasa calculada.
-		paymentRealAmt = paymentAmt.divide(BigDecimal.ONE.subtract(rate), SCALE, BigDecimal.ROUND_HALF_EVEN);
-
+		paymentRealAmt = paymentAmt.divide(BigDecimal.ONE.subtract(rate), SCALE,
+				BigDecimal.ROUND_HALF_EVEN);
+		
 		// Obtiene el pendiente y lo compara con el importe real del pago. Si
 		// hay una diferencia mínima de centavos agrega esta diferencia al pago
 		// real para permitir completar el pedido
@@ -429,13 +434,13 @@ public class Order {
 		if (diff.abs().compareTo(ROUND_TOLERANCE) <= 0) {
 			paymentRealAmt = paymentRealAmt.add(diff);
 		}
-
+		
 		// Guarda el importe real en el pago
 		payment.setRealAmount(paymentRealAmt);
 	}
-
+	
 	/**
-	 * @return el importe real
+	 * @return el importe real 
 	 */
 	public BigDecimal getPaymentRealAmount(BigDecimal amt, IPaymentMediumInfo paymentMediumInfo) {
 		/*
@@ -444,10 +449,12 @@ public class Order {
 		 * decrementado según el descuento que tenga asociado el medio de pago.
 		 * Es decir, debemos calcular RP de forma que:
 		 * 
-		 * RP = P / (1 - T)
+		 *   RP = P / (1 - T)
 		 * 
-		 * Donde: - RP: Importe real del pago - P: Importe ingresado del pago -
-		 * T: Tasa del descuento aplicado (-1 < T < 1)
+		 * Donde: 
+		 * - RP: Importe real del pago 
+		 * - P: Importe ingresado del pago 
+		 * - T: Tasa del descuento aplicado (-1 < T < 1)
 		 * 
 		 * La tasa no la conocemos ya que un esquema de descuento puede tener
 		 * una tasa del 10% pero sea aplicable solo a un subconjunto de las
@@ -456,16 +463,17 @@ public class Order {
 		 * constante, y al obtener el importe de descuento podemos obtener
 		 * también la tasa de esa aplicación. De esta forma:
 		 * 
-		 * T = C / D
+		 *   T = C / D
 		 * 
-		 * Donde: - C: Importe constante de aplicación (se usará 100) - D:
-		 * Importe del descuento basado en C.
+		 * Donde: 
+		 * - C: Importe constante de aplicación (se usará 100) 
+		 * - D: Importe del descuento basado en C.
 		 */
-
-		if (amt == null) {
+		
+		if(amt == null){
 			return BigDecimal.ZERO;
 		}
-
+		
 		BigDecimal currentToPayAmt = getToPayAmount(paymentMediumInfo);
 		// Obtiene el importe del pago para el cálculo de descuento.
 		// Si el pago es menor o igual al pendiente a pagar según el medio de
@@ -475,46 +483,50 @@ public class Order {
 		if (amt.compareTo(currentToPayAmt) <= 0) {
 			paymentAmt = amt;
 
-			// Si el pago supera el importe pendiente, para no calcular
-			// descuentos sobre importes que no se van a cobrar (e.d vueltos o
-			// créditos a favor del cliente), el importe base para el descuento
-			// es el importe pendiente de pago según el medio de pago indicado.
+		// Si el pago supera el importe pendiente, para no calcular
+		// descuentos sobre importes que no se van a cobrar (e.d vueltos o
+		// créditos a favor del cliente), el importe base para el descuento
+		// es el importe pendiente de pago según el medio de pago indicado.
 		} else {
 			paymentAmt = currentToPayAmt;
 		}
-
+		
 		// Previene la división por cero en el cálculo. (solo se puede dar para
 		// recálculos de descuentos de líneas).
 		if (paymentAmt.compareTo(BigDecimal.ZERO) <= 0) {
 			return BigDecimal.ZERO;
 		}
-
+	
 		// Efectúa el cálculo de la fórmula
-		final int SCALE = 20;
-		BigDecimal discount = BigDecimal.ZERO; // D
-		BigDecimal rate = BigDecimal.ZERO; // T
-		BigDecimal paymentRealAmt = null; // RP
-		BigDecimal constantAmt = new BigDecimal(100); // C. Utilizado para
-														// calcular T
-
+		final int SCALE           = 20; 
+		BigDecimal discount       = BigDecimal.ZERO;     // D
+		BigDecimal rate           = BigDecimal.ZERO;     // T
+		BigDecimal paymentRealAmt = null;                // RP
+		BigDecimal constantAmt    = new BigDecimal(100); // C. Utilizado para calcular T
+		
 		// Calcula la tasa real de aplicación (puede diferir de la tasa del
 		// esquema debido a aplicaciones parciales en las líneas - descuentos
 		// selectivos -)
-		if (paymentMediumInfo.getDiscountSchema() != null && isPaymentMediumDiscountApplicable(paymentMediumInfo.getDiscountSchema().getDiscountContextType())) {
-			discount = getDiscountCalculator().calculateDiscount(paymentMediumInfo.getDiscountSchema(), constantAmt);
+		if (paymentMediumInfo.getDiscountSchema() != null
+				&& isPaymentMediumDiscountApplicable(paymentMediumInfo
+						.getDiscountSchema().getDiscountContextType())) {
+			discount = getDiscountCalculator().calculateDiscount(
+					paymentMediumInfo.getDiscountSchema(), constantAmt);
 			rate = discount.divide(constantAmt, SCALE, BigDecimal.ROUND_HALF_EVEN);
 		}
 		// Calcula el importe real del pago a partir del importe original y la
 		// tasa calculada.
-		paymentRealAmt = paymentAmt.divide(BigDecimal.ONE.subtract(rate), SCALE, BigDecimal.ROUND_HALF_EVEN);
-
+		paymentRealAmt = paymentAmt.divide(BigDecimal.ONE.subtract(rate), SCALE,
+				BigDecimal.ROUND_HALF_EVEN);
+		
 		return paymentRealAmt;
 	}
-
+	
 	public void removePayment(Payment payment) {
 		getPayments().remove(payment);
 		paymentRemoved(payment);
-		getDiscountCalculator().subtractDiscountBaseAmount(payment.getPaymentMedium().getInternalID(payment), payment.getRealAmount());
+		getDiscountCalculator().subtractDiscountBaseAmount(payment.getPaymentMedium().getInternalID(payment),
+				payment.getRealAmountConverted());
 		updateDiscounts();
 	}
 
@@ -525,22 +537,23 @@ public class Order {
 	 * @param payment
 	 *            pago
 	 */
-	protected void paymentRemoved(Payment payment) {
+	protected void paymentRemoved(Payment payment){
 		// Crédito
-		if (payment.isCreditPayment()) {
+		if(payment.isCreditPayment()){
 			// Anular el esquema de vencimientos configurado
 			setPaymentTerm(null);
 		}
 	}
-
+	
+	
 	public boolean hasPayments() {
 		return getPayments().size() > 0;
 	}
-
+	
 	public boolean hasOrderProducts() {
 		return getOrderProducts().size() > 0;
 	}
-
+	
 	public BigDecimal getPaidAmount() {
 		BigDecimal paidAmt = BigDecimal.ZERO;
 		for (Payment payment : getPayments()) {
@@ -557,25 +570,34 @@ public class Order {
 	private BigDecimal getRealPaidAmount() {
 		BigDecimal realPaidAmt = BigDecimal.ZERO;
 		for (Payment payment : getPayments()) {
-			if (payment != null && payment.getRealAmount() != null)
+			if (payment!=null && payment.getRealAmount() != null)
 				realPaidAmt = realPaidAmt.add(payment.getRealAmount());
 		}
 		return realPaidAmt;
 	}
 
+	private BigDecimal getRealPaidAmountConverted() {
+		BigDecimal realPaidAmtConverted = BigDecimal.ZERO;
+		for (Payment payment : getPayments()) {
+			if (payment!=null && payment.getRealAmountConverted() != null)
+				realPaidAmtConverted = realPaidAmtConverted.add(payment.getRealAmountConverted());
+		}
+		return realPaidAmtConverted;
+	}
+	
 	public BigDecimal getCashPaidAmount() {
 		BigDecimal paidAmt = BigDecimal.ZERO;
 		for (Payment payment : getPayments()) {
-			if (payment.isCashPayment())
+			if(payment.isCashPayment())
 				paidAmt = paidAmt.add(payment.getConvertedAmount());
 		}
 		return AmountHelper.scale(paidAmt);
 	}
-
+	
 	public BigDecimal getBalance() {
 		return AmountHelper.scale(getPaidAmount().subtract(getTotalAmount()));
 	}
-
+	
 	/**
 	 * Recalcula los descuentos a nivel de líneas y documento.
 	 */
@@ -584,14 +606,13 @@ public class Order {
 		 * Dado que el recalculo de descuentos de línea puede modificar el
 		 * importe total del pedido, antes de hacer este cálculo se deben
 		 * eliminar todos los pagos actualmente agregados al pedido para
-		 * eliminar los descuentos a nivel de documento realizados por los
-		 * medios de pago. Luego se recalculan los descuentos de líneas y
-		 * finalmente se agregan nuevamente (en el mismo orden) los pagos que
-		 * tenía el pedido a fin de recalcular correctamente los descuentos de
-		 * los medios de pago tal como si hubiesen sido agregados por el
-		 * usuario.
+		 * eliminar los descuentos a nivel de documento realizados por los medios
+		 * de pago. Luego se recalculan los descuentos de líneas y finalmente se
+		 * agregan nuevamente (en el mismo orden) los pagos que tenía el pedido
+		 * a fin de recalcular correctamente los descuentos de los medios de
+		 * pago tal como si hubiesen sido agregados por el usuario.
 		 */
-
+		
 		// Guarda una copia de la lista de pagos actuales y elimina cada pago de
 		// la lista de pagos asociados a este pedido
 		List<Payment> currentPayments = new ArrayList<Payment>(getPayments());
@@ -612,29 +633,29 @@ public class Order {
 		// Recalcula descuentos a nivel de documento.
 		getDiscountCalculator().applyDocumentHeaderDiscounts();
 	}
-
-	public void updateManualGeneralDiscount(BigDecimal percentage) {
+	
+	public void updateManualGeneralDiscount(BigDecimal percentage){
 		getDiscountCalculator().updateManualGeneralDiscount(percentage);
 	}
-
-	public BigDecimal getTotalChangeAmt() {
+	
+	public BigDecimal getTotalChangeAmt(){
 		BigDecimal changeAmt = BigDecimal.ZERO;
 		for (Payment payment : getPayments()) {
-			changeAmt = changeAmt.add(payment.getChangeAmt());
+			changeAmt = changeAmt.add(payment.getChangeAmt()); 
 		}
 		return changeAmt;
 	}
-
-	public BigDecimal getTotalChangeCashAmt() {
+	
+	public BigDecimal getTotalChangeCashAmt(){
 		BigDecimal changeAmt = BigDecimal.ZERO;
 		for (Payment payment : getPayments()) {
-			if (payment.isCashPayment()) {
-				changeAmt = changeAmt.add(payment.getChangeAmt());
+			if(payment.isCashPayment()){
+				changeAmt = changeAmt.add(payment.getChangeAmt()); 
 			}
 		}
 		return changeAmt;
 	}
-
+	
 	public void clear() {
 		setId(0);
 		this.businessPartner = null;
@@ -654,50 +675,47 @@ public class Order {
 	}
 
 	/**
-	 * @param id
-	 *            The id to set.
+	 * @param id The id to set.
 	 */
 	public void setId(int id) {
 		this.id = id;
 	}
-
+	
 	/**
-	 * Agrega todas las líneas de un pedido a este pedido. Ambos pedidos
-	 * referencian a las mismas líneas (no se hace una copia de la línea) con lo
-	 * cual los cambios realizados en las líneas de un pedido serán reflejados
-	 * en las líneas del otro.
-	 * 
-	 * @param anotherOrder
-	 *            Pedido del cual se obtienen las líneas a agregar.
+	 * Agrega todas las líneas de un pedido a este pedido. Ambos pedidos referencian
+	 * a las mismas líneas (no se hace una copia de la línea) con lo cual los cambios
+	 * realizados en las líneas de un pedido serán reflejados en las líneas del otro.
+	 * @param anotherOrder Pedido del cual se obtienen las líneas a agregar.
 	 */
 	public void addOrderProductsFrom(Order anotherOrder) {
 		for (OrderProduct orderProduct : anotherOrder.getOrderProducts()) {
 			addOrderProduct(orderProduct);
-			orderProduct.setDiscount(orderProduct.getDiscount(), DiscountApplication.ToPrice);
+			orderProduct.setDiscount(orderProduct.getDiscount(),
+					DiscountApplication.ToPrice);
 		}
 		updateDiscounts();
 	}
-
+	
 	/**
-	 * @return Devuelve la cantidad de artículos en este pedido cuyo lugar de
-	 *         retiro es el TPV.
+	 * @return Devuelve la cantidad de artículos en este pedido cuyo
+	 * lugar de retiro es el TPV.
 	 */
 	public int getPOSCheckoutProductsCount() {
 		int count = 0;
 		for (OrderProduct orderProduct : getOrderProducts()) {
-			count += orderProduct.isPOSCheckout() ? 1 : 0;
+			count += orderProduct.isPOSCheckout()?1:0;
 		}
 		return count;
 	}
-
+	
 	/**
-	 * @return Devuelve la cantidad de artículos en este pedido cuyo lugar de
-	 *         retiro es el Almacén.
+	 * @return Devuelve la cantidad de artículos en este pedido cuyo
+	 * lugar de retiro es el Almacén.
 	 */
 	public int getWarehouseCheckoutProductsCount() {
 		int count = 0;
 		for (OrderProduct orderProduct : getOrderProducts()) {
-			count += orderProduct.isWarehouseCheckout() ? 1 : 0;
+			count += orderProduct.isWarehouseCheckout()?1:0;
 		}
 		return count;
 	}
@@ -717,12 +735,15 @@ public class Order {
 	public BigDecimal getOpenAmount() {
 		BigDecimal toPay = BigDecimal.ZERO;
 		if (getBalance().compareTo(BigDecimal.ZERO) <= 0) {
-			// toPay = getOrderProductsTotalAmt().subtract(getPaidAmount());
-			toPay = getOrderProductsTotalAmt().subtract(getTotalManualGeneralDiscount()).subtract(getRealPaidAmount()).subtract(getTotalBPartnerDiscount());
+			//toPay = getOrderProductsTotalAmt().subtract(getPaidAmount());
+			toPay = getOrderProductsTotalAmt()
+					.subtract(getTotalManualGeneralDiscount())
+					.subtract(getRealPaidAmountConverted())
+					.subtract(getTotalBPartnerDiscount());
 		}
 		return toPay;
 	}
-
+	
 	/**
 	 * Devuelve el importe pendiente de pago de este pedido teniendo en cuenta
 	 * el descuento / recargo asociado a un medio de pago para el calculo del
@@ -740,7 +761,7 @@ public class Order {
 	public BigDecimal getToPayAmount(IPaymentMediumInfo paymentMediumInfo) {
 		return getToPayAmount(paymentMediumInfo, null);
 	}
-
+	
 	/**
 	 * Devuelve el importe pendiente de pago de este pedido teniendo en cuenta
 	 * el descuento / recargo asociado a un medio de pago para el calculo del
@@ -761,7 +782,7 @@ public class Order {
 	public BigDecimal getToPayAmount(IPaymentMediumInfo paymentMediumInfo, BigDecimal amt) {
 		// Calcula el descuento de documento según el esquema del Medio de Pago
 		// Se ignora el esquema de EC ya que el mismo ya está (o no) aplicado
-		// dentro del pedido
+		// dentro del pedido 
 		BigDecimal discountAmt = BigDecimal.ZERO;
 		BigDecimal orderOpenAmt = getOpenAmount();
 
@@ -769,26 +790,34 @@ public class Order {
 		// FIXME se debería pasar la comparación del tipo de pago al modelo
 		BigDecimal openAmt = amt == null
 				|| (amt.compareTo(orderOpenAmt) > 0
-						&& (!MPOSPaymentMedium.TENDERTYPE_Cash.equals(paymentMediumInfo.getTenderType()) || (MPOSPaymentMedium.TENDERTYPE_Cash
-								.equals(paymentMediumInfo.getTenderType()) && !isAllowSurpassCashAmount())) && (!MPOSPaymentMedium.TENDERTYPE_Check
-						.equals(paymentMediumInfo.getTenderType()) || (MPOSPaymentMedium.TENDERTYPE_Check.equals(paymentMediumInfo.getTenderType()) && !isAllowSurpassCheckAmount()))) ? orderOpenAmt
+						&& (!MPOSPaymentMedium.TENDERTYPE_Cash
+								.equals(paymentMediumInfo.getTenderType()) || (MPOSPaymentMedium.TENDERTYPE_Cash
+										.equals(paymentMediumInfo.getTenderType()) && !isAllowSurpassCashAmount())) 
+						&& (!MPOSPaymentMedium.TENDERTYPE_Check
+								.equals(paymentMediumInfo.getTenderType()) || (MPOSPaymentMedium.TENDERTYPE_Check
+										.equals(paymentMediumInfo.getTenderType()) && !isAllowSurpassCheckAmount()))
+							) ? orderOpenAmt
 				: amt;
-
+		
 		if (paymentMediumInfo != null) {
 			// Calcula el importe del descuento general a partir de importe
 			// pendiente (que incluye los descuentos realizados al documento)
 			if (paymentMediumInfo.getDiscountSchema() != null
-					&& getDiscountCalculator().isGeneralDocumentDiscountApplicable(paymentMediumInfo.getDiscountSchema().getDiscountContextType())) {
+					&& getDiscountCalculator()
+							.isGeneralDocumentDiscountApplicable(
+									paymentMediumInfo.getDiscountSchema()
+											.getDiscountContextType())) {
 				getDiscountCalculator().setApplyScale(false);
-				discountAmt = getDiscountCalculator().calculateDiscount(paymentMediumInfo.getDiscountSchema(), openAmt);
+				discountAmt = getDiscountCalculator().calculateDiscount(
+						paymentMediumInfo.getDiscountSchema(), openAmt);
 				getDiscountCalculator().setApplyScale(true);
 				discountAmt = getDiscountCalculator().scaleAmount(discountAmt);
 			}
-
+			
 		}
-
+		
 		BigDecimal toPay = openAmt.subtract(discountAmt);
-
+		
 		// Obtiene el pendiente y lo compara con el importe real del pago. Si
 		// hay una diferencia mínima de centavos agrega esta diferencia al pago
 		// real para permitir completar el pedido
@@ -796,25 +825,24 @@ public class Order {
 		if (diff.abs().compareTo(ROUND_TOLERANCE) <= 0) {
 			toPay = toPay.add(diff);
 		}
-
+		
 		// Al pendiente se le resta el descuento del Medio de Pago, y se le
 		// quita también el descuento total del pedido ya que ese importe no se
 		// debe pagar.
-		// return
-		// openAmt.subtract(discountAmt).subtract(getTotalDocumentDiscount());
+		//return openAmt.subtract(discountAmt).subtract(getTotalDocumentDiscount());
 		return toPay;
 	}
 
 	/**
 	 * Busca en la colección de pagos agregados a este pedido un pago que sea
-	 * Efectivo y sus propiedades sean similares a un pago determinado Las
-	 * condiciones de búsqueda son:<br>
+	 * Efectivo y sus propiedades sean similares a un pago determinado
+	 * Las condiciones de búsqueda son:<br>
 	 * <ol>
 	 * <li>Sea un {@link CashPayment}</li>
 	 * <li>Tenga la misma moneda que el pago parámetro</li>
 	 * <li>Tenga el mismo esquema de descuento que el pago parámetro</li>
 	 * </ol>
-	 *
+     *
 	 * @param payment
 	 *            Pago de búsqueda. Si no es un {@link CashPayment} devuelve
 	 *            <code>null</code>
@@ -824,31 +852,33 @@ public class Order {
 	private CashPayment findCashPaymentLike(Payment payment) {
 		CashPayment result = null;
 		// El parámetro debe ser un CashPayment
-		if (payment.isCashPayment()) {
+		if(payment.isCashPayment()) {
 			for (Payment p : getPayments()) {
 				// Se busca un pago que:
 				// 1. Sea un CashPayment
 				// 2. Tenga la misma moneda que el pago parámetro
 				// 3. Tenga el mismo esquema de descuento que el pago parámetro
-				if (p.isCashPayment() && p.getCurrencyId() == payment.getCurrencyId() && p.equalsDiscountSchema(payment.getDiscountSchema())) {
-
-					result = (CashPayment) p;
+				if(p.isCashPayment() 
+						&& p.getCurrencyId() == payment.getCurrencyId()
+						&& p.equalsDiscountSchema(payment.getDiscountSchema())) {
+					
+					result = (CashPayment)p;
 					break;
 				}
 			}
 		}
 		return result;
 	}
-
+	
 	/**
-	 * Busca en la colección de pagos agregados a este pedido un pago que sea A
-	 * Crédito y sus propiedades sean similares a un pago determinado Las
-	 * condiciones de búsqueda son:<br>
+	 * Busca en la colección de pagos agregados a este pedido un pago que sea
+	 * A Crédito y sus propiedades sean similares a un pago determinado
+	 * Las condiciones de búsqueda son:<br>
 	 * <ol>
 	 * <li>Sea un {@link CreditPayment}</li>
 	 * <li>Tenga el mismo esquema de descuento que el pago parámetro</li>
 	 * </ol>
-	 *
+     *
 	 * @param payment
 	 *            Pago de búsqueda. Si no es un {@link CreditPayment} devuelve
 	 *            <code>null</code>
@@ -858,14 +888,15 @@ public class Order {
 	private CreditPayment findCreditPaymentLike(Payment payment) {
 		CreditPayment result = null;
 		// El parámetro debe ser un CreditPayment
-		if (payment.isCreditPayment()) {
+		if(payment.isCreditPayment()) {
 			for (Payment p : getPayments()) {
 				// Se busca un pago que:
 				// 1. Sea un CreditPayment
 				// 3. Tenga el mismo esquema de descuento que el pago parámetro
-				if (p.isCreditPayment() && p.equalsDiscountSchema(payment.getDiscountSchema())) {
-
-					result = (CreditPayment) p;
+				if(p.isCreditPayment() 
+						&& p.equalsDiscountSchema(payment.getDiscountSchema())) {
+					
+					result = (CreditPayment)p;
 					break;
 				}
 			}
@@ -889,8 +920,7 @@ public class Order {
 	}
 
 	/**
-	 * @param totalDocumentDiscount
-	 *            the totalDocumentDiscount to set
+	 * @param totalDocumentDiscount the totalDocumentDiscount to set
 	 */
 	protected void setTotalDocumentDiscount(BigDecimal totalDocumentDiscount) {
 		if (totalDocumentDiscount == null) {
@@ -907,8 +937,7 @@ public class Order {
 	}
 
 	/**
-	 * @param generatedOrderID
-	 *            the generatedOrderID to set
+	 * @param generatedOrderID the generatedOrderID to set
 	 */
 	public void setGeneratedOrderID(int generatedOrderID) {
 		this.generatedOrderID = generatedOrderID;
@@ -922,13 +951,12 @@ public class Order {
 	}
 
 	/**
-	 * @param generatedInvoiceID
-	 *            the generatedInvoiceID to set
+	 * @param generatedInvoiceID the generatedInvoiceID to set
 	 */
 	public void setGeneratedInvoiceID(int generatedInvoiceID) {
 		this.generatedInvoiceID = generatedInvoiceID;
 	}
-
+	
 	/**
 	 * @return Indica si son aplicables los descuentos por medios de pagos.
 	 */
@@ -943,21 +971,24 @@ public class Order {
 	 *         contexto pasado como parámetro
 	 */
 	public boolean isPaymentMediumDiscountApplicable(String discountContextType) {
-		return getDiscountCalculator().isGeneralDocumentDiscountApplicable(discountContextType);
+		return getDiscountCalculator().isGeneralDocumentDiscountApplicable(
+				discountContextType);
 	}
-
+	
 	/**
 	 * @return Indica si es aplicable el descuento de EC.
 	 */
 	public boolean isBPartnerDiscountApplicable() {
-		return getDiscountCalculator().isBPartnerDiscountApplicable(
-				getBusinessPartner().getDiscountSchema() != null ? getBusinessPartner().getDiscountSchema().getDiscountContextType() : null,
-				getBusinessPartner().getDiscountSchemaContext());
+		return getDiscountCalculator()
+				.isBPartnerDiscountApplicable(
+						getBusinessPartner().getDiscountSchema() != null ? getBusinessPartner()
+								.getDiscountSchema().getDiscountContextType()
+								: null,
+						getBusinessPartner().getDiscountSchemaContext());
 	}
 
 	/**
-	 * @param totalBPartnerDiscount
-	 *            the totalBPartnerDiscount to set
+	 * @param totalBPartnerDiscount the totalBPartnerDiscount to set
 	 */
 	protected void setTotalBPartnerDiscount(BigDecimal totalBPartnerDiscount) {
 		this.totalBPartnerDiscount = totalBPartnerDiscount;
@@ -986,8 +1017,7 @@ public class Order {
 	}
 
 	/**
-	 * @param stdPrecision
-	 *            el valor de stdPrecision a asignar
+	 * @param stdPrecision el valor de stdPrecision a asignar
 	 */
 	public void setStdPrecision(int stdPrecision) {
 		this.stdPrecision = stdPrecision;
@@ -1001,26 +1031,23 @@ public class Order {
 	}
 
 	/**
-	 * @param costingPresicion
-	 *            el valor de costingPresicion a asignar
+	 * @param costingPresicion el valor de costingPresicion a asignar
 	 */
 	public void setCostingPresicion(int costingPresicion) {
 		this.costingPresicion = costingPresicion;
 	}
-
+	
 	/**
 	 * Realiza el redondeo de importes según la precisión Std
-	 * 
 	 * @param amount
 	 * @return
 	 */
 	public BigDecimal scaleAmount(BigDecimal amount) {
 		return amount.setScale(getStdPrecision(), BigDecimal.ROUND_HALF_UP);
 	}
-
+	
 	/**
 	 * Realiza el redondeo de precios según la precisión Costing
-	 * 
 	 * @param price
 	 * @return
 	 */
@@ -1038,8 +1065,7 @@ public class Order {
 	 *            cobro con descuento. En el momento de seleccionar un medio de
 	 *            cobro con descuento se debe anular el descuento de entidad
 	 *            comercial.<br>
-	 *            Al cambiar este valor se recalcularan los descuentos
-	 *            automáticamente.
+	 *            Al cambiar este valor se recalcularan los descuentos automáticamente.
 	 */
 	public void setAssumeGeneralDiscountAdded(boolean value) {
 		getDiscountCalculator().setAssumeGeneralDiscountAdded(value);
@@ -1049,10 +1075,10 @@ public class Order {
 	/**
 	 * @return Valor a devolver en efectivo de las notas de crédito existentes
 	 */
-	public BigDecimal getCreditNoteChangeAmount() {
+	public BigDecimal getCreditNoteChangeAmount(){
 		BigDecimal returnAmt = BigDecimal.ZERO;
 		for (Payment payment : getPayments()) {
-			if (payment.isCreditNotePayment())
+			if(payment.isCreditNotePayment())
 				returnAmt = returnAmt.add(payment.getChangeAmt());
 		}
 		return AmountHelper.scale(returnAmt);
@@ -1064,10 +1090,12 @@ public class Order {
 	 * @return true si existe como pago agregado anteriormente la nota de
 	 *         crédito, false caso contrario
 	 */
-	public boolean existsCreditNote(Integer creditNoteID) {
+	public boolean existsCreditNote(Integer creditNoteID){
 		boolean found = false;
 		for (int i = 0; i < getPayments().size() && !found; i++) {
-			found = getPayments().get(i).isCreditNotePayment() && ((CreditNotePayment) getPayments().get(i)).getInvoiceID() == creditNoteID;
+			found = getPayments().get(i).isCreditNotePayment()
+					&& ((CreditNotePayment) getPayments().get(i))
+							.getInvoiceID() == creditNoteID;
 		}
 		return found;
 	}
@@ -1088,18 +1116,22 @@ public class Order {
 	public List<Tax> getOtherTaxes() {
 		return otherTaxes;
 	}
-
-	public boolean isManualDiscountApplicable(OrderProduct orderProduct) {
+	
+	public boolean isManualDiscountApplicable(OrderProduct orderProduct){
 		return getDiscountCalculator().isManualDiscountApplicable(
-				((DiscountableOrderWrapper) getDiscountCalculator().getDocument()).createDocumentLine(orderProduct));
+				((DiscountableOrderWrapper) getDiscountCalculator()
+						.getDocument()).createDocumentLine(orderProduct));
 	}
-
-	public Integer addLineManualDiscount(OrderProduct op) {
-		return getDiscountCalculator().addLineManualDiscount(((DiscountableOrderWrapper) getDiscountCalculator().getDocument()).createDocumentLine(op),
+	
+	
+	public Integer addLineManualDiscount(OrderProduct op){
+		return getDiscountCalculator().addLineManualDiscount(
+				((DiscountableOrderWrapper) getDiscountCalculator()
+						.getDocument()).createDocumentLine(op),
 				op.getDiscountApplication());
 	}
-
-	public Integer getOrgID() {
+	
+	public Integer getOrgID(){
 		return getOrganization().getId();
 	}
 
