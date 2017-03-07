@@ -47,77 +47,78 @@ import org.openXpertya.util.UserAuthData;
 import ar.com.geneos.goizueta.plugin.client.pos.ctrl.PoSModel;
 import ar.com.geneos.goizueta.plugin.client.pos.model.OrderProduct;
 
+
 public class UpdateOrderProductDialog extends JDialog {
 
 	private final int BUTTON_PANEL_WIDTH = 160;
 	private final int BUTTON_WIDTH = 155;
 	private final int DIALOG_WIDTH = 650;
 	private final int DIALOG_HEIGHT = 280;
-
+	
 	private OrderProduct orderProduct;
 	private PoSMainForm poS;
 	private User user;
 	private PoSMsgRepository msgRepository;
-
+	
 	private JPanel jContentPane = null;
 	private CPanel cMainPanel = null;
-	protected CPanel cItemPanel = null;
+	private CPanel cItemPanel = null;
 	private CPanel cCmdPanel = null;
-	protected CLabel cProductLabel = null;
-	protected CLabel cProductDescLabel = null;
-	protected CLabel cProductPriceLabel = null;
-	protected CLabel cProductTaxedPriceLabel = null;
-	protected CLabel cProductTaxRateLabel = null;
+	private CLabel cProductLabel = null;
+	private CLabel cProductDescLabel = null;
+	private CLabel cProductPriceLabel = null;
+	private CLabel cProductTaxedPriceLabel = null;
+	private CLabel cProductTaxRateLabel = null;
 	private VNumber cPriceListText = null;
-	public VNumber cProductTaxedPriceText = null;
+	private VNumber cProductTaxedPriceText = null;
 	private VNumber cDiscountAmtText = null;
-	protected CLabel cDiscountLabel = null;
+	private CLabel cDiscountLabel = null;
 	private VNumber cDiscountText = null;
-	protected CLabel cCountLabel = null;
+	private CLabel cCountLabel = null;
 	private CTextField cCountText = null;
 	private CButton cOkButton = null;
 	private CButton cRemoveButton = null;
 	private CButton cCancelButton = null;
-	protected CLabel cApplicationLabel = null;
+	private CLabel cApplicationLabel = null;
 	private CPanel cApplicationPanel = null;
 	private JRadioButton cToPriceRadio = null;
 	private JRadioButton cBonusRadio = null;
 	private ButtonGroup applicationGroup = null;
-	protected AUserAuth userAuthPanel = null;
-	protected CLabel cLineDescriptionLabel = null;
+	private AUserAuth userAuthPanel = null;
+	private CLabel cLineDescriptionLabel = null;
 	private CTextField cLineDescriptionText = null;
-	protected String MSG_PRODUCT;
+	private String MSG_PRODUCT;
 	private String MSG_OK;
 	private String MSG_DELETE;
 	private String MSG_CANCEL;
-	protected String MSG_PRICE;
-	protected String MSG_DISCOUNT;
-	protected String MSG_COUNT;
+	private String MSG_PRICE;
+	private String MSG_DISCOUNT;
+	private String MSG_COUNT;
 	private String MSG_NO_PRODUCT_PRICE;
 	private String MSG_INVALID_PRODUCT_PRICE;
 	private String MSG_INVALID_PRODUCT_COUNT;
 	private String MSG_CONFIRM_DELETE_RPODUCT;
 	private String MSG_UPDATE_ITEM;
-	protected String MSG_TAXRATE;
-	protected String MSG_TAXED_PRICE;
-	protected String MSG_APPLICATION;
+	private String MSG_TAXRATE;
+	private String MSG_TAXED_PRICE;
+	private String MSG_APPLICATION;
 	private String MSG_TO_PRICE;
 	private String MSG_BONUS;
-	protected String MSG_PRICE_LIST;
-	protected String MSG_MANUAL_DISCOUNT;
-	protected String MSG_AMOUNT;
-	protected String MSG_SUPERVISOR_AUTH;
+	private String MSG_PRICE_LIST;
+	private String MSG_MANUAL_DISCOUNT;
+	private String MSG_AMOUNT;
+	private String MSG_SUPERVISOR_AUTH;
 	private String MSG_SURPASS_MAX_QTY;
 	private String MSG_INVALID_PRICE;
 	private String MSG_INVALID_FINAL_PRICE;
 	private String MSG_INVALID_COUNT;
-	protected String MSG_LINE_DESCRIPTION_TITLE;
-	protected String MSG_DESCRIPTION;
-
-	protected final String CHANGE_FOCUS_USER_AUTH = "changeFocusUserAuth";
-
-	private Map<String, KeyStroke> actionKeys;
-
+	private String MSG_LINE_DESCRIPTION_TITLE;
+	private String MSG_DESCRIPTION;
+	
+	private final String CHANGE_FOCUS_USER_AUTH = "changeFocusUserAuth";
+	
+	private Map<String,KeyStroke> actionKeys;
+	
 	/**
 	 * This is the default constructor
 	 */
@@ -133,7 +134,7 @@ public class UpdateOrderProductDialog extends JDialog {
 		super();
 		initialize();
 	}
-
+	
 	/**
 	 * This method initializes this
 	 * 
@@ -142,13 +143,13 @@ public class UpdateOrderProductDialog extends JDialog {
 	private void initialize() {
 		initMsgs();
 		keyBindingsInit();
-		this.setSize(590, 400);
+		this.setSize(590,400);
 		this.setTitle(MSG_UPDATE_ITEM);
 		this.setResizable(false);
 		this.setContentPane(getJContentPane());
 	}
-
-	public void initMsgs() {
+	
+	private void initMsgs() {
 		MSG_PRODUCT = getMsg("M_Product_ID");
 		MSG_OK = getMsg("OK");
 		MSG_DELETE = getMsg("POSDelete");
@@ -178,28 +179,32 @@ public class UpdateOrderProductDialog extends JDialog {
 		MSG_DESCRIPTION = getMsg("Description");
 	}
 
-	private void keyBindingsInit() {
+	private void keyBindingsInit(){
 		// Se asignan las teclas shorcut de las acciones.
-		setActionKeys(new HashMap<String, KeyStroke>());
+		setActionKeys(new HashMap<String,KeyStroke>());
 		getActionKeys().put(CHANGE_FOCUS_USER_AUTH, KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
-
+		
+		
 		// Se crean las acciones pertinentes
-		getRootPane().getActionMap().put(CHANGE_FOCUS_USER_AUTH, new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				userAuthPanel.setFocus();
-			}
-		});
-
+        getRootPane().getActionMap().put(CHANGE_FOCUS_USER_AUTH,
+        	new AbstractAction() {
+        		public void actionPerformed(ActionEvent e) {
+					userAuthPanel.setFocus();
+				}
+        	}
+        );
+		
 		// Se habilitan las necesarias
 		setActionEnabled(CHANGE_FOCUS_USER_AUTH, true);
 	}
-
+	
 	private void setActionEnabled(String action, boolean enabled) {
-		String kAction = (enabled ? action : "none");
-		KeyStroke keyStroke = getActionKeys().get(action);
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, kAction);
+		String kAction = (enabled?action:"none");
+        KeyStroke keyStroke = getActionKeys().get(action);
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				keyStroke, kAction);
 	}
-
+	
 	/**
 	 * This method initializes jContentPane
 	 * 
@@ -209,7 +214,7 @@ public class UpdateOrderProductDialog extends JDialog {
 		if (jContentPane == null) {
 			jContentPane = new CPanel();
 			jContentPane.setLayout(new BorderLayout());
-			// jContentPane.setPreferredSize(new java.awt.Dimension(590,110));
+			//jContentPane.setPreferredSize(new java.awt.Dimension(590,110));
 			jContentPane.setPreferredSize(new java.awt.Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
 			jContentPane.add(getCMainPanel(), java.awt.BorderLayout.CENTER);
 			jContentPane.setOpaque(false);
@@ -218,15 +223,15 @@ public class UpdateOrderProductDialog extends JDialog {
 	}
 
 	/**
-	 * This method initializes cMainPanel
-	 * 
-	 * @return org.compiere.swing.CPanel
+	 * This method initializes cMainPanel	
+	 * 	
+	 * @return org.compiere.swing.CPanel	
 	 */
 	private CPanel getCMainPanel() {
 		if (cMainPanel == null) {
 			cMainPanel = new CPanel();
 			cMainPanel.setLayout(new BorderLayout());
-			cMainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+			cMainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5,5,5,5));
 			cMainPanel.setOpaque(false);
 			cMainPanel.add(getCItemPanel(), java.awt.BorderLayout.CENTER);
 			cMainPanel.add(getCCmdPanel(), java.awt.BorderLayout.EAST);
@@ -235,117 +240,117 @@ public class UpdateOrderProductDialog extends JDialog {
 	}
 
 	/**
-	 * This method initializes cItemPanel
-	 * 
-	 * @return org.compiere.swing.CPanel
+	 * This method initializes cItemPanel	
+	 * 	
+	 * @return org.compiere.swing.CPanel	
 	 */
-	protected CPanel getCItemPanel() {
+	private CPanel getCItemPanel() {
 		if (cItemPanel == null) {
 			final int V_SPAN = 3;
-
+			
 			GridBagConstraints gbc0603 = new GridBagConstraints();
 			gbc0603.gridx = 3;
-			gbc0603.insets = new java.awt.Insets(V_SPAN, 5, 0, 0);
+			gbc0603.insets = new java.awt.Insets(V_SPAN,5,0,0);
 			gbc0603.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0603.gridy = 6;
 			gbc0603.gridwidth = 2;
 			GridBagConstraints gbc0602 = new GridBagConstraints();
 			gbc0602.gridx = 2;
 			gbc0602.anchor = java.awt.GridBagConstraints.WEST;
-			gbc0602.insets = new java.awt.Insets(V_SPAN, 0, 0, 0);
+			gbc0602.insets = new java.awt.Insets(V_SPAN,0,0,0);
 			gbc0602.gridy = 6;
-
+			
 			GridBagConstraints gbc0601 = new GridBagConstraints();
 			gbc0601.fill = java.awt.GridBagConstraints.NONE;
 			gbc0601.gridy = 6;
 			gbc0601.anchor = java.awt.GridBagConstraints.WEST;
-			gbc0601.insets = new java.awt.Insets(V_SPAN, 5, 0, 0);
+			gbc0601.insets = new java.awt.Insets(V_SPAN,5,0,0);
 			gbc0601.gridx = 1;
 			GridBagConstraints gbc0600 = new GridBagConstraints();
 			gbc0600.gridx = 0;
-			gbc0600.insets = new java.awt.Insets(V_SPAN, 0, 0, 0);
+			gbc0600.insets = new java.awt.Insets(V_SPAN,0,0,0);
 			gbc0600.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0600.gridy = 6;
-
+			
 			GridBagConstraints gbc0503 = new GridBagConstraints();
 			gbc0503.gridx = 3;
-			gbc0503.insets = new java.awt.Insets(V_SPAN, 5, 0, 0);
+			gbc0503.insets = new java.awt.Insets(V_SPAN,5,0,0);
 			gbc0503.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0503.gridy = 5;
 			gbc0503.gridwidth = 2;
 			GridBagConstraints gbc0502 = new GridBagConstraints();
 			gbc0502.gridx = 2;
 			gbc0502.anchor = java.awt.GridBagConstraints.WEST;
-			gbc0502.insets = new java.awt.Insets(V_SPAN, 0, 0, 0);
+			gbc0502.insets = new java.awt.Insets(V_SPAN,0,0,0);
 			gbc0502.gridy = 5;
-
+			
 			GridBagConstraints gbc0501 = new GridBagConstraints();
 			gbc0501.fill = java.awt.GridBagConstraints.NONE;
 			gbc0501.gridy = 5;
 			gbc0501.anchor = java.awt.GridBagConstraints.WEST;
-			gbc0501.insets = new java.awt.Insets(V_SPAN, 5, 0, 0);
+			gbc0501.insets = new java.awt.Insets(V_SPAN,5,0,0);
 			gbc0501.gridx = 1;
 			GridBagConstraints gbc0500 = new GridBagConstraints();
 			gbc0500.gridx = 0;
-			gbc0500.insets = new java.awt.Insets(V_SPAN, 0, 0, 0);
+			gbc0500.insets = new java.awt.Insets(V_SPAN,0,0,0);
 			gbc0500.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0500.gridy = 8;
 			gbc0500.gridwidth = 4;
-			gbc0500.insets = new java.awt.Insets(10, 0, 3, 0);
-
+			gbc0500.insets = new java.awt.Insets(10,0,3,0);
+			
 			GridBagConstraints gbc0303 = new GridBagConstraints();
 			gbc0303.gridx = 3;
-			gbc0303.insets = new java.awt.Insets(V_SPAN, 5, 0, 0);
+			gbc0303.insets = new java.awt.Insets(V_SPAN,5,0,0);
 			gbc0303.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0303.gridy = 3;
 			gbc0303.gridwidth = 2;
 			GridBagConstraints gbc0302 = new GridBagConstraints();
 			gbc0302.gridx = 2;
 			gbc0302.anchor = java.awt.GridBagConstraints.WEST;
-			gbc0302.insets = new java.awt.Insets(V_SPAN, 0, 0, 0);
+			gbc0302.insets = new java.awt.Insets(V_SPAN,0,0,0);
 			gbc0302.gridy = 3;
 			gbc0302.gridwidth = 3;
 			cApplicationLabel = new CLabel();
 			cApplicationLabel.setText(MSG_APPLICATION);
-
+			
 			GridBagConstraints gbc0401 = new GridBagConstraints();
 			gbc0401.fill = java.awt.GridBagConstraints.NONE;
 			gbc0401.gridy = 4;
 			gbc0401.weightx = 1.0;
 			gbc0401.anchor = java.awt.GridBagConstraints.WEST;
-			gbc0401.insets = new java.awt.Insets(V_SPAN, 5, 0, 0);
+			gbc0401.insets = new java.awt.Insets(V_SPAN,5,0,0);
 			gbc0401.gridx = 1;
 			GridBagConstraints gbc0400 = new GridBagConstraints();
 			gbc0400.gridx = 0;
-			gbc0400.insets = new java.awt.Insets(V_SPAN, 0, 0, 0);
+			gbc0400.insets = new java.awt.Insets(V_SPAN,0,0,0);
 			gbc0400.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0400.gridy = 4;
-
+			
 			GridBagConstraints gbc0201 = new GridBagConstraints();
 			gbc0201.fill = java.awt.GridBagConstraints.NONE;
 			gbc0201.gridy = 2;
 			gbc0201.weightx = 1.0;
 			gbc0201.anchor = java.awt.GridBagConstraints.WEST;
-			gbc0201.insets = new java.awt.Insets(V_SPAN, 5, 0, 0);
+			gbc0201.insets = new java.awt.Insets(V_SPAN,5,0,0);
 			gbc0201.gridx = 1;
 			GridBagConstraints gbc0200 = new GridBagConstraints();
 			gbc0200.gridx = 0;
-			gbc0200.insets = new java.awt.Insets(V_SPAN, 0, 0, 0);
+			gbc0200.insets = new java.awt.Insets(V_SPAN,0,0,0);
 			gbc0200.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0200.gridy = 2;
 			gbc0200.gridwidth = 4;
-			gbc0200.insets = new java.awt.Insets(10, 0, 3, 0);
+			gbc0200.insets = new java.awt.Insets(10,0,3,0);
 			cProductTaxedPriceLabel = new CLabel();
 			cProductTaxedPriceLabel.setText(MSG_TAXED_PRICE);
 			GridBagConstraints gbc0103 = new GridBagConstraints();
 			gbc0103.gridx = 3;
-			gbc0103.insets = new java.awt.Insets(V_SPAN, 5, 0, 0);
+			gbc0103.insets = new java.awt.Insets(V_SPAN,5,0,0);
 			gbc0103.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0103.gridy = 1;
 			GridBagConstraints gbc0102 = new GridBagConstraints();
 			gbc0102.gridx = 2;
 			gbc0102.anchor = java.awt.GridBagConstraints.WEST;
-			gbc0102.insets = new java.awt.Insets(V_SPAN, 0, 0, 0);
+			gbc0102.insets = new java.awt.Insets(V_SPAN,0,0,0);
 			gbc0102.gridy = 1;
 			cProductTaxRateLabel = new CLabel();
 			cProductTaxRateLabel.setText(MSG_TAXRATE);
@@ -354,79 +359,81 @@ public class UpdateOrderProductDialog extends JDialog {
 			gbc0403.gridy = 4;
 			gbc0403.weightx = 1.0;
 			gbc0403.anchor = java.awt.GridBagConstraints.WEST;
-			gbc0403.insets = new java.awt.Insets(V_SPAN, 5, 0, 0);
+			gbc0403.insets = new java.awt.Insets(V_SPAN,5,0,0);
 			gbc0403.gridwidth = 3;
 			gbc0403.gridx = 3;
 			GridBagConstraints gbc0402 = new GridBagConstraints();
 			gbc0402.gridx = 2;
 			gbc0402.anchor = java.awt.GridBagConstraints.WEST;
-			gbc0402.insets = new java.awt.Insets(V_SPAN, 0, 0, 0);
+			gbc0402.insets = new java.awt.Insets(V_SPAN,0,0,0);
 			gbc0402.gridy = 4;
-			// gbc0402.gridwidth = 3;
+			//gbc0402.gridwidth = 3;
 			GridBagConstraints gbc0301 = new GridBagConstraints();
 			gbc0301.fill = java.awt.GridBagConstraints.NONE;
 			gbc0301.gridy = 3;
 			gbc0301.weightx = 1.0;
 			gbc0301.anchor = java.awt.GridBagConstraints.WEST;
-			gbc0301.insets = new java.awt.Insets(V_SPAN, 5, 0, 0);
+			gbc0301.insets = new java.awt.Insets(V_SPAN,5,0,0);
 			gbc0301.gridx = 1;
 			GridBagConstraints gbc0300 = new GridBagConstraints();
 			gbc0300.gridx = 0;
-			gbc0300.insets = new java.awt.Insets(V_SPAN, 0, 0, 0);
+			gbc0300.insets = new java.awt.Insets(V_SPAN,0,0,0);
 			gbc0300.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0300.gridy = 3;
 			GridBagConstraints gbc0205 = new GridBagConstraints();
 			gbc0205.fill = java.awt.GridBagConstraints.NONE;
 			gbc0205.gridy = 2;
 			gbc0205.weightx = 1.0;
-			gbc0205.insets = new java.awt.Insets(V_SPAN, 5, 0, 0);
+			gbc0205.insets = new java.awt.Insets(V_SPAN,5,0,0);
 			gbc0205.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0205.gridx = 5;
 			GridBagConstraints gbc0204 = new GridBagConstraints();
 			gbc0204.gridx = 4;
-			gbc0204.insets = new java.awt.Insets(V_SPAN, 10, 0, 0);
+			gbc0204.insets = new java.awt.Insets(V_SPAN,10,0,0);
 			gbc0204.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0204.gridy = 2;
 			cCountLabel = new CLabel();
 			cCountLabel.setText(MSG_COUNT);
 			GridBagConstraints gbc0203 = new GridBagConstraints();
 			gbc0203.gridx = 3;
-			gbc0203.insets = new java.awt.Insets(V_SPAN, 5, 0, 0);
+			gbc0203.insets = new java.awt.Insets(V_SPAN,5,0,0);
 			gbc0203.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0203.gridy = 2;
 			GridBagConstraints gbc0202 = new GridBagConstraints();
 			gbc0202.gridx = 2;
 			gbc0202.anchor = java.awt.GridBagConstraints.WEST;
-			gbc0202.insets = new java.awt.Insets(V_SPAN, 0, 0, 0);
+			gbc0202.insets = new java.awt.Insets(V_SPAN,0,0,0);
 			gbc0202.gridy = 2;
 			cDiscountLabel = new CLabel();
 			cDiscountLabel.setText(MSG_DISCOUNT);
 			GridBagConstraints gbc0101 = new GridBagConstraints();
 			gbc0101.gridx = 1;
-			gbc0101.insets = new java.awt.Insets(V_SPAN, 5, 0, 0);
+			gbc0101.insets = new java.awt.Insets(V_SPAN,5,0,0);
 			gbc0101.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0101.gridy = 1;
 			GridBagConstraints gbc0100 = new GridBagConstraints();
 			gbc0100.gridx = 0;
-			gbc0100.insets = new java.awt.Insets(V_SPAN, 0, 0, 0);
+			gbc0100.insets = new java.awt.Insets(V_SPAN,0,0,0);
 			gbc0100.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0100.gridy = 1;
 			cProductPriceLabel = new CLabel();
 			cProductPriceLabel.setText(MSG_PRICE);
 			GridBagConstraints gbc0001 = new GridBagConstraints();
 			gbc0001.gridx = 1;
-			gbc0001.insets = new java.awt.Insets(0, 5, 5, 0);
+			gbc0001.insets = new java.awt.Insets(0,5,5,0);
 			gbc0001.gridwidth = 5;
 			gbc0001.fill = java.awt.GridBagConstraints.HORIZONTAL;
 			gbc0001.gridy = 0;
 			cProductDescLabel = new CLabel();
-			cProductDescLabel.setText("<html>" + getOrderProduct().getProduct().getDescription() + "</html>");
+			cProductDescLabel.setText("<html>"
+					+ getOrderProduct().getProduct().getDescription()
+					+ "</html>");
 			cProductDescLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 			GridBagConstraints gbc0000 = new GridBagConstraints();
 			gbc0000.gridx = 0;
 			gbc0000.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0000.gridy = 0;
-			gbc0000.insets = new java.awt.Insets(0, 0, 5, 0);
+			gbc0000.insets = new java.awt.Insets(0,0,5,0);
 			cProductLabel = new CLabel();
 			cProductLabel.setText(MSG_PRODUCT + ":");
 			cProductLabel.setFontBold(true);
@@ -439,8 +446,8 @@ public class UpdateOrderProductDialog extends JDialog {
 			cDiscountAmtLabel.setText(MSG_AMOUNT);
 			CLabel cAuthTitleLabel = new CLabel();
 			cAuthTitleLabel.setText(MSG_SUPERVISOR_AUTH);
-			cAuthTitleLabel.setFontBold(true);
-
+			cAuthTitleLabel.setFontBold(true);			
+			
 			// Título de descripción de línea
 			CLabel cLineDescriptionTitleLabel = new CLabel();
 			cLineDescriptionTitleLabel.setText(MSG_LINE_DESCRIPTION_TITLE);
@@ -450,7 +457,7 @@ public class UpdateOrderProductDialog extends JDialog {
 			gbc0700.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0700.gridy = 6;
 			gbc0700.gridwidth = 4;
-			gbc0700.insets = new java.awt.Insets(10, 0, 3, 0);
+			gbc0700.insets = new java.awt.Insets(10,0,3,0);
 			// Label de Descripción
 			cLineDescriptionLabel = new CLabel();
 			cLineDescriptionLabel.setText(MSG_DESCRIPTION);
@@ -458,27 +465,25 @@ public class UpdateOrderProductDialog extends JDialog {
 			gbc0800.gridx = 0;
 			gbc0800.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0800.gridy = 7;
-			gbc0800.insets = new java.awt.Insets(V_SPAN, 0, 5, 0);
+			gbc0800.insets = new java.awt.Insets(V_SPAN,0,5,0);
 			// Descripción
 			GridBagConstraints gbc0801 = new GridBagConstraints();
 			gbc0801.gridx = 1;
 			gbc0801.anchor = java.awt.GridBagConstraints.WEST;
 			gbc0801.gridy = 7;
-			gbc0801.insets = new java.awt.Insets(V_SPAN, 5, 5, 0);
+			gbc0801.insets = new java.awt.Insets(V_SPAN,5,5,0);
 			gbc0801.gridwidth = 5;
 			gbc0801.fill = java.awt.GridBagConstraints.HORIZONTAL;
-
+			
 			cItemPanel = new CPanel();
 			cItemPanel.setLayout(new GridBagLayout());
-			cItemPanel.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-					javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED),
-					javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+			cItemPanel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), javax.swing.BorderFactory.createEmptyBorder(5,5,5,5)));
 			cItemPanel.add(cProductLabel, gbc0000);
 			cItemPanel.add(cProductDescLabel, gbc0001);
-			// cItemPanel.add(cProductPriceLabel, gridBagConstraints2);
-			// cItemPanel.add(getCProductPriceText(), gridBagConstraints3);
-			// cItemPanel.add(cProductTaxRateLabel, gridBagConstraints12);
-			// cItemPanel.add(getCProductTaxRateText(), gridBagConstraints13);
+			//cItemPanel.add(cProductPriceLabel, gridBagConstraints2);
+			//cItemPanel.add(getCProductPriceText(), gridBagConstraints3);
+			//cItemPanel.add(cProductTaxRateLabel, gridBagConstraints12);
+			//cItemPanel.add(getCProductTaxRateText(), gridBagConstraints13);
 			cItemPanel.add(cProductTaxedPriceLabel, gbc0100);
 			cItemPanel.add(getCProductTaxedPriceText(), gbc0101);
 			cItemPanel.add(cCountLabel, gbc0102);
@@ -495,20 +500,21 @@ public class UpdateOrderProductDialog extends JDialog {
 			cItemPanel.add(cLineDescriptionLabel, gbc0800);
 			cItemPanel.add(getCLineDescriptionText(), gbc0801);
 			cItemPanel.add(cAuthTitleLabel, gbc0500);
-
+			
 			GridBagConstraints userAuthConstraints = new GridBagConstraints();
 			userAuthConstraints.gridx = 0;
-			userAuthConstraints.insets = new java.awt.Insets(V_SPAN, 5, 0, 0);
+			userAuthConstraints.insets = new java.awt.Insets(V_SPAN,5,0,0);
 			userAuthConstraints.anchor = java.awt.GridBagConstraints.WEST;
 			userAuthConstraints.gridy = 9;
 			userAuthConstraints.gridwidth = 6;
-
+			
 			// Obtener la instancia del panel de autorización y el panel
 			userAuthPanel = AUserAuth.get();
-			userAuthPanel.setShortcutLabel(KeyUtils.getKeyStr(getActionKeys().get(CHANGE_FOCUS_USER_AUTH)));
+			userAuthPanel.setShortcutLabel(KeyUtils.getKeyStr(getActionKeys()
+					.get(CHANGE_FOCUS_USER_AUTH)));
 			cItemPanel.add(userAuthPanel.getAuthPanel(), userAuthConstraints);
-
-			// cItemPanel.add(cApplicationLabel, gridBagConstraints18);
+			
+			//cItemPanel.add(cApplicationLabel, gridBagConstraints18);
 			updateDiscountComponents();
 			updateDiscountAmtText();
 		}
@@ -516,14 +522,14 @@ public class UpdateOrderProductDialog extends JDialog {
 	}
 
 	/**
-	 * This method initializes cCmdPanel
-	 * 
-	 * @return org.compiere.swing.CPanel
+	 * This method initializes cCmdPanel	
+	 * 	
+	 * @return org.compiere.swing.CPanel	
 	 */
 	private CPanel getCCmdPanel() {
 		if (cCmdPanel == null) {
 			cCmdPanel = new CPanel();
-			cCmdPanel.setPreferredSize(new java.awt.Dimension(BUTTON_PANEL_WIDTH, 36));
+			cCmdPanel.setPreferredSize(new java.awt.Dimension(BUTTON_PANEL_WIDTH,36));
 			cCmdPanel.add(getCOkButton(), null);
 			cCmdPanel.add(getCDeleteButton(), null);
 			cCmdPanel.add(getCCancelButton(), null);
@@ -532,14 +538,14 @@ public class UpdateOrderProductDialog extends JDialog {
 	}
 
 	/**
-	 * This method initializes cPriceListText
-	 * 
-	 * @return org.openXpertya.grid.ed.VNumber
+	 * This method initializes cPriceListText	
+	 * 	
+	 * @return org.openXpertya.grid.ed.VNumber	
 	 */
-	protected VNumber getCPriceListText() {
+	private VNumber getCPriceListText() {
 		if (cPriceListText == null) {
 			cPriceListText = new VNumber();
-			cPriceListText.setPreferredSize(new java.awt.Dimension(100, 20));
+			cPriceListText.setPreferredSize(new java.awt.Dimension(100,20));
 			cPriceListText.setMandatory(false);
 			cPriceListText.setReadWrite(false);
 			cPriceListText.setDisplayType(DisplayType.CostPrice);
@@ -547,40 +553,40 @@ public class UpdateOrderProductDialog extends JDialog {
 		}
 		return cPriceListText;
 	}
-
-	protected VNumber getCDiscountAmtText() {
+	
+	private VNumber getCDiscountAmtText() {
 		if (cDiscountAmtText == null) {
 			cDiscountAmtText = new VNumber();
 			cDiscountAmtText.setDisplayType(DisplayType.Amount);
-			cDiscountAmtText.setPreferredSize(new java.awt.Dimension(100, 20));
+			cDiscountAmtText.setPreferredSize(new java.awt.Dimension(100,20));
 			cDiscountAmtText.setMandatory(false);
 			cDiscountAmtText.setReadWrite(false);
 		}
 		return cDiscountAmtText;
 	}
-
-	protected VNumber getCProductTaxedPriceText() {
+	
+	private VNumber getCProductTaxedPriceText() {
 		if (cProductTaxedPriceText == null) {
 			cProductTaxedPriceText = new VNumber();
 			cProductTaxedPriceText.setDisplayType(DisplayType.CostPrice);
-			cProductTaxedPriceText.setPreferredSize(new java.awt.Dimension(100, 20));
+			cProductTaxedPriceText.setPreferredSize(new java.awt.Dimension(100,20));
 			cProductTaxedPriceText.setValue(getOrderProduct().getTaxedPrice());
 			cProductTaxedPriceText.setMandatory(true);
 			cProductTaxedPriceText.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
-					BigDecimal taxedPrice = (BigDecimal) cProductTaxedPriceText.getValue();
-					if (taxedPrice != null) {
-						OrderProduct op = getOrderProduct();
+					BigDecimal taxedPrice = (BigDecimal)cProductTaxedPriceText.getValue();
+					if(taxedPrice != null) {
+						OrderProduct op = getOrderProduct(); 
 						// Se recalcula el descuento
 						BigDecimal price = op.getPrice(taxedPrice);
 						BigDecimal discount = op.scalePrice(op.calculateDiscount(price));
-
-						getCDiscountText().setValue(discount);
+						
+						getCDiscountText().setValue(discount); 
 						updateDiscountAmtText();
 					}
 				}
-
+				
 			});
 			FocusUtils.addFocusHighlight(cProductTaxedPriceText);
 		}
@@ -588,31 +594,30 @@ public class UpdateOrderProductDialog extends JDialog {
 	}
 
 	/**
-	 * This method initializes cDiscountText
-	 * 
-	 * @return org.openXpertya.grid.ed.VNumber
+	 * This method initializes cDiscountText	
+	 * 	
+	 * @return org.openXpertya.grid.ed.VNumber	
 	 */
-	protected VNumber getCDiscountText() {
+	private VNumber getCDiscountText() {
 		if (cDiscountText == null) {
 			cDiscountText = new VNumber();
 			cDiscountText.setDisplayType(DisplayType.CostPrice);
-			// cDiscountText.setPreferredSize(new java.awt.Dimension(70,20));
-			cDiscountText.setPreferredSize(new java.awt.Dimension(100, 20));
+			//cDiscountText.setPreferredSize(new java.awt.Dimension(70,20));
+			cDiscountText.setPreferredSize(new java.awt.Dimension(100,20));
 			cDiscountText.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
-					BigDecimal discount = (BigDecimal) cDiscountText.getValue();
-					if (discount != null) {
-						OrderProduct op = getOrderProduct();
+					BigDecimal discount = (BigDecimal)cDiscountText.getValue();
+					if(discount != null) {
+						OrderProduct op = getOrderProduct(); 
 						// Se recalcula el importe
 						BigDecimal taxedPriceList = op.getTaxedPrice(op.getPriceList());
-						BigDecimal taxedPrice = op.scalePrice(taxedPriceList.subtract(taxedPriceList.multiply(discount.divide(new BigDecimal(100), 10,
-								BigDecimal.ROUND_HALF_UP))));
+						BigDecimal taxedPrice = op.scalePrice(taxedPriceList.subtract(taxedPriceList.multiply(discount.divide(new BigDecimal(100),10,BigDecimal.ROUND_HALF_UP))));
 						getCProductTaxedPriceText().setValue(taxedPrice);
 						updateDiscountAmtText();
 					}
 				}
-
+				
 			});
 			cDiscountText.setValue(getOrderProduct().getDiscount());
 			FocusUtils.addFocusHighlight(cDiscountText);
@@ -621,31 +626,30 @@ public class UpdateOrderProductDialog extends JDialog {
 	}
 
 	/**
-	 * This method initializes cCountText
-	 * 
-	 * @return org.compiere.swing.CTextField
+	 * This method initializes cCountText	
+	 * 	
+	 * @return org.compiere.swing.CTextField	
 	 */
-	protected CTextField getCCountText() {
+	private CTextField getCCountText() {
 		if (cCountText == null) {
 			cCountText = new CTextField();
-			cCountText.setMinimumSize(new java.awt.Dimension(50, 20));
-			cCountText.setPreferredSize(new java.awt.Dimension(50, 20));
+			cCountText.setMinimumSize(new java.awt.Dimension(50,20));
+			cCountText.setPreferredSize(new java.awt.Dimension(50,20));
 			cCountText.setText(String.valueOf(getOrderProduct().getCount()));
 			cCountText.setMandatory(true);
 			cCountText.addKeyListener(new java.awt.event.KeyAdapter() {
 				public void keyTyped(java.awt.event.KeyEvent e) {
 					char keyChar = e.getKeyChar();
 					String countStr = cCountText.getText();
-
-					// Si es punto y ya existe uno dentro del string, entonces
-					// consumo
-					if (keyChar == '.' && countStr.indexOf('.') > -1) {
+  
+					// Si es punto y ya existe uno dentro del string, entonces consumo
+					if(keyChar == '.' && countStr.indexOf('.') > -1){
+						e.consume();
+					}	
+					if(!Character.isDigit(keyChar) && keyChar != '.') {
 						e.consume();
 					}
-					if (!Character.isDigit(keyChar) && keyChar != '.') {
-						e.consume();
-					}
-					if ((!Character.isDigit(e.getKeyChar()) && countStr.length() == 0)) {
+					if((!Character.isDigit(e.getKeyChar()) && countStr.length() == 0)) {
 						e.consume();
 						cCountText.setText("1");
 						cCountText.selectAll();
@@ -655,15 +659,18 @@ public class UpdateOrderProductDialog extends JDialog {
 				@Override
 				public void keyReleased(KeyEvent event) {
 					String countStr = cCountText.getText();
-					if (countStr.length() > 1 && countStr.startsWith("0") && !countStr.startsWith("0.")) {
-						cCountText.setText("0." + countStr.substring(1, countStr.length()));
+					if (countStr.length() > 1 && countStr.startsWith("0")
+							&& !countStr.startsWith("0.")) {
+						cCountText.setText("0."
+								+ countStr.substring(1, countStr.length()));
 					}
-					if (countStr.startsWith(".")) {
-						cCountText.setText("0" + countStr);
+					if(countStr.startsWith(".")){
+						cCountText.setText("0"+countStr);
 					}
 					updateDiscountAmtText();
 				}
-
+				
+				
 			});
 			cCountText.addFocusListener(new FocusListener() {
 				public void focusGained(FocusEvent event) {
@@ -671,7 +678,7 @@ public class UpdateOrderProductDialog extends JDialog {
 				}
 
 				public void focusLost(FocusEvent event) {
-
+					
 				}
 			});
 			cCountText.addActionListener(new ActionListener() {
@@ -679,32 +686,32 @@ public class UpdateOrderProductDialog extends JDialog {
 				public void actionPerformed(ActionEvent e) {
 					updateDiscountAmtText();
 				}
-
+				
 			});
 			FocusUtils.addFocusHighlight(cCountText);
 		}
 		return cCountText;
 	}
 
-	protected CTextField getCLineDescriptionText() {
-		if (cLineDescriptionText == null) {
+	private CTextField getCLineDescriptionText() {
+		if(cLineDescriptionText == null){
 			cLineDescriptionText = new CTextField();
 			cLineDescriptionText.setText(getOrderProduct().getLineDescription());
-			cLineDescriptionText.setMinimumSize(new Dimension(100, 20));
+			cLineDescriptionText.setMinimumSize(new Dimension(100,20));
 		}
 		return cLineDescriptionText;
 	}
-
+	
 	/**
-	 * This method initializes cOkButton
-	 * 
-	 * @return org.compiere.swing.CButton
+	 * This method initializes cOkButton	
+	 * 	
+	 * @return org.compiere.swing.CButton	
 	 */
 	private CButton getCOkButton() {
 		if (cOkButton == null) {
 			cOkButton = new CButton();
 			cOkButton.setIcon(getImageIcon("Ok16.gif"));
-			cOkButton.setPreferredSize(new java.awt.Dimension(BUTTON_WIDTH, 26));
+			cOkButton.setPreferredSize(new java.awt.Dimension(BUTTON_WIDTH,26));
 			cOkButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					updateOrderProduct();
@@ -719,21 +726,21 @@ public class UpdateOrderProductDialog extends JDialog {
 	}
 
 	/**
-	 * This method initializes cDeleteButton
-	 * 
-	 * @return org.compiere.swing.CButton
+	 * This method initializes cDeleteButton	
+	 * 	
+	 * @return org.compiere.swing.CButton	
 	 */
 	private CButton getCDeleteButton() {
 		if (cRemoveButton == null) {
 			cRemoveButton = new CButton();
 			cRemoveButton.setIcon(getImageIcon("Delete16.gif"));
-			cRemoveButton.setPreferredSize(new java.awt.Dimension(BUTTON_WIDTH, 26));
+			cRemoveButton.setPreferredSize(new java.awt.Dimension(BUTTON_WIDTH,26));
 			cRemoveButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					removeOrderProduct();
 				}
 			});
-
+			
 			KeyUtils.setRemoveButtonKeys(cRemoveButton);
 			KeyUtils.setButtonText(cRemoveButton, MSG_DELETE);
 			FocusUtils.addFocusHighlight(cRemoveButton);
@@ -742,35 +749,35 @@ public class UpdateOrderProductDialog extends JDialog {
 	}
 
 	/**
-	 * This method initializes cCancelButton
-	 * 
-	 * @return org.compiere.swing.CButton
+	 * This method initializes cCancelButton	
+	 * 	
+	 * @return org.compiere.swing.CButton	
 	 */
 	private CButton getCCancelButton() {
 		if (cCancelButton == null) {
 			cCancelButton = new CButton();
 			cCancelButton.setIcon(getImageIcon("Cancel16.gif"));
-			cCancelButton.setPreferredSize(new java.awt.Dimension(BUTTON_WIDTH, 26));
+			cCancelButton.setPreferredSize(new java.awt.Dimension(BUTTON_WIDTH,26));
 			cCancelButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					cancel();
 				}
 			});
-
+			
 			KeyUtils.setCancelButtonKeys(cCancelButton);
-			KeyUtils.setButtonText(cCancelButton, MSG_CANCEL);
+			KeyUtils.setButtonText(cCancelButton, MSG_CANCEL);			
 			cCancelButton.setToolTipText(MSG_CANCEL);
 			FocusUtils.addFocusHighlight(cCancelButton);
 		}
 		return cCancelButton;
 	}
-
+	
 	/**
-	 * This method initializes cApplicationPanel
-	 * 
-	 * @return org.compiere.swing.CPanel
+	 * This method initializes cApplicationPanel	
+	 * 	
+	 * @return org.compiere.swing.CPanel	
 	 */
-	protected CPanel getCApplicationPanel() {
+	private CPanel getCApplicationPanel() {
 		if (cApplicationPanel == null) {
 			cApplicationPanel = new CPanel();
 			cApplicationPanel.setLayout(new FlowLayout());
@@ -780,15 +787,17 @@ public class UpdateOrderProductDialog extends JDialog {
 			applicationGroup = new ButtonGroup();
 			applicationGroup.add(getCToPriceRadio());
 			applicationGroup.add(getCBonusRadio());
-			if (getOrderProduct().getDiscount() != null && getOrderProduct().getDiscount().compareTo(BigDecimal.ZERO) != 0) {
+			if (getOrderProduct().getDiscount() != null
+					&& getOrderProduct().getDiscount().compareTo(
+							BigDecimal.ZERO) != 0) {
 				if (getOrderProduct().getLineBonusAmt().compareTo(BigDecimal.ZERO) > 0) {
 					applicationGroup.setSelected(getCBonusRadio().getModel(), true);
 				} else {
-					applicationGroup.setSelected(getCToPriceRadio().getModel(), true);
+					applicationGroup.setSelected(getCToPriceRadio().getModel(), true);				
 				}
 			}
 			// Seleccionar uno por defecto
-			if (applicationGroup.getSelection() == null) {
+			if(applicationGroup.getSelection() == null){
 				applicationGroup.setSelected(getCToPriceRadio().getModel(), true);
 			}
 		}
@@ -796,9 +805,9 @@ public class UpdateOrderProductDialog extends JDialog {
 	}
 
 	/**
-	 * This method initializes cToPriceRadio
-	 * 
-	 * @return {@link JRadioButton}
+	 * This method initializes cToPriceRadio	
+	 * 	
+	 * @return {@link JRadioButton}	
 	 */
 	private JRadioButton getCToPriceRadio() {
 		if (cToPriceRadio == null) {
@@ -821,9 +830,9 @@ public class UpdateOrderProductDialog extends JDialog {
 	}
 
 	/**
-	 * This method initializes cBonusRadio
-	 * 
-	 * @return {@link JRadioButton}
+	 * This method initializes cBonusRadio	
+	 * 	
+	 * @return {@link JRadioButton}	
 	 */
 	private JRadioButton getCBonusRadio() {
 		if (cBonusRadio == null) {
@@ -844,7 +853,7 @@ public class UpdateOrderProductDialog extends JDialog {
 		}
 		return cBonusRadio;
 	}
-
+	
 	/**
 	 * Dispara el evento action performed con el evento parámetro a todos los
 	 * listeners parámetro
@@ -852,12 +861,12 @@ public class UpdateOrderProductDialog extends JDialog {
 	 * @param listeners
 	 * @param event
 	 */
-	protected void fireActionPerformed(ActionListener[] listeners, ActionEvent event) {
+	protected void fireActionPerformed(ActionListener[] listeners, ActionEvent event){
 		for (ActionListener actionListener : listeners) {
 			actionListener.actionPerformed(event);
 		}
 	}
-
+	
 	private CPanel getCDiscountTitlePanel() {
 		CPanel panel = new CPanel();
 		panel.add(new CLabel("Descuento Manual"));
@@ -865,14 +874,15 @@ public class UpdateOrderProductDialog extends JDialog {
 		return panel;
 	}
 
-	protected void updateDiscountComponents() {
-		boolean isManualDiscountApplicable = getOrderProduct().getOrder().isManualDiscountApplicable(getOrderProduct());
+	private void updateDiscountComponents(){
+		boolean isManualDiscountApplicable = getOrderProduct().getOrder()
+				.isManualDiscountApplicable(getOrderProduct());
 		getCBonusRadio().setEnabled(isManualDiscountApplicable);
 		getCToPriceRadio().setEnabled(isManualDiscountApplicable);
 		getCDiscountText().setReadWrite(isManualDiscountApplicable);
 		getCProductTaxedPriceText().setReadWrite(isManualDiscountApplicable);
 	}
-
+	
 	/**
 	 * @return Devuelve orderProduct.
 	 */
@@ -881,8 +891,7 @@ public class UpdateOrderProductDialog extends JDialog {
 	}
 
 	/**
-	 * @param orderProduct
-	 *            Fija o asigna orderProduct.
+	 * @param orderProduct Fija o asigna orderProduct.
 	 */
 	public void setOrderProduct(OrderProduct orderProduct) {
 		this.orderProduct = orderProduct;
@@ -903,8 +912,7 @@ public class UpdateOrderProductDialog extends JDialog {
 	}
 
 	/**
-	 * @param poS
-	 *            Fija o asigna poS.
+	 * @param poS Fija o asigna poS.
 	 */
 	public void setPoS(PoSMainForm poS) {
 		this.poS = poS;
@@ -913,16 +921,21 @@ public class UpdateOrderProductDialog extends JDialog {
 	private boolean validateUpdate() {
 		return true;
 	}
-
-	protected void updateDiscountAmtText() {
-		BigDecimal manualDiscount = (BigDecimal) (getCDiscountText().getValue() == null ? BigDecimal.ZERO : getCDiscountText().getValue());
-		BigDecimal priceList = (BigDecimal) getCPriceListText().getValue();
-		priceList = priceList == null || manualDiscount.compareTo(BigDecimal.ZERO) == 0 ? BigDecimal.ZERO : priceList;
-		BigDecimal price = (BigDecimal) getCProductTaxedPriceText().getValue();
-		price = price == null || manualDiscount.compareTo(BigDecimal.ZERO) == 0 ? BigDecimal.ZERO : price;
-		getCDiscountAmtText().setValue(getOrderProduct().getPricesDiff(priceList, price).multiply(new BigDecimal((String) getCCountText().getValue())));
+	
+	private void updateDiscountAmtText(){
+		BigDecimal manualDiscount = (BigDecimal) (getCDiscountText().getValue() == null ? BigDecimal.ZERO
+				: getCDiscountText().getValue());
+		BigDecimal priceList = (BigDecimal)getCPriceListText().getValue();
+		priceList = priceList == null
+				|| manualDiscount.compareTo(BigDecimal.ZERO) == 0 ? BigDecimal.ZERO
+				: priceList;
+		BigDecimal price = (BigDecimal)getCProductTaxedPriceText().getValue();
+		price = price == null || manualDiscount.compareTo(BigDecimal.ZERO) == 0 ? BigDecimal.ZERO: price;
+		getCDiscountAmtText().setValue(
+				getOrderProduct().getPricesDiff(priceList, price).multiply(
+						new BigDecimal((String)getCCountText().getValue())));
 	}
-
+	
 	private boolean validateUserAccess() {
 		// Si el TPV está configurado para permitir modificaciones de precios
 		// entonces no se validan los datos de usuario.
@@ -933,7 +946,7 @@ public class UpdateOrderProductDialog extends JDialog {
 		// Autorización de usuario
 		// Obtengo el usuario del TPV
 		Integer userID = userAuthPanel.getUserID();
-		if (userID != null) {
+		if(userID != null){
 			setUser(getModel().getUser(userAuthPanel.getUserID()));
 		}
 		// Validar autorización al cambio de precio de línea
@@ -942,77 +955,82 @@ public class UpdateOrderProductDialog extends JDialog {
 		List<String> operations = new ArrayList<String>();
 		operations.add(UserAuthConstants.POS_MODIFY_PRICE_ORDER_PRODUCT_UID);
 		authData.setAuthOperations(operations);
-		authData.setPosSupervisor(getUser() == null ? false : getUser().isPoSSupervisor());
+		authData.setPosSupervisor(getUser() == null ? false : getUser()
+				.isPoSSupervisor());
 		CallResult result = userAuthPanel.validateAuthorization(authData);
-		if (result.isError()) {
+		if(result.isError()){
 			errorMsg(result.getMsg());
 		}
-
+		
 		return !result.isError();
 	}
-
+	
 	private void updateOrderProduct() {
-		if (!validateUserAccess())
+		if(!validateUserAccess())
 			return;
-
+		
 		boolean error = false;
 		StringBuffer errorMsg = new StringBuffer("");
-
-		BigDecimal taxedPrice = (BigDecimal) getCProductTaxedPriceText().getValue();
-		BigDecimal discount = (BigDecimal) getCDiscountText().getValue();
+		
+		BigDecimal taxedPrice = (BigDecimal)getCProductTaxedPriceText().getValue();
+		BigDecimal discount = (BigDecimal)getCDiscountText().getValue();
 		BigDecimal count = new BigDecimal(getCCountText().getText());
-
+	
 		// Valido que el se haya ingresado un precio.
-		if (taxedPrice == null) {
+		if(taxedPrice == null) {
 			error = true;
-			errorMsg.append("").append(MSG_NO_PRODUCT_PRICE);
+			errorMsg.append("").
+					 append(MSG_NO_PRODUCT_PRICE);
 		}
 		// Usuario habilitado para vender por debajo del precio limite.
 		BigDecimal limitPrice1 = getOrderProduct().getProduct().getLimitPrice();
 		BigDecimal limitPrice = getOrderProduct().getTaxedLimitPrice();
-		// BigDecimal price = getOrderProduct().getPrice(taxedPrice);
+		//BigDecimal price = getOrderProduct().getPrice(taxedPrice);
 		BigDecimal price = taxedPrice;
-
-		if (price != null && !getUser().isOverwriteLimitPrice() && price.compareTo(limitPrice) < 0) {
+		
+		if(price != null && !getUser().isOverwriteLimitPrice() && price.compareTo(limitPrice) < 0) {
 			error = true;
-			errorMsg.append(" ").append(MSG_INVALID_PRODUCT_PRICE).append(limitPrice.setScale(2, BigDecimal.ROUND_HALF_DOWN));
+			errorMsg.append(" ").
+					 append(MSG_INVALID_PRODUCT_PRICE).append(limitPrice.setScale(2,BigDecimal.ROUND_HALF_DOWN));
 		}
-
+		
 		// El precio debe ser mayor a 0
-		BigDecimal scaledprice = getOrderProduct().scalePrice(price);
-		if (scaledprice.compareTo(BigDecimal.ZERO) <= 0) {
+		BigDecimal scaledprice = getOrderProduct().scalePrice(price); 
+		if(scaledprice.compareTo(BigDecimal.ZERO) <= 0){
 			error = true;
 			errorMsg.append(" ").append(MSG_INVALID_PRICE);
 		}
-
+		
 		// Descuento entre 0 y 100.
 		/*
-		 * if(discount != null && discount.compareTo(new BigDecimal(100)) > 0 ||
-		 * discount.compareTo(BigDecimal.ZERO) < 0) { error = true;
-		 * errorMsg.append("\n"). append(MSG_INVALID_PRODUCT_DISCOUNT); }
-		 */
-
+		if(discount != null && discount.compareTo(new BigDecimal(100)) > 0 || discount.compareTo(BigDecimal.ZERO) < 0) {
+			error = true;
+			errorMsg.append("\n").
+					 append(MSG_INVALID_PRODUCT_DISCOUNT);
+		}
+		*/
+		
 		// Cantidad mayor que cero.
 		BigDecimal scaledQty = getOrderProduct().scaleAmount(count);
-		if (scaledQty.compareTo(BigDecimal.ZERO) <= 0) {
+		if(scaledQty.compareTo(BigDecimal.ZERO) <= 0) {
 			error = true;
 			errorMsg.append(" ").append(MSG_INVALID_COUNT);
 		}
-
+		
 		// El precio final de línea (precio * cantidad) debe ser válido
 		BigDecimal scaledTotalLine = getOrderProduct().scaleAmount(scaledprice.multiply(scaledQty));
-		if (scaledTotalLine.compareTo(BigDecimal.ZERO) <= 0) {
+		if(scaledTotalLine.compareTo(BigDecimal.ZERO) <= 0){
 			error = true;
 			errorMsg.append(" ").append(MSG_INVALID_FINAL_PRICE);
 		}
 
 		// Cantidad supera el máximo
-		if (getPoS().getModel().countSurpassMax(count)) {
+		if(getPoS().getModel().countSurpassMax(count)){
 			error = true;
 			errorMsg.append(" ").append(MSG_SURPASS_MAX_QTY);
 		}
-
-		if (error) {
+		
+		if(error) {
 			errorMsg(errorMsg.toString());
 		} else {
 
@@ -1020,17 +1038,17 @@ public class UpdateOrderProductDialog extends JDialog {
 			getOrderProduct().setDiscount(discount, getDiscountApplication());
 			getOrderProduct().setCount(count);
 			getOrderProduct().setLineDescription(getCLineDescriptionText().getText());
-
+			
 			getPoS().updateOrderProduct(getOrderProduct());
 			setVisible(false);
 		}
 	}
-
+	
 	private void removeOrderProduct() {
-		if (!validateUserAccess())
+		if(!validateUserAccess())
 			return;
-
-		if (getPoS().askMsg(MSG_CONFIRM_DELETE_RPODUCT)) {
+		
+		if(getPoS().askMsg(MSG_CONFIRM_DELETE_RPODUCT)) {
 			getPoS().removeOrderProduct(getOrderProduct());
 			setVisible(false);
 		}
@@ -1044,8 +1062,7 @@ public class UpdateOrderProductDialog extends JDialog {
 	}
 
 	/**
-	 * @param user
-	 *            Fija o asigna user.
+	 * @param user Fija o asigna user.
 	 */
 	public void setUser(User user) {
 		this.user = user;
@@ -1058,32 +1075,32 @@ public class UpdateOrderProductDialog extends JDialog {
 	protected void setMsgRepository(PoSMsgRepository msgRepository) {
 		this.msgRepository = msgRepository;
 	}
-
+	
 	protected String getMsg(String name) {
 		return getMsgRepository().getMsg(name);
 	}
-
+	
 	private void errorMsg(String msg) {
-		errorMsg(msg, null);
+		errorMsg(msg,null);
 	}
-
+	
 	private void errorMsg(String msg, String subMsg) {
-		getPoS().errorMsg(msg, subMsg);
-
+		getPoS().errorMsg(msg,subMsg);
+		
 	}
-
+	
 	private ImageIcon getImageIcon(String name) {
 		return getPoS().getImageIcon(name);
 	}
-
+	
 	private ButtonGroup getApplicationGroup() {
 		return applicationGroup;
 	}
-
+	
 	private void cancel() {
 		setVisible(false);
 	}
-
+	
 	private DiscountApplication getDiscountApplication() {
 		if (getApplicationGroup().getSelection() == cToPriceRadio.getModel()) {
 			return DiscountApplication.ToPrice;
@@ -1092,12 +1109,12 @@ public class UpdateOrderProductDialog extends JDialog {
 		}
 	}
 
-	protected void setActionKeys(Map<String, KeyStroke> actionKeys) {
+	protected void setActionKeys(Map<String,KeyStroke> actionKeys) {
 		this.actionKeys = actionKeys;
 	}
 
-	protected Map<String, KeyStroke> getActionKeys() {
+	protected Map<String,KeyStroke> getActionKeys() {
 		return actionKeys;
 	}
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}  //  @jve:decl-index=0:visual-constraint="10,10"
