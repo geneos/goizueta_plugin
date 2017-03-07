@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import org.openXpertya.reflection.CallResult;
 
-import ar.com.geneos.goizueta.plugin.client.pos.PoSMainForm;
+import ar.com.geneos.goizueta.plugin.client.pos.view.PoSMainForm;
 
 public class AddPOSPaymentValidations {
 

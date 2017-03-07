@@ -1,4 +1,4 @@
-package ar.com.geneos.goizueta.plugin.client.pos;
+package ar.com.geneos.goizueta.plugin.client.pos.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

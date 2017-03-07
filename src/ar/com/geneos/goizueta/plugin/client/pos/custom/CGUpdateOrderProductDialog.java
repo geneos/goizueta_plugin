@@ -14,8 +14,8 @@ import org.openXpertya.pos.view.KeyUtils;
 import org.openXpertya.swing.util.FocusUtils;
 import org.openXpertya.util.DisplayType;
 
-import ar.com.geneos.goizueta.plugin.client.pos.UpdateOrderProductDialog;
 import ar.com.geneos.goizueta.plugin.client.pos.model.OrderProduct;
+import ar.com.geneos.goizueta.plugin.client.pos.view.UpdateOrderProductDialog;
 
 public class CGUpdateOrderProductDialog extends UpdateOrderProductDialog {
 

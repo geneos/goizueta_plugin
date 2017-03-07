@@ -24,9 +24,9 @@ import org.openXpertya.util.DisplayType;
 import org.openXpertya.util.Env;
 import org.openXpertya.util.Trx;
 
-import ar.com.geneos.goizueta.plugin.client.pos.PoSMainForm;
-import ar.com.geneos.goizueta.plugin.client.pos.UpdateOrderProductDialog;
 import ar.com.geneos.goizueta.plugin.client.pos.model.OrderProduct;
+import ar.com.geneos.goizueta.plugin.client.pos.view.PoSMainForm;
+import ar.com.geneos.goizueta.plugin.client.pos.view.UpdateOrderProductDialog;
 import ar.com.geneos.goizueta.plugin.client.pos.view.table.ProductTableModel;
 import ar.com.geneos.goizueta.plugin.model.MCGParameter;
 

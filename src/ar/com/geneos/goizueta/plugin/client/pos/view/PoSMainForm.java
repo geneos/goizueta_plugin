@@ -1,4 +1,4 @@
-package ar.com.geneos.goizueta.plugin.client.pos;
+package ar.com.geneos.goizueta.plugin.client.pos.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -138,9 +138,6 @@ import ar.com.geneos.goizueta.plugin.client.pos.model.Order;
 import ar.com.geneos.goizueta.plugin.client.pos.model.OrderProduct;
 import ar.com.geneos.goizueta.plugin.client.pos.model.Payment;
 import ar.com.geneos.goizueta.plugin.client.pos.model.PaymentMedium;
-import ar.com.geneos.goizueta.plugin.client.pos.view.OnlinePoSComponentFactory;
-import ar.com.geneos.goizueta.plugin.client.pos.view.PoSComponentFactory;
-import ar.com.geneos.goizueta.plugin.client.pos.view.PoSConfigDialog;
 import ar.com.geneos.goizueta.plugin.client.pos.view.table.PaymentTableModel;
 import ar.com.geneos.goizueta.plugin.client.pos.view.table.ProductTableModel;
 
