@@ -193,7 +193,7 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 	private final String CANCEL_ORDER = "cancelOrder";
 	private final String GOTO_INSERT_CARD = "gotoInsertCard";
 	
-	private PoSModel model;
+	protected PoSModel model;
 	
 	private FormFrame frame;
 	private int windowNo = 0;
@@ -685,7 +685,7 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 		selectTenderType(MPOSPaymentMedium.TENDERTYPE_Cash);
 	}
 	
-	private void initMsgs() {
+	protected void initMsgs() {
 		MSG_NO_POS_CONFIG = getMsg("NoPOSConfig");
 		MSG_ORDER = getMsg("C_Order_ID");
 		MSG_PAYMENT = getMsg("CustomerPayment");
@@ -1135,7 +1135,7 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 	 * 	
 	 * @return org.compiere.swing.CPanel	
 	 */
-	private CPanel getCOrderTopPanel() {
+	protected CPanel getCOrderTopPanel() {
 		if (cOrderTopPanel == null) {
 			cOrderTopPanel = new CPanel();
 			cOrderTopPanel.setPreferredSize(new java.awt.Dimension(0,90));
@@ -1401,7 +1401,7 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 	 * 	
 	 * @return javax.swing.JTable	
 	 */
-	private JTable getCOrderTable() {
+	protected JTable getCOrderTable() {
 		if (cOrderTable == null) {
 			cOrderTable = new MiniTable();
 			cOrderTable.setRowSelectionAllowed(true);
@@ -4433,7 +4433,7 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 	/**
 	 * @return Devuelve orderTableUtils.
 	 */
-	private TableUtils getOrderTableUtils() {
+	protected TableUtils getOrderTableUtils() {
 		return orderTableUtils;
 	}
 
@@ -4458,7 +4458,7 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 		this.paymentsTableUtils = tenderTypeTableUtils;
 	}
 	
-	private void openUpdateOrderProductDialog() {
+	protected void openUpdateOrderProductDialog() {
 		if(!hasOrderProducts())
 			return;
 		OrderProduct orderProduct = (OrderProduct)getOrderTableUtils().getSelection();
@@ -4510,11 +4510,11 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 		updateAllowClose();
 	}
 	
-	private boolean hasOrderProducts() {
+	protected boolean hasOrderProducts() {
 		return getCOrderTable().getRowCount() > 0;
 	}
 	
-	private void goToPayments() {
+	protected void goToPayments() {
 		if(!hasOrderProducts()) {
 			errorMsg(MSG_NO_PRODUCT_ERROR);
 		} else {
@@ -5239,7 +5239,7 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 		worker.start();
 	}	
 	
-	private void newOrder() {
+	protected void newOrder() {
 		if (infoFiscalPrinter != null) {
 			infoFiscalPrinter.setVisible(false);
 			infoFiscalPrinter.clearDetail();
