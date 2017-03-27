@@ -1492,7 +1492,14 @@ public class PoSOnline extends PoSConnectionState {
 		
 		// Ignora la impresión fiscal al completar. Se hace luego fuera de la transacción. 
 		inv.setIgnoreFiscalPrint(true);
+		
+		//Replico el tema de impresion fiscal para factura electroncia?
 		inv.skipAfterAndBeforeSave = true;
+		
+		if (inv.isElectronicInvoice() ){
+			debug("Commit transaccion preventivo para FE");
+			throwIfFalse(Trx.getTrx(trxName).commit());
+		}
 		throwIfFalse(inv.processIt(DocAction.ACTION_Complete), inv, InvoiceCreateException.class);
 		throwIfFalse(inv.save(), inv, InvoiceCreateException.class);
 		
