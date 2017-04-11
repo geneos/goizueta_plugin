@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
 
+import javax.swing.JOptionPane;
+
 import ar.com.geneos.goizueta.plugin.client.pos.model.BankTransferPayment;
 import ar.com.geneos.goizueta.plugin.client.pos.model.BusinessPartner;
 import ar.com.geneos.goizueta.plugin.client.pos.model.CashPayment;
@@ -410,6 +412,35 @@ public class PoSOnline extends PoSConnectionState {
 			}
 			//ADER, para que aparezca en el log de postgres
 			DB.getSQLObject(getTrxName(), "select 'Finalizando completeOrder'", null);		
+			
+			//Mando factura a AFIP
+			if (getShouldCreateInvoice()) {
+				debug("Enviando Factura a AFIP (MInvoice)");
+				//Esto puede fallar porque:
+				
+				String afipMsg = invoice.sendAFIPInvoice();
+				if (!Util.isEmpty(afipMsg)) {
+					// 1) Nunca llega la respuesta
+					if (afipMsg.contains("Exit Value=3")){
+						//Do nothing (Notificar)
+						JOptionPane.showMessageDialog(null,"La Factura fue registrada en el sistema y enviada a la AFIP pero no se recibio respuesta.\n Por favor verifique manualmente si la misma fue registrada en la AFIP","Error al registrar factura en la AFIP",JOptionPane.ERROR_MESSAGE);
+					}
+					// 2) Falla al obtener comprobante o coneccion a internet
+					else {
+						if ((afipMsg.contains("Exit Value=2")))
+							afipMsg = "No se pudo conectar a la AFIP";
+						//Arrojo exception para que vuelva todo atras
+						PosException e;
+						e = new PosException(); 
+						e.setMessage(afipMsg);
+						throw e;
+					}
+					
+				}
+				invoice.save();
+				
+				
+			}
 			
 			debug("Commit de Transaccion");
 			throwIfFalse(trx.commit());
@@ -1495,11 +1526,9 @@ public class PoSOnline extends PoSConnectionState {
 		
 		//Replico el tema de impresion fiscal para factura electroncia?
 		inv.skipAfterAndBeforeSave = true;
-		
-		if (inv.isElectronicInvoice() ){
-			debug("Commit transaccion preventivo para FE");
-			throwIfFalse(Trx.getTrx(trxName).commit());
-		}
+
+		// Ignora la facturacion electronica al completar. Se hace luego dentro de la misma transaccion pero al finalizar todos los documentos
+		inv.setIgnoreSendAFIP(true);
 		throwIfFalse(inv.processIt(DocAction.ACTION_Complete), inv, InvoiceCreateException.class);
 		throwIfFalse(inv.save(), inv, InvoiceCreateException.class);
 		

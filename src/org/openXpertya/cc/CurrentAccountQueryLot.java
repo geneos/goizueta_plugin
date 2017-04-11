@@ -54,6 +54,9 @@ public class CurrentAccountQueryLot {
 	
 	/** Sólo comprobantes en cuenta corriente */
 	private boolean onlyCurrrentAccoundDocuments;
+	
+	/** Entidad Comercial */
+	private Integer bPartnerID;
 
 	public CurrentAccountQueryLot(Properties ctx, Integer orgID,
 			Integer docTypeID, Boolean detailReceiptsPayments,
@@ -67,6 +70,21 @@ public class CurrentAccountQueryLot {
 		setDateTo(dateTo);
 		setCurrencyID(Env.getContextAsInt(getCtx(), "$C_Currency_ID"));
 		setOnlyCurrrentAccoundDocuments(onlyCurrentAccountDocuments);
+	}
+	
+	public CurrentAccountQueryLot(Properties ctx, Integer orgID,
+			Integer docTypeID, Boolean detailReceiptsPayments,
+			Timestamp dateFrom, Timestamp dateTo,
+			Boolean onlyCurrentAccountDocuments, Integer bPartnerID) {
+		setCtx(ctx);
+		setOrgID(orgID);
+		setDocTypeID(docTypeID);
+		setDetailReceiptsPayments(detailReceiptsPayments);
+		setDateFrom(dateFrom);
+		setDateTo(dateTo);
+		setCurrencyID(Env.getContextAsInt(getCtx(), "$C_Currency_ID"));
+		setOnlyCurrrentAccoundDocuments(onlyCurrentAccountDocuments);
+		setbPartnerID(bPartnerID);
 	}
 
 	/**
@@ -322,6 +340,14 @@ public class CurrentAccountQueryLot {
 
 	public void setOnlyCurrrentAccoundDocuments(boolean onlyCurrrentAccoundDocuments) {
 		this.onlyCurrrentAccoundDocuments = onlyCurrrentAccoundDocuments;
+	}
+	
+	public Integer getbPartnerID() {
+		return bPartnerID;
+	}
+
+	public void setbPartnerID(Integer bPartnerID) {
+		this.bPartnerID = bPartnerID;
 	}
 
 }

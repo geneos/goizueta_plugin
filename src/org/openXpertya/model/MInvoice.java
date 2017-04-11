@@ -4174,57 +4174,6 @@ public class MInvoice extends X_C_Invoice implements DocAction {
 			}
 		}
 
-		/**
-		 * @agregado: Horacio Alvarez - Servicios Digitales S.A.
-		 * @fecha: 2009-06-16
-		 * @fecha: 2011-06-25 modificado para soportar WSFEv1.0
-		 * 
-		 */
-		if (localeARActive
-				& MDocType.isElectronicDocType(getC_DocTypeTarget_ID())) {
-			if (getcaecbte() != getNumeroComprobante()) {
-				ProcessorWSFE processor = new ProcessorWSFE(this);
-				String errorMsg = processor.generateCAE();
-				if (errorMsg != null) {
-					setcaeerror(errorMsg);
-					m_processMsg = errorMsg;
-					log.log(Level.SEVERE, "CAE Error: " + errorMsg);
-					return DocAction.STATUS_Invalid;
-				} else {
-					setcae(processor.getCAE());
-					setvtocae(processor.getDateCae());
-					setcaeerror(null);
-					int nroCbte = Integer.parseInt(processor.getNroCbte());
-					this.setNumeroComprobante(nroCbte);
-
-					/*
-					 * Ajuste por revisión de bug - commit r1443
-					 * 
-					 * 
-					 */
-					
-					boolean updateDocumentNo = getNumeroComprobante()!= nroCbte && this.skipAfterAndBeforeSave;
-					
-					if(updateDocumentNo)
-						setDocumentNo(CalloutInvoiceExt.GenerarNumeroDeDocumento(getPuntoDeVenta(), 
-								getNumeroComprobante(), 
-								getLetra(), 
-								isSOTrx(), 
-								false));					
-					
-					// Actualizar la secuencia del tipo de documento de la
-					// factura en función del valor recibido en el WS de AFIP
-					MDocType dt = MDocType.get(getCtx(), getC_DocType_ID(),
-							get_TrxName());
-					MSequence.setFiscalDocTypeNextNroComprobante(
-							dt.getDocNoSequence_ID(), nroCbte + 1,
-							get_TrxName());
-
-					log.log(Level.SEVERE, "CAE: " + processor.getCAE());
-					log.log(Level.SEVERE, "DATE CAE: " + processor.getDateCae());
-				}
-			}
-		}
 		MPriceList pl = new MPriceList(getCtx(), getM_PriceList_ID(),
 				get_TrxName());
 		if (pl.isActualizarPreciosConFacturaDeCompra()) {
@@ -4258,7 +4207,27 @@ public class MInvoice extends X_C_Invoice implements DocAction {
 				}
 			}
 		}
-
+		
+		/**
+		 * @agregado: Horacio Alvarez - Servicios Digitales S.A.
+		 * @modificado: Pablo Velazquez - Cooperativa GENEOS
+		 * @fecha: 2009-06-16
+		 * @fecha: 2011-06-25 modificado para soportar WSFEv1.0
+		 * @fecha: 2017-03-30 modificado para evitar envio de facturas que no corresponden desde TPV
+		 * 
+		 */
+		
+		if (localeARActive
+				& MDocType.isElectronicDocType(getC_DocTypeTarget_ID()) && !ignoreSendAFIP) {
+			
+			String afipMsg = sendAFIPInvoice();
+			if (!Util.isEmpty(afipMsg)) {
+				m_processMsg = afipMsg;
+				return DOCSTATUS_Invalid;
+			}
+			
+		}
+		
 		m_processMsg = info.toString().trim();
 		setProcessed(true);
 		setDocAction(DOCACTION_Close);
@@ -5401,6 +5370,7 @@ public class MInvoice extends X_C_Invoice implements DocAction {
 	}
 
 	private boolean ignoreFiscalPrint = false;
+	private boolean ignoreSendAFIP = false;
 
 	/**
 	 * @return el valor de ignoreFiscalPrint
@@ -5415,6 +5385,14 @@ public class MInvoice extends X_C_Invoice implements DocAction {
 	 */
 	public void setIgnoreFiscalPrint(boolean ignoreFiscalPrint) {
 		this.ignoreFiscalPrint = ignoreFiscalPrint;
+	}
+	
+	/**
+	 * @param ignoreSendAFIP
+	 *            el valor de ignoreFiscalPrint a asignar
+	 */
+	public void setIgnoreSendAFIP(boolean sendAFIP) {
+		this.ignoreSendAFIP = sendAFIP;
 	}
 
 	/**
@@ -6035,6 +6013,54 @@ public class MInvoice extends X_C_Invoice implements DocAction {
 
 	public void setAllowSetOrderPriceList(boolean allowSetOrderPriceList) {
 		this.allowSetOrderPriceList = allowSetOrderPriceList;
+	}
+	
+	public String sendAFIPInvoice() {
+		// === Lógica adicional para evitar doble notificación a AFIP. ===
+		// Si tiene CAE asignado, no debe generarlo nuevamente
+		String errorMsg = "";
+		boolean success = false;
+		if ((getcae() == null || getcae().length() == 0) && getcaecbte() != getNumeroComprobante()) {
+			ProcessorWSFE processor = new ProcessorWSFE(this);
+			errorMsg = processor.generateCAE();
+			if (Util.isEmpty(processor.getCAE())) {
+				setcaeerror(errorMsg);
+				log.log(Level.SEVERE, "CAE Error: " + errorMsg);
+			} else {
+				setcae(processor.getCAE());
+				setvtocae(processor.getDateCae());
+				setcaeerror(errorMsg);
+				int nroCbte = Integer.parseInt(processor.getNroCbte());
+				boolean updateDocumentNo = getNumeroComprobante()!= nroCbte && this.skipAfterAndBeforeSave;
+				this.setNumeroComprobante(nroCbte);
+				
+				if(updateDocumentNo)
+					setDocumentNo(CalloutInvoiceExt
+							.GenerarNumeroDeDocumento(getPuntoDeVenta(),
+									getNumeroComprobante(), getLetra(),
+									isSOTrx(), false));
+
+				// Actualizar la secuencia del tipo de documento de la
+				// factura en función del valor recibido en el WS de AFIP
+				MDocType dt = MDocType.get(getCtx(), getC_DocType_ID(),
+						get_TrxName());
+				MSequence.setFiscalDocTypeNextNroComprobante(
+						dt.getDocNoSequence_ID(), nroCbte + 1,
+						get_TrxName());
+				success = true;
+				log.log(Level.SEVERE, "CAE: " + processor.getCAE());
+				log.log(Level.SEVERE, "DATE CAE: " + processor.getDateCae());
+			}
+			
+			//Genero log de llamado (SIEMPRE)
+			processor.getWsfe().getRequestXML();
+			processor.getWsfe().getResponseXML();
+			
+		}
+		if (success)
+			return "";
+		else
+			return errorMsg;
 	}
 
 } // MInvoice
