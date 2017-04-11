@@ -53,6 +53,8 @@ import org.openXpertya.util.StringUtil;
 import org.openXpertya.util.TimeStatsLogger;
 import org.openXpertya.util.Util;
 
+import ar.com.geneos.goizueta.plugin.model.MCGFEInvoiceChangelog;
+
 /**
  * Descripción de Clase
  * 
@@ -6053,9 +6055,13 @@ public class MInvoice extends X_C_Invoice implements DocAction {
 			}
 			
 			//Genero log de llamado (SIEMPRE)
-			processor.getWsfe().getRequestXML();
-			processor.getWsfe().getResponseXML();
-			
+			MCGFEInvoiceChangelog fecl = new MCGFEInvoiceChangelog(getCtx(),this,null);
+			fecl.setrequestxml(processor.getWsfe().getRequestXML());
+			fecl.setresponsexml(processor.getWsfe().getResponseXML());
+			fecl.setmsgerror(errorMsg);
+			fecl.setsuccess(success);
+			fecl.setAD_Session_ID(333);
+			fecl.save();
 		}
 		if (success)
 			return "";
