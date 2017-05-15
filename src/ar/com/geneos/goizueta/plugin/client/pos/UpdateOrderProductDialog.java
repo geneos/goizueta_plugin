@@ -541,7 +541,7 @@ public class UpdateOrderProductDialog extends JDialog {
 			cPriceListText = new VNumber();
 			cPriceListText.setPreferredSize(new java.awt.Dimension(100, 20));
 			cPriceListText.setMandatory(false);
-			cPriceListText.setReadWrite(false);
+			//cPriceListText.setReadWrite(false);
 			cPriceListText.setDisplayType(DisplayType.CostPrice);
 			cPriceListText.setValue(getOrderProduct().getTaxedPriceList());
 		}
