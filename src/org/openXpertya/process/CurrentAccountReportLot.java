@@ -12,7 +12,9 @@ import java.util.logging.Level;
 
 import org.openXpertya.cc.CurrentAccountQuery;
 import org.openXpertya.model.MBPartner;
+import org.openXpertya.model.MBPartnerLocation;
 import org.openXpertya.model.MCurrency;
+import org.openXpertya.model.MLocation;
 import org.openXpertya.model.MQuery;
 import org.openXpertya.model.PrintInfo;
 import org.openXpertya.print.MPrintFormat;
@@ -28,6 +30,12 @@ public class CurrentAccountReportLot extends SvrProcess {
 
 	/** Entidad Comercial de los comprobantes a consultar */
 	private Integer p_C_BPartnerID;
+	
+	/** Dirección de Entidad Comercial de los comprobantes a consultar
+	 *  Cambio Goizueta 20/03/2017 */
+	
+	private int p_C_LocationID = 0;
+	
 	/** Tipo de Entidad Comercial de los comprobantes a consultar */
 	private Integer p_C_BPartner_GroupID;
 	/** Fecha inicial del rango de fechas de la transacción */
@@ -179,6 +187,18 @@ public class CurrentAccountReportLot extends SvrProcess {
 			while (rs_group.next()) {
 				
 				p_C_BPartnerID = rs_group.getInt(1);
+				
+				MBPartnerLocation[] locs = MBPartnerLocation.getForBPartner(getCtx(), p_C_BPartnerID);
+				MLocation loc = null;
+				
+				if(locs.length > 0) {
+					loc = MLocation.getBPLocation(getCtx(), locs[0].getC_BPartner_Location_ID(), get_TrxName());
+				}				
+				
+				if(loc != null)
+					p_C_LocationID = loc.getC_Location_ID();
+				else
+					p_C_LocationID = 0;
 
 				// Saldo acumulado, por defecto es 0.
 				acumBalance = BigDecimal.ZERO;
@@ -228,7 +248,7 @@ public class CurrentAccountReportLot extends SvrProcess {
 								subIndice++;
 								// insert first row: before query balance period
 								// Field used for 'date field' in temporary table: DATETRX
-								usql.append(" INSERT INTO T_CUENTACORRIENTE (SUBINDICE, IncludeOpenOrders, ShowDetailedReceiptsPayments, AD_CLIENT_ID, AD_ORG_ID, AD_PINSTANCE_ID, ISO_CODE, AMOUNT, DEBE, HABER, SALDO, NUMEROCOMPROBANTE, C_BPARTNER_ID, ACCOUNTTYPE, DATETRX, C_DOCTYPE_ID, OnlyCurrentAccountDocuments) "
+								usql.append(" INSERT INTO T_CUENTACORRIENTE (SUBINDICE, IncludeOpenOrders, ShowDetailedReceiptsPayments, AD_CLIENT_ID, AD_ORG_ID, AD_PINSTANCE_ID, ISO_CODE, AMOUNT, DEBE, HABER, SALDO, NUMEROCOMPROBANTE, C_BPARTNER_ID, ACCOUNTTYPE, DATETRX, C_DOCTYPE_ID, OnlyCurrentAccountDocuments, C_LOCATION_ID) "
 										+ " VALUES ("
 										+ subIndice
 										+ ", '"
@@ -258,6 +278,8 @@ public class CurrentAccountReportLot extends SvrProcess {
 										+ p_DateTrx_From + "', NULL"
 										+ ", "
 										+ "'"+(isOnlyCurrentAccountDocuments()?"Y":"N")+"'"
+										+ ", "
+										+ p_C_LocationID
 										+ ");");
 							}
 							
@@ -314,7 +336,7 @@ public class CurrentAccountReportLot extends SvrProcess {
 									// ANTONIO: La cuenta es al reves acumBalance =
 									// acumBalance.add(credit.subtract(debit));
 									acumBalance = acumBalance.add(debit.subtract(credit));
-									usql.append(" INSERT INTO T_CUENTACORRIENTE (SUBINDICE, IncludeOpenOrders, ShowDetailedReceiptsPayments, AD_CLIENT_ID, AD_ORG_ID, AD_PINSTANCE_ID, ISO_CODE, AMOUNT, DEBE, HABER, SALDO, NUMEROCOMPROBANTE, C_BPARTNER_ID, ACCOUNTTYPE, DATETRX, C_DOCTYPE_ID, C_INVOICE_ID, C_PAYMENT_ID, C_CASHLINE_ID, C_ALLOCATIONHDR_ID, duedate, OnlyCurrentAccountDocuments) "
+									usql.append(" INSERT INTO T_CUENTACORRIENTE (SUBINDICE, IncludeOpenOrders, ShowDetailedReceiptsPayments, AD_CLIENT_ID, AD_ORG_ID, AD_PINSTANCE_ID, ISO_CODE, AMOUNT, DEBE, HABER, SALDO, NUMEROCOMPROBANTE, C_BPARTNER_ID, ACCOUNTTYPE, DATETRX, C_DOCTYPE_ID, C_INVOICE_ID, C_PAYMENT_ID, C_CASHLINE_ID, C_ALLOCATIONHDR_ID, duedate, OnlyCurrentAccountDocuments, C_Location_ID) "
 											+ " VALUES ("
 											+ subIndice
 											+ ", '"
@@ -378,6 +400,8 @@ public class CurrentAccountReportLot extends SvrProcess {
 										usql.append("NULL");
 									
 									usql.append(" , '"+(isOnlyCurrentAccountDocuments()?"Y":"N")+"'");
+									usql.append(" , " + p_C_LocationID);
+
 									usql.append(" ); ");
 									documents.put(documentKey, trx_Org_ID);
 									DB.executeUpdate(usql.toString(), get_TrxName());
@@ -412,11 +436,18 @@ public class CurrentAccountReportLot extends SvrProcess {
 		        format.setTranslationLanguage( language );
 		        
 		        MBPartner ent = new MBPartner(getCtx(), p_C_BPartnerID, get_TrxName());
-		        
+
 		        
 		        MQuery query = new MQuery("T_CuentaCorriente");
 		        query.addRestriction("C_BPartner_ID", "=", p_C_BPartnerID, "Entidad Comercial", ent.getName());
+
+		        if (p_C_LocationID != 0) {
+		        	MLocation dir = new MLocation(getCtx(), p_C_LocationID, get_TrxName());
+		        	query.addRestriction("C_Location_ID", "=", p_C_LocationID, "Dirección", dir.getAddress1() + " - " + dir.getCity());
+		        }
 		        
+		        
+		        String q = query.toString();
 
 
 				// Engine
@@ -440,6 +471,9 @@ public class CurrentAccountReportLot extends SvrProcess {
 			}
 			
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (	Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

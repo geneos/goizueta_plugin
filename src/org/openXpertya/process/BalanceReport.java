@@ -4,7 +4,12 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.openXpertya.model.MBPartner;
 import org.openXpertya.model.MPayment;
 import org.openXpertya.util.DB;
 import org.openXpertya.util.Env;
@@ -257,14 +262,27 @@ public class BalanceReport extends SvrProcess {
 		ResultSet rs = pstmt.executeQuery();
 		int subindice=0;
 		StringBuffer usql = new StringBuffer();
+		
+		String in = "(";
+		int flagIn = 0; 
+		
 		while (rs.next())
 		{
 			// Pedido para que no figuren las entidades con saldo 0
 			// Goizueta 14/11/2016
 			
+			MBPartner mbp = new MBPartner(this.getCtx(), rs.getInt("C_BPartner_ID"), this.get_TrxName());
+			
+			if(flagIn == 0){
+				flagIn = 1;
+				in += rs.getInt("C_BPartner_ID");
+			} else {
+				in += "," + rs.getInt("C_BPartner_ID");
+			}
+			
 			BigDecimal s = this.getSaldoFecha(p_DateTrx_From, rs.getInt("C_BPartner_ID")).add(rs.getBigDecimal("Debit")).subtract(rs.getBigDecimal("Credit"));
-			System.out.println(rs.getInt("C_BPartner_ID") + ": " + this.getSaldoFecha(p_DateTrx_From, rs.getInt("C_BPartner_ID")) + " " + rs.getBigDecimal("Debit") + " " + rs.getBigDecimal("Credit"));
-			if(!s.setScale(2).equals(Env.ZERO.setScale(2))) {
+			System.out.println(mbp.getName() + ": " + this.getSaldoFecha(p_DateTrx_From, rs.getInt("C_BPartner_ID")) + " " + rs.getBigDecimal("Debit") + " " + rs.getBigDecimal("Credit"));
+			if(!s.setScale(2).equals(Env.ZERO.setScale(2)) || !rs.getBigDecimal("Debit").setScale(2).equals(Env.ZERO.setScale(2)) || !rs.getBigDecimal("Credit").setScale(2).equals(Env.ZERO.setScale(2))) {
 
 				subindice++;
 				usql.append(" INSERT INTO T_BALANCEREPORT (ad_pinstance_id, ad_client_id, ad_org_id, subindice, c_bpartner_id, observaciones, ");
@@ -319,6 +337,14 @@ public class BalanceReport extends SvrProcess {
 			
 		}
 		
+		in += ")";
+		
+		
+		
+
+				
+		
+		
 		// si no hubo entradas directamente no se ejecuta sentencia de insercion alguna
 		if (subindice > 0){
 			int no = DB.executeUpdate(usql.toString(), get_TrxName());
@@ -326,6 +352,67 @@ public class BalanceReport extends SvrProcess {
 				throw new Exception("Error insertando datos en la tabla temporal");
 			}
 		}
+
+		PreparedStatement pstmt_sinmov = null;
+		ResultSet rs_sinmov = null;
+		
+		StringBuilder sql_sinmov = new StringBuilder();
+		sql_sinmov.append("SELECT C_BPartner_ID from C_BPartner where C_BP_Group_ID = " + p_C_BP_Group_ID + " and C_BPartner_ID not in " + in);
+		
+		pstmt_sinmov = DB.prepareStatement(sql_sinmov.toString(), get_TrxName());
+		usql = new StringBuffer();
+		
+		rs_sinmov = pstmt_sinmov.executeQuery();
+		
+		while (rs_sinmov.next()) {
+				
+			subindice++;
+			usql.append(" INSERT INTO T_BALANCEREPORT (ad_pinstance_id, ad_client_id, ad_org_id, subindice, c_bpartner_id, observaciones, ");
+			usql.append("								s_init, credit, debit, balance, date_oldest_open_invoice, date_newest_open_invoice, sortcriteria, scope, c_bp_group_id, truedatetrx, accounttype, ");
+			usql.append("								onlycurrentaccounts, valuefrom, valueto, duedebt, actualbalance, chequesencartera, generalbalance ) ");
+			// Se anexa la columna saldo inicial y el saldo final como resultado de sumar los debitos y restar los créditos en proveedor daría negativo (debemos) y cliente positivo (nos deben).
+			usql.append(" VALUES ( ")	.append(getAD_PInstance_ID()).append(",")
+										.append(getAD_Client_ID()).append(",")
+										.append(p_AD_Org_ID).append(",")
+										.append(subindice).append(",")
+										.append(rs_sinmov.getInt("C_BPartner_ID"))
+										.append(", '', ")
+										.append(this.getSaldoFecha(p_DateTrx_From, rs_sinmov.getInt("C_BPartner_ID")))
+										.append(",0")
+										.append(",0")
+										.append("," + this.getSaldoFecha(p_DateTrx_From, rs_sinmov.getInt("C_BPartner_ID")))
+										.append(", null")
+										.append(", null");
+			
+			usql.append(" '").append(p_Sort_Criteria).append("', ")
+				.append(" '").append(p_Scope).append("', ")
+				.append(p_C_BP_Group_ID).append(", ");
+			
+			if (p_DateTrx_To!=null)
+				usql.append(" '").append(p_DateTrx_To).append("'::timestamp, ");
+			else
+				usql.append("null, ");
+			
+			usql.append("'").append(p_AccountType).append("'");
+			usql.append(" , ");
+			usql.append(onlyCurentAccounts?"'Y'":"'N'");
+			usql.append(" , ");
+			usql.append("'"+valueFrom+"'");
+			usql.append(" , ");
+			usql.append("'"+valueTo+"'");
+			usql.append(" , 0");
+			usql.append(" , 0");
+			usql.append(" , 0");
+			usql.append(" , 0");
+			usql.append(" ); ");				
+		
+			int no = DB.executeUpdate(usql.toString(), get_TrxName());
+			if(no == 0){
+				throw new Exception("Error insertando datos en la tabla temporal");
+			}
+			
+		}
+		
 		
 		return "OK";
 		
