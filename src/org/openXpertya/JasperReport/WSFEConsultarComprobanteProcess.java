@@ -317,6 +317,24 @@ public class WSFEConsultarComprobanteProcess extends SvrProcess {
 			} else {
 				res_csv.concat(lineSeparator);
 			}
+		} else {
+			res_strr = "Comprobante: " + response.getResultGet().getCbteDesde() + " - " +
+					"Fecha: " + response.getResultGet().getFchServDesde() + " - " +
+					"Importe Total: " + response.getResultGet().getImpTotal() + lineSeparator;
+			res_csv = response.getResultGet().getPtoVta() + "-" + response.getResultGet().getCbteDesde() + "," +
+						response.getResultGet().getFchServDesde() + "," +
+						response.getResultGet().getImpTotal() + "," +
+						response.getResultGet().getDocNro() + ",";
+			
+			int [] ids = MBPartner.getAllIDs("C_BPartner", "taxid='" + response.getResultGet().getDocNro() + "' AND isCustomer = 'Y'", this.get_TrxName());
+			
+			if(ids.length != 0){
+				int cbp_ID = ids[0];
+				cbp = new MBPartner(this.getCtx(), cbp_ID ,this.get_TrxName());
+				res_csv.concat(cbp.getC_BPartner_ID() + "," + cbp.getTaxIdType() + lineSeparator);
+			} else {
+				res_csv.concat(lineSeparator);
+			}
 		}
 		
 		try {
