@@ -55,7 +55,6 @@ public class PosMainForm extends PoSMainForm {
 	private String MSG_TRIP;
 	private String MSG_TRIP_ORIGIN;
 	private String MSG_TRIP_DESTINATION;
-	private String MSG_SENDER_DETAILS;
 	private String MSG_DECLARED_VALUE;
 	private String MSG_ERROR_MANDATORY;
 	private String MSG_ADITIONAL_ADDED;

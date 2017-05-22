@@ -453,6 +453,10 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 	private String MSG_CUSTOMER_IDENTIFICATION;
 	private String MSG_PRICE_LIST;
 	private String MSG_CHECKOUT_IN;
+	
+	// Agregado Goizueta
+	protected String MSG_SENDER_DETAILS;
+	
 	private String MSG_PAYMENT_MEDIUM;
 	private String MSG_NO_PAYMENT_MEDIUM_ERROR;
 	private String MSG_CREDIT_CARD_PLAN;
@@ -502,7 +506,7 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 	private String MSG_DUPLICATED_POS_INSTANCE;
 	private String MSG_CASH_RETIREMENT;
 	private String MSG_CASH_RETIREMENT_EXCEEDS_LIMIT;
-	
+
 	/**
 	 * This method initializes 
 	 * 
@@ -1403,7 +1407,15 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 	 */
 	protected JTable getCOrderTable() {
 		if (cOrderTable == null) {
-			cOrderTable = new MiniTable();
+			cOrderTable = new MiniTable() {
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					if (column == 7)
+						return true;
+					else
+						return false;
+				}
+			};
 			cOrderTable.setRowSelectionAllowed(true);
 			
 			// Creo el Modelo de la tabla.
@@ -1418,6 +1430,11 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 			orderTableModel.addColumName(MSG_PRICE);
 			orderTableModel.addColumName(MSG_FINAL_PRICE);
 			orderTableModel.addColumName(MSG_CHECKOUT_IN);
+			
+			// Agregado Goizueta
+			orderTableModel.addColumName(MSG_SENDER_DETAILS);
+			cOrderTable.setModel(orderTableModel);
+			
 			cOrderTable.setModel(orderTableModel);
 			
 			// Configuracion del renderizado de la tabla.
