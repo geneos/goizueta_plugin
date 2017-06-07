@@ -384,21 +384,18 @@ public class BalanceReport extends SvrProcess {
 										.append(", null")
 										.append(", null");
 			
-			usql.append(" '").append(p_Sort_Criteria).append("', ")
-				.append(" '").append(p_Scope).append("', ")
-				.append(p_C_BP_Group_ID).append(", ");
+			usql.append(", '").append(p_Sort_Criteria).append("'")
+				.append(", '").append(p_Scope).append("'")
+				.append(", ").append(p_C_BP_Group_ID).append(", ");
 			
 			if (p_DateTrx_To!=null)
 				usql.append(" '").append(p_DateTrx_To).append("'::timestamp, ");
 			else
 				usql.append("null, ");
 			
-			usql.append("'").append(p_AccountType).append("'");
-			usql.append(" , ");
-			usql.append(onlyCurentAccounts?"'Y'":"'N'");
-			usql.append(" , ");
-			usql.append("'"+valueFrom+"'");
-			usql.append(" , ");
+			usql.append("'").append(p_AccountType).append("'").append(", ");
+			usql.append(onlyCurentAccounts?"'Y'":"'N'").append(", ");
+			usql.append("'"+valueFrom+"'").append(", ");
 			usql.append("'"+valueTo+"'");
 			usql.append(" , 0");
 			usql.append(" , 0");
