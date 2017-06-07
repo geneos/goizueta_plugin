@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="/org.libertya.1503/lib/JasperReports.jar"/>
-	<classpathentry kind="lib" path="/org.libertya.1503/lib/AxisJar.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.libertya.1503"/>
+	<classpathentry kind="lib" path="/home/teseo87/Workspace/Geneos/libertya-1604/libertya-src/lib/JasperReports.jar"/>
+	<classpathentry kind="lib" path="/home/teseo87/Workspace/Geneos/libertya-1604/libertya-src/lib/AxisJar.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.libertya"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
