@@ -238,6 +238,10 @@ public class BalanceReport extends SvrProcess {
 		
 		// ejecutar la consulta y cargar la tabla temporal
 		PreparedStatement pstmt = DB.prepareStatement(sqlDoc.toString(), get_TrxName(), true);
+		
+		System.out.println("SQL: " + sqlDoc.toString());
+		
+		
 		int i = 1;
 		// Parámetros de sqlDoc
 		pstmt.setTimestamp(i++,
@@ -279,6 +283,11 @@ public class BalanceReport extends SvrProcess {
 			} else {
 				in += "," + rs.getInt("C_BPartner_ID");
 			}
+			
+			
+			usql = new StringBuffer();
+			
+			
 			
 			BigDecimal s = this.getSaldoFecha(p_DateTrx_From, rs.getInt("C_BPartner_ID")).add(rs.getBigDecimal("Debit")).subtract(rs.getBigDecimal("Credit"));
 			System.out.println(mbp.getName() + ": " + this.getSaldoFecha(p_DateTrx_From, rs.getInt("C_BPartner_ID")) + " " + rs.getBigDecimal("Debit") + " " + rs.getBigDecimal("Credit"));
@@ -331,7 +340,12 @@ public class BalanceReport extends SvrProcess {
 				usql.append(rs.getBigDecimal("actualbalance").add(
 						rs.getBigDecimal("chequesencartera")));
 				usql.append(" ); ");
+
 				
+				int no = DB.executeUpdate(usql.toString(), get_TrxName());
+				if(no == 0){
+					throw new Exception("Error insertando datos en la tabla temporal");
+				}
 				
 			}
 			
@@ -342,22 +356,17 @@ public class BalanceReport extends SvrProcess {
 		
 		
 
-				
+		System.out.println("SQL: " + usql.toString());	
 		
 		
-		// si no hubo entradas directamente no se ejecuta sentencia de insercion alguna
-		if (subindice > 0){
-			int no = DB.executeUpdate(usql.toString(), get_TrxName());
-			if(no == 0){
-				throw new Exception("Error insertando datos en la tabla temporal");
-			}
-		}
+
 
 		PreparedStatement pstmt_sinmov = null;
 		ResultSet rs_sinmov = null;
 		
 		StringBuilder sql_sinmov = new StringBuilder();
-		sql_sinmov.append("SELECT C_BPartner_ID from C_BPartner where C_BP_Group_ID = " + p_C_BP_Group_ID + " and C_BPartner_ID not in " + in);
+		sql_sinmov.append("SELECT C_BPartner_ID from C_BPartner where C_BP_Group_ID = " + p_C_BP_Group_ID + " and C_BPartner_ID not in " + in + " order by name desc");
+		
 		
 		pstmt_sinmov = DB.prepareStatement(sql_sinmov.toString(), get_TrxName());
 		usql = new StringBuffer();
@@ -365,7 +374,8 @@ public class BalanceReport extends SvrProcess {
 		rs_sinmov = pstmt_sinmov.executeQuery();
 		
 		while (rs_sinmov.next()) {
-				
+			
+			usql = new StringBuffer();
 			subindice++;
 			usql.append(" INSERT INTO T_BALANCEREPORT (ad_pinstance_id, ad_client_id, ad_org_id, subindice, c_bpartner_id, observaciones, ");
 			usql.append("								s_init, credit, debit, balance, date_oldest_open_invoice, date_newest_open_invoice, sortcriteria, scope, c_bp_group_id, truedatetrx, accounttype, ");
@@ -384,27 +394,24 @@ public class BalanceReport extends SvrProcess {
 										.append(", null")
 										.append(", null");
 			
-			usql.append(" '").append(p_Sort_Criteria).append("', ")
-				.append(" '").append(p_Scope).append("', ")
-				.append(p_C_BP_Group_ID).append(", ");
+			usql.append(", '").append(p_Sort_Criteria).append("'")
+				.append(", '").append(p_Scope).append("'")
+				.append(", ").append(p_C_BP_Group_ID).append(", ");
 			
 			if (p_DateTrx_To!=null)
 				usql.append(" '").append(p_DateTrx_To).append("'::timestamp, ");
 			else
 				usql.append("null, ");
 			
-			usql.append("'").append(p_AccountType).append("'");
-			usql.append(" , ");
-			usql.append(onlyCurentAccounts?"'Y'":"'N'");
-			usql.append(" , ");
-			usql.append("'"+valueFrom+"'");
-			usql.append(" , ");
+			usql.append("'").append(p_AccountType).append("'").append(", ");
+			usql.append(onlyCurentAccounts?"'Y'":"'N'").append(", ");
+			usql.append("'"+valueFrom+"'").append(", ");
 			usql.append("'"+valueTo+"'");
 			usql.append(" , 0");
 			usql.append(" , 0");
 			usql.append(" , 0");
 			usql.append(" , 0");
-			usql.append(" ); ");				
+			usql.append(" ); ");			
 		
 			int no = DB.executeUpdate(usql.toString(), get_TrxName());
 			if(no == 0){
