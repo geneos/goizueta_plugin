@@ -271,6 +271,10 @@ public class RetencionGanancias extends AbstractRetencionProcessor {
 				.getC_BPartner_Recaudador_ID());
 		recaudador_fac.setDateInvoiced(getDateTrx());
 		recaudador_fac.setDateAcct(getDateTrx());
+		
+		//Agregado para que no falle luego al actualizar lista de precios
+		recaudador_fac.setFechadeTCparaActualizarPrecios(getDateTrx());
+
 		recaudador_fac.setC_Currency_ID(getCurrency().getC_Currency_ID());
 		recaudador_fac.setIsSOTrx(isSOTrx());
 		recaudador_fac.setDocStatus(MInvoice.DOCSTATUS_Drafted);
@@ -350,6 +354,10 @@ public class RetencionGanancias extends AbstractRetencionProcessor {
 		credito_prov.setC_BPartner_ID(getBPartner().getC_BPartner_ID());
 		credito_prov.setDateInvoiced(getDateTrx());
 		credito_prov.setDateAcct(getDateTrx());
+		
+		//Agregado para que no falle luego al actualizar lista de precios
+		credito_prov.setFechadeTCparaActualizarPrecios(getDateTrx());
+
 		credito_prov.setC_Currency_ID(getCurrency().getC_Currency_ID());
 		credito_prov.setIsSOTrx(isSOTrx());
 		credito_prov.setDocStatus(MInvoice.DOCSTATUS_Drafted);
