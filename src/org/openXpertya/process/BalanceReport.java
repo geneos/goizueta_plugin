@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -268,7 +270,8 @@ public class BalanceReport extends SvrProcess {
 		StringBuffer usql = new StringBuffer();
 		
 		String in = "(";
-		int flagIn = 0; 
+		int flagIn = 0;
+		
 		
 		while (rs.next())
 		{
@@ -289,9 +292,10 @@ public class BalanceReport extends SvrProcess {
 			
 			
 			
-			BigDecimal s = this.getSaldoFecha(p_DateTrx_From, rs.getInt("C_BPartner_ID")).add(rs.getBigDecimal("Debit")).subtract(rs.getBigDecimal("Credit"));
+			//BigDecimal s = this.getSaldoFecha(p_DateTrx_From, rs.getInt("C_BPartner_ID")).add(rs.getBigDecimal("Debit")).subtract(rs.getBigDecimal("Credit"));
+			BigDecimal sal = this.getSaldoFecha(p_DateTrx_From, rs.getInt("C_BPartner_ID"));
 			System.out.println(mbp.getName() + ": " + this.getSaldoFecha(p_DateTrx_From, rs.getInt("C_BPartner_ID")) + " " + rs.getBigDecimal("Debit") + " " + rs.getBigDecimal("Credit"));
-			if(!s.setScale(2).equals(Env.ZERO.setScale(2)) || !rs.getBigDecimal("Debit").setScale(2).equals(Env.ZERO.setScale(2)) || !rs.getBigDecimal("Credit").setScale(2).equals(Env.ZERO.setScale(2))) {
+			if(!sal.setScale(2).equals(Env.ZERO.setScale(2)) || !rs.getBigDecimal("Debit").setScale(2).equals(Env.ZERO.setScale(2)) || !rs.getBigDecimal("Credit").setScale(2).equals(Env.ZERO.setScale(2))) {
 
 				subindice++;
 				usql.append(" INSERT INTO T_BALANCEREPORT (ad_pinstance_id, ad_client_id, ad_org_id, subindice, c_bpartner_id, observaciones, ");
@@ -340,7 +344,6 @@ public class BalanceReport extends SvrProcess {
 				usql.append(rs.getBigDecimal("actualbalance").add(
 						rs.getBigDecimal("chequesencartera")));
 				usql.append(" ); ");
-
 				
 				int no = DB.executeUpdate(usql.toString(), get_TrxName());
 				if(no == 0){
@@ -352,14 +355,15 @@ public class BalanceReport extends SvrProcess {
 		}
 		
 		in += ")";
-		
-		
-		
 
-		System.out.println("SQL: " + usql.toString());	
-		
-		
-
+		/*
+		 * Geneos
+		 * 
+		 * Cambio pedido el 11/07/2017 volver a modificar el formato sacando las dos secciones 
+		 * mezclado todos con o sin movimientos, solo no van los saldos de inicio = 0 y sin movimientos.
+		 * 
+		 * 
+		 */
 
 		PreparedStatement pstmt_sinmov = null;
 		ResultSet rs_sinmov = null;
@@ -374,53 +378,60 @@ public class BalanceReport extends SvrProcess {
 		rs_sinmov = pstmt_sinmov.executeQuery();
 		
 		while (rs_sinmov.next()) {
+
 			
-			usql = new StringBuffer();
-			subindice++;
-			usql.append(" INSERT INTO T_BALANCEREPORT (ad_pinstance_id, ad_client_id, ad_org_id, subindice, c_bpartner_id, observaciones, ");
-			usql.append("								s_init, credit, debit, balance, date_oldest_open_invoice, date_newest_open_invoice, sortcriteria, scope, c_bp_group_id, truedatetrx, accounttype, ");
-			usql.append("								onlycurrentaccounts, valuefrom, valueto, duedebt, actualbalance, chequesencartera, generalbalance ) ");
-			// Se anexa la columna saldo inicial y el saldo final como resultado de sumar los debitos y restar los créditos en proveedor daría negativo (debemos) y cliente positivo (nos deben).
-			usql.append(" VALUES ( ")	.append(getAD_PInstance_ID()).append(",")
-										.append(getAD_Client_ID()).append(",")
-										.append(p_AD_Org_ID).append(",")
-										.append(subindice).append(",")
-										.append(rs_sinmov.getInt("C_BPartner_ID"))
-										.append(", '', ")
-										.append(this.getSaldoFecha(p_DateTrx_From, rs_sinmov.getInt("C_BPartner_ID")))
-										.append(",0")
-										.append(",0")
-										.append("," + this.getSaldoFecha(p_DateTrx_From, rs_sinmov.getInt("C_BPartner_ID")))
-										.append(", null")
-										.append(", null");
+			MBPartner mbp = new MBPartner(this.getCtx(), rs_sinmov.getInt("C_BPartner_ID"), this.get_TrxName());
+
+			BigDecimal sal = this.getSaldoFecha(p_DateTrx_From, rs_sinmov.getInt("C_BPartner_ID"));
+			if(!sal.setScale(2).equals(Env.ZERO.setScale(2))) {
+				
+				usql = new StringBuffer();
+				subindice++;
+				usql.append(" INSERT INTO T_BALANCEREPORT (ad_pinstance_id, ad_client_id, ad_org_id, subindice, c_bpartner_id, observaciones, ");
+				usql.append("								s_init, credit, debit, balance, date_oldest_open_invoice, date_newest_open_invoice, sortcriteria, scope, c_bp_group_id, truedatetrx, accounttype, ");
+				usql.append("								onlycurrentaccounts, valuefrom, valueto, duedebt, actualbalance, chequesencartera, generalbalance ) ");
+				// Se anexa la columna saldo inicial y el saldo final como resultado de sumar los debitos y restar los créditos en proveedor daría negativo (debemos) y cliente positivo (nos deben).
+				usql.append(" VALUES ( ")	.append(getAD_PInstance_ID()).append(",")
+											.append(getAD_Client_ID()).append(",")
+											.append(p_AD_Org_ID).append(",")
+											.append(subindice).append(",")
+											.append(rs_sinmov.getInt("C_BPartner_ID"))
+											.append(", '', ")
+											.append(this.getSaldoFecha(p_DateTrx_From, rs_sinmov.getInt("C_BPartner_ID")))
+											.append(",0")
+											.append(",0")
+											.append("," + this.getSaldoFecha(p_DateTrx_From, rs_sinmov.getInt("C_BPartner_ID")))
+											.append(", null")
+											.append(", null");
+				
+				usql.append(", '").append(p_Sort_Criteria).append("'")
+					.append(", '").append(p_Scope).append("'")
+					.append(", ").append(p_C_BP_Group_ID).append(", ");
+				
+				if (p_DateTrx_To!=null)
+					usql.append(" '").append(p_DateTrx_To).append("'::timestamp, ");
+				else
+					usql.append("null, ");
+				
+				usql.append("'").append(p_AccountType).append("'").append(", ");
+				usql.append(onlyCurentAccounts?"'Y'":"'N'").append(", ");
+				usql.append("'"+valueFrom+"'").append(", ");
+				usql.append("'"+valueTo+"'");
+				usql.append(" , 0");
+				usql.append(" , 0");
+				usql.append(" , 0");
+				usql.append(" , 0");
+				usql.append(" ); ");			
 			
-			usql.append(", '").append(p_Sort_Criteria).append("'")
-				.append(", '").append(p_Scope).append("'")
-				.append(", ").append(p_C_BP_Group_ID).append(", ");
-			
-			if (p_DateTrx_To!=null)
-				usql.append(" '").append(p_DateTrx_To).append("'::timestamp, ");
-			else
-				usql.append("null, ");
-			
-			usql.append("'").append(p_AccountType).append("'").append(", ");
-			usql.append(onlyCurentAccounts?"'Y'":"'N'").append(", ");
-			usql.append("'"+valueFrom+"'").append(", ");
-			usql.append("'"+valueTo+"'");
-			usql.append(" , 0");
-			usql.append(" , 0");
-			usql.append(" , 0");
-			usql.append(" , 0");
-			usql.append(" ); ");			
-		
-			int no = DB.executeUpdate(usql.toString(), get_TrxName());
-			if(no == 0){
-				throw new Exception("Error insertando datos en la tabla temporal");
-			}
+				int no = DB.executeUpdate(usql.toString(), get_TrxName());
+				if(no == 0){
+					throw new Exception("Error insertando datos en la tabla temporal");
+				}
+									
+			}			
 			
 		}
-		
-		
+
 		return "OK";
 		
 	}
