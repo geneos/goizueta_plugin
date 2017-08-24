@@ -430,13 +430,17 @@ public class PoSOnline extends PoSConnectionState {
 						if ((afipMsg.contains("Exit Value=2")))
 							afipMsg = "No se pudo conectar a la AFIP";
 						//Arrojo exception para que vuelva todo atras
-						PosException e;
-						e = new PosException(); 
+						PosException e = new PosException(); 
 						e.setMessage(afipMsg);
 						throw e;
 					}
-					
 				}
+				else if (Util.isEmpty(invoice.getcae())){
+					PosException e = new PosException(); 
+					e.setMessage("No se genero el CAE correctamente:"+afipMsg);
+					throw e;
+				}
+					 
 				invoice.save();
 				
 				
