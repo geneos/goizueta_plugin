@@ -1510,6 +1510,7 @@ public class PoSMainForm extends CPanel implements FormPanel, ASyncProcess, Disp
 			minWidth.add(75);
 			minWidth.add(75);
 			minWidth.add(75);
+			minWidth.add(400);
 			
 			// Se wrapea la tabla con funcionalidad extra.
 			setOrderTableUtils(new TableUtils(minWidth,cOrderTable));

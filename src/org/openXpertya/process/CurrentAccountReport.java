@@ -230,13 +230,30 @@ public class CurrentAccountReport extends SvrProcess {
 						+ "'"+(isOnlyCurrentAccountDocuments()?"Y":"N")+"'"
 						+ ");");
 			}
-
+			
+			
+			// Hacer efectivo el insert antes de limpiar el campo.
+			
+			if (usql.length() > 0)
+				// Se insertan todas las líneas en la tabla.
+				DB.executeUpdate(usql.toString(), get_TrxName());
+			
+			
 			BigDecimal credit = null;
 			BigDecimal debit = null;
 			Map<String, Integer> documents = new HashMap<String, Integer>();
 			String documentKey;
 			// process rs & insert rows in table
 			while (rs.next()) {
+				
+				/* 
+				 * Limpio el sql para que no tener problemas con el largo máximo de 2000 caracteres.
+				 * Geneos 30/08/2017
+				 * 
+				 */
+				
+				usql = new StringBuffer();
+				
 				documentKey = rs.getString("documenttable")
 						+ "_"
 						+ rs.getString("document_id")
@@ -350,9 +367,20 @@ public class CurrentAccountReport extends SvrProcess {
 					
 					usql.append(" , '"+(isOnlyCurrentAccountDocuments()?"Y":"N")+"'");
 					usql.append(" ); ");
+					
 					documents.put(documentKey, trx_Org_ID);
+					
+					// Hacer efectivo el insert antes de limpiar el campo.
+					
+					if (usql.length() > 0)
+						// Se insertan todas las líneas en la tabla.
+						DB.executeUpdate(usql.toString(), get_TrxName());
+					
+					
 				}
 			}
+			
+			usql = new StringBuffer();
 
 			// incorporar los pedidos no facturados (parcial o total)
 			if (p_includeOpenOrders)

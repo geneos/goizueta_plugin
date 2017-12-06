@@ -142,7 +142,8 @@ public class CurrentAccountQuery {
 			sqlDoc.append("  	d.document_id, ");
 			sqlDoc.append(" 	d.c_invoicepayschedule_id ");
 			sqlDoc.append(" FROM V_Documents_Org d ");
-			sqlDoc.append(" WHERE d.DocStatus IN ('CO','CL', 'RE', 'VO') ");
+			//sqlDoc.append(" WHERE d.DocStatus IN ('CO','CL', 'RE', 'VO') ");
+			sqlDoc.append(" WHERE d.DocStatus IN ('CO','CL', 'RE') ");
 			sqlDoc.append("   AND d.AD_Client_ID = ? ");
 			sqlDoc.append("   AND d.C_Bpartner_ID = ? ");
 			if(onlyCurrrentAccoundDocuments){
@@ -200,7 +201,8 @@ public class CurrentAccountQuery {
 			sqlDoc.append(" 		(CASE WHEN ((SELECT al.C_AllocationHdr_ID FROM C_AllocationLine al WHERE ( ((d.documenttable = 'C_Payment') AND (al.C_Payment_ID = d.document_id)) OR ((d.documenttable = 'C_Invoice') AND (al.C_Invoice_Credit_ID = d.document_id)) OR ((d.documenttable = 'C_CashLine') AND (al.C_CashLine_ID = d.document_id)) ) LIMIT 1) IS NOT NULL) THEN (SELECT al.C_AllocationHdr_ID FROM C_AllocationLine al WHERE ( ((d.documenttable = 'C_Payment') AND (al.C_Payment_ID = d.document_id)) OR ((d.documenttable = 'C_Invoice') AND (al.C_Invoice_Credit_ID = d.document_id)) OR ((d.documenttable = 'C_CashLine') AND (al.C_CashLine_ID = d.document_id)) ) LIMIT 1) ELSE d.document_id END) AS document_id, ");
 			sqlDoc.append(" 	d.c_invoicepayschedule_id ");
 			sqlDoc.append(" 	FROM V_Documents_org d ");
-			sqlDoc.append(" 	WHERE d.DocStatus IN ('CO','CL', 'RE', 'VO') ");
+			//sqlDoc.append(" 	WHERE d.DocStatus IN ('CO','CL', 'RE', 'VO') ");
+			sqlDoc.append(" 	WHERE d.DocStatus IN ('CO','CL', 'RE') ");
 			sqlDoc.append("     AND d.AD_Client_ID = ? ");
 			sqlDoc.append("   AND d.C_Bpartner_ID = ? ");
 			if(onlyCurrrentAccoundDocuments){
