@@ -327,7 +327,7 @@ public class CurrentAccountReport extends SvrProcess {
 							+ ", "
 							+ acumBalance
 							+ ", '"
-							+ rs.getString("DocumentNo")
+							+ scapeQuote(rs.getString("DocumentNo"))
 							+ "', "
 							+ p_C_BPartnerID
 							+ ", '"
@@ -531,7 +531,7 @@ public class CurrentAccountReport extends SvrProcess {
 					+ ", "
 					+ acumBalance
 					+ ", '"
-					+ rs.getString("DocumentNo")
+					+ scapeQuote(rs.getString("DocumentNo"))
 					+ "', "
 					+ p_C_BPartnerID
 					+ ", '"
@@ -563,6 +563,14 @@ public class CurrentAccountReport extends SvrProcess {
 	protected void setOnlyCurrentAccountDocuments(
 			boolean onlyCurrentAccountDocuments) {
 		this.onlyCurrentAccountDocuments = onlyCurrentAccountDocuments;
+	}
+	
+	/**
+	 * Inserta caracter de escape en los strings que contienen '
+	 * para evitar que produzcan errores en las consultas SQL. 
+	 */
+	private String scapeQuote(String s) {
+		return s.replaceAll("'", "''");		
 	}
 
 }
