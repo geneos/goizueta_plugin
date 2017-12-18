@@ -899,8 +899,13 @@ public class MInvoiceLine extends X_C_InvoiceLine {
     protected boolean beforeSave( boolean newRecord ) {
         log.fine( "New=" + newRecord );
 
+        // Alguno de los dos: producto o cargo, deben estar cargados
+        if(getC_Charge_ID() == 0 && getM_Product_ID() == 0) {
+        	log.saveError("Error", new Exception("El artículo y el cargo no pueden estar vacíos simultaneamente"));
+        	return false;
+        }
+        
         // Charge
-
         if( getC_Charge_ID() != 0 ) {
             if( getM_Product_ID() != 0 ) {
                 setM_Product_ID( 0 );
@@ -1943,20 +1948,31 @@ public class MInvoiceLine extends X_C_InvoiceLine {
     public String getProductCompleteName()
     {
     	LP_C_InvoiceLine line_lp = new LP_C_InvoiceLine(p_ctx, getC_InvoiceLine_ID(), null);
+    	String description = getDescription();
+    	String charge = getChargeName();
+    	String senderDetails = line_lp.getcg_sender_details();
+    	String ret = "";
     	
+    	//Nombre de producto
     	if (getM_Product_ID() > 0) {
-
-    		String ret = getProduct().getName();
-    		
-    		if(getDescription() != null)
-    			ret += " - " + getDescription();
-    		if(line_lp.getcg_sender_details() != null)
-    			ret += " - " + line_lp.getcg_sender_details();
-    		
-    		return ret;
-    		
-    	}
-    	return "";
+    		ret = getProduct().getName();     		
+    	} else {
+	    	//Intento agregar cargo
+	    	if(charge != null && !charge.equals("")) {
+	    		ret = charge;
+			} else {
+				return "Sin detalle";
+			}
+		}    
+    	//Intento agregar descripcion
+    	if(description != null) {
+			ret += " - " + description;
+		}
+    	//Intento agregar envío
+		if(senderDetails != null) {
+			ret += " - " + senderDetails;
+		}   	
+    	return ret;
     }
     
     /** 
