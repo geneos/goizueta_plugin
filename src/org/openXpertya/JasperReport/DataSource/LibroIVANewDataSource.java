@@ -196,7 +196,7 @@ public class LibroIVANewDataSource implements JRDataSource {
 				+ "							ELSE NULL::numeric "
 				+ "					    END AS gravado, "
 				+ "						c_invoicetax.ad_client_id "
-				+ "					 FROM c_invoicetax) cit ON cit.c_invoice_id = inv.c_invoice_id "
+				+ "					 FROM c_invoicetax where c_tax_id in (select c_tax_id from c_tax where c_taxcategory_id in (select c_taxcategory_id from c_taxcategory where isManual='N'))) cit ON cit.c_invoice_id = inv.c_invoice_id "
 				+ "		INNER JOIN ( SELECT c_doctype.c_doctype_id, c_doctype.name AS c_doctype_name, c_doctype.docbasetype, c_doctype.signo_issotrx AS signo, c_doctype.doctypekey, c_doctype.printname, c_doctype.isfiscaldocument, c_doctype.isfiscal "
 				+ " 				FROM c_doctype"
 				+ "					WHERE isfiscaldocument = 'Y') cdt ON cdt.c_doctype_id = inv.c_doctype_id "
@@ -234,7 +234,10 @@ public class LibroIVANewDataSource implements JRDataSource {
 			pstmt.setTimestamp(j++, new Timestamp(this.p_dateFrom.getTime()));
 			pstmt.setTimestamp(j++, new Timestamp(this.p_dateTo.getTime()));
 			rs = pstmt.executeQuery();
-
+			/*
+			Object[] params = {Env.getAD_Client_ID(Env.getCtx()), new Timestamp(this.p_dateFrom.getTime()), new Timestamp(this.p_dateTo.getTime())};
+			Swissknife.sqlToPrint(getQuery(), params, "CONSULTA DE INFORME DE LIBRO IVA:");
+			*/
 			int invoiceID = 0;
 			int lastInvoiceID = -1;
 			totalNeto = new BigDecimal(0);
